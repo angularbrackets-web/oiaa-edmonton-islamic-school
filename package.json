@@ -1,0 +1,51 @@
+{
+  "name": "oiaaedmonton.ca",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts next dev",
+    "build": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts next build",
+    "start": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts next start",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "payload": "payload"
+  },
+  "keywords": [
+    "islamic-school",
+    "nextjs",
+    "cms"
+  ],
+  "author": "",
+  "license": "MIT",
+  "description": "Beautiful modern website for Islamic School with CMS",
+  "dependencies": {
+    "@payloadcms/db-postgres": "^3.50.0",
+    "@payloadcms/db-sqlite": "^3.50.0",
+    "@payloadcms/next": "^3.50.0",
+    "@payloadcms/richtext-lexical": "^3.50.0",
+    "@react-three/drei": "^10.6.1",
+    "@react-three/fiber": "^9.3.0",
+    "@tailwindcss/postcss": "^4.1.11",
+    "@types/node": "^24.2.1",
+    "@types/react": "^19.1.9",
+    "@types/react-dom": "^19.1.7",
+    "autoprefixer": "^10.4.21",
+    "better-sqlite3": "^12.2.0",
+    "clsx": "^2.1.1",
+    "cross-env": "^10.0.0",
+    "eslint": "^9.33.0",
+    "eslint-config-next": "^15.4.6",
+    "framer-motion": "^12.23.12",
+    "lucide-react": "^0.539.0",
+    "next": "^15.4.6",
+    "next-auth": "^4.24.11",
+    "payload": "^3.50.0",
+    "postcss": "^8.5.6",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "tailwind-merge": "^3.3.1",
+    "tailwindcss": "^4.1.11",
+    "three": "^0.179.1",
+    "typescript": "^5.9.2"
+  }
+}

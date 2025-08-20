@@ -1,0 +1,248 @@
+{
+  "careers": {
+    "title": "Join Our Team",
+    "subtitle": "Be part of our mission to provide exceptional Islamic education",
+    "description": "We are always looking for passionate educators and dedicated professionals who share our commitment to academic excellence and Islamic values. Join our growing team and help shape the future of Islamic education in Edmonton.",
+    "benefits": [
+      {
+        "title": "Competitive Compensation",
+        "description": "Competitive salary packages with performance-based incentives",
+        "icon": "💰"
+      },
+      {
+        "title": "Professional Development",
+        "description": "Ongoing training and professional development opportunities",
+        "icon": "📚"
+      },
+      {
+        "title": "Islamic Environment",
+        "description": "Work in a supportive Islamic environment with prayer facilities",
+        "icon": "🕌"
+      },
+      {
+        "title": "Health Benefits",
+        "description": "Comprehensive health and dental coverage for you and your family",
+        "icon": "🏥"
+      },
+      {
+        "title": "Flexible Schedule",
+        "description": "Work-life balance with flexible scheduling options",
+        "icon": "⏰"
+      },
+      {
+        "title": "Community Impact",
+        "description": "Make a meaningful difference in students' lives and the community",
+        "icon": "🌟"
+      }
+    ]
+  },
+  "openPositions": [
+    {
+      "id": "high-school-math-teacher",
+      "title": "High School Mathematics Teacher",
+      "department": "Secondary Education",
+      "type": "Full-time",
+      "location": "Edmonton, AB",
+      "salary": "$65,000 - $85,000",
+      "posted": "2025-01-15",
+      "deadline": "2025-02-28",
+      "status": "active",
+      "featured": true,
+      "requirements": [
+        "Bachelor's degree in Mathematics or related field",
+        "Alberta Teaching Certificate",
+        "Minimum 2 years teaching experience",
+        "Strong commitment to Islamic education",
+        "Excellent communication skills in English",
+        "Arabic language skills preferred"
+      ],
+      "responsibilities": [
+        "Teach mathematics to high school students (Grades 9-12)",
+        "Develop and implement lesson plans aligned with Alberta curriculum",
+        "Integrate Islamic values into mathematical concepts where appropriate",
+        "Assess student progress and provide constructive feedback",
+        "Participate in parent-teacher conferences and school events",
+        "Contribute to curriculum development and improvement"
+      ],
+      "description": "We are seeking a passionate and qualified Mathematics Teacher to join our high school team. The ideal candidate will have strong mathematical knowledge, excellent teaching skills, and a commitment to Islamic education principles."
+    },
+    {
+      "id": "elementary-teacher",
+      "title": "Elementary Teacher (Grades 1-3)",
+      "department": "Elementary Education",
+      "type": "Full-time",
+      "location": "Edmonton, AB", 
+      "salary": "$55,000 - $70,000",
+      "posted": "2025-01-20",
+      "deadline": "2025-03-15",
+      "status": "active",
+      "featured": true,
+      "requirements": [
+        "Bachelor of Education (Elementary)",
+        "Alberta Teaching Certificate",
+        "Experience with young children (ages 6-9)",
+        "Knowledge of Islamic studies and values",
+        "Bilingual (English/Arabic) preferred",
+        "First Aid/CPR certification"
+      ],
+      "responsibilities": [
+        "Teach core subjects to elementary students",
+        "Create engaging and age-appropriate lesson plans",
+        "Foster Islamic values and character development",
+        "Maintain classroom management and positive learning environment",
+        "Communicate regularly with parents about student progress",
+        "Participate in school activities and community events"
+      ],
+      "description": "Join our elementary team as a dedicated teacher for Grades 1-3. We seek someone who loves working with young children and is passionate about integrating Islamic values with academic learning."
+    },
+    {
+      "id": "arabic-language-teacher",
+      "title": "Arabic Language Teacher",
+      "department": "Language Arts",
+      "type": "Full-time",
+      "location": "Edmonton, AB",
+      "salary": "$60,000 - $75,000",
+      "posted": "2025-01-10",
+      "deadline": "2025-02-15",
+      "status": "active",
+      "featured": false,
+      "requirements": [
+        "Native or near-native Arabic speaker",
+        "Bachelor's degree in Arabic Language/Literature",
+        "Teaching certification or equivalent experience",
+        "Experience teaching Arabic as a second language",
+        "Strong English communication skills",
+        "Knowledge of Islamic studies"
+      ],
+      "responsibilities": [
+        "Teach Arabic language to students of various levels",
+        "Develop Arabic language curriculum and materials",
+        "Conduct Arabic language assessments",
+        "Organize Arabic cultural events and activities",
+        "Support Quran recitation and memorization programs",
+        "Collaborate with Islamic Studies department"
+      ],
+      "description": "We are looking for a qualified Arabic Language Teacher to strengthen our Arabic program. The successful candidate will help students develop proficiency in Arabic language skills while connecting them to their Islamic heritage."
+    },
+    {
+      "id": "admin-assistant",
+      "title": "Administrative Assistant",
+      "department": "Administration",
+      "type": "Full-time",
+      "location": "Edmonton, AB",
+      "salary": "$40,000 - $50,000",
+      "posted": "2025-01-25",
+      "deadline": "2025-03-01",
+      "status": "active",
+      "featured": false,
+      "requirements": [
+        "High school diploma minimum, post-secondary preferred",
+        "2+ years administrative experience",
+        "Proficient in Microsoft Office Suite",
+        "Excellent organizational and communication skills",
+        "Knowledge of Islamic community and values",
+        "Bilingual (English/Arabic) an asset"
+      ],
+      "responsibilities": [
+        "Provide administrative support to school leadership",
+        "Manage student registration and enrollment processes",
+        "Handle phone calls, emails, and visitor inquiries",
+        "Maintain student and staff records",
+        "Assist with event planning and coordination",
+        "Support financial and HR administrative tasks"
+      ],
+      "description": "Join our administrative team to support the daily operations of our Islamic school. We need someone who is organized, professional, and committed to our educational mission."
+    },
+    {
+      "id": "maintenance-coordinator",
+      "title": "Facilities Maintenance Coordinator",
+      "department": "Operations",
+      "type": "Full-time",
+      "location": "Edmonton, AB",
+      "salary": "$45,000 - $55,000",
+      "posted": "2025-01-18",
+      "deadline": "2025-02-20",
+      "status": "active",
+      "featured": false,
+      "requirements": [
+        "High school diploma or equivalent",
+        "3+ years facilities maintenance experience",
+        "Basic electrical and plumbing knowledge",
+        "Strong problem-solving skills",
+        "Physical ability to perform maintenance tasks",
+        "Understanding of safety protocols"
+      ],
+      "responsibilities": [
+        "Perform routine maintenance of school facilities",
+        "Coordinate with contractors for major repairs",
+        "Ensure cleanliness and safety of all areas",
+        "Maintain prayer areas and ablution facilities",
+        "Manage inventory of maintenance supplies",
+        "Respond to emergency maintenance issues"
+      ],
+      "description": "We are seeking a reliable Facilities Maintenance Coordinator to ensure our school environment remains safe, clean, and conducive to learning and worship."
+    }
+  ],
+  "volunteerOpportunities": [
+    {
+      "id": "teaching-assistant",
+      "title": "Classroom Teaching Assistant",
+      "department": "Education",
+      "commitment": "Part-time, flexible hours",
+      "description": "Support teachers in classroom activities and student supervision"
+    },
+    {
+      "id": "event-coordinator",
+      "title": "Event Coordinator",
+      "department": "Community",
+      "commitment": "As needed for events",
+      "description": "Help organize school events, fundraisers, and community gatherings"
+    },
+    {
+      "id": "tutoring-volunteer",
+      "title": "Student Tutoring Volunteer", 
+      "department": "Academic Support",
+      "commitment": "2-4 hours per week",
+      "description": "Provide additional academic support to students in various subjects"
+    },
+    {
+      "id": "library-volunteer",
+      "title": "Library Assistant",
+      "department": "Library",
+      "commitment": "1-2 days per week",
+      "description": "Help maintain library resources and assist students with research"
+    }
+  ],
+  "applicationProcess": [
+    {
+      "step": 1,
+      "title": "Submit Application",
+      "description": "Complete the online application form with your resume and cover letter"
+    },
+    {
+      "step": 2,
+      "title": "Initial Review",
+      "description": "Our HR team will review your application within 5-7 business days"
+    },
+    {
+      "step": 3,
+      "title": "Phone/Video Interview",
+      "description": "Qualified candidates will be invited for an initial interview"
+    },
+    {
+      "step": 4,
+      "title": "In-Person Interview",
+      "description": "Final candidates will meet with the hiring committee and tour our facilities"
+    },
+    {
+      "step": 5,
+      "title": "Reference Check",
+      "description": "We will contact your professional and character references"
+    },
+    {
+      "step": 6,
+      "title": "Job Offer",
+      "description": "Successful candidates will receive a formal job offer with details"
+    }
+  ]
+}

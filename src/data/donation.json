@@ -1,0 +1,81 @@
+{
+  "donation": {
+    "title": "Support Our Vision",
+    "subtitle": "Help Build the Future of Our Community",
+    "methods": [
+      {
+        "type": "keela_widget",
+        "title": "Online Donation",
+        "description": "Secure online donations through our trusted payment partner",
+        "widget": "<div class=\"keela-embed-form w-full\" data-src=\"https://give-can.keela.co/embed/qDP7zogDmmbomhw2s\"><div class=\"keela-loading\"><div></div><div></div><div></div><div></div></div></div>",
+        "featured": true
+      },
+      {
+        "type": "e_transfer",
+        "title": "Interac e-Transfer",
+        "description": "Send your donation directly via e-Transfer",
+        "email": "new.project@oiacedmonton.ca",
+        "instructions": "To donate via Interac / e-Transfer, please send it to new.project@oiacedmonton.ca",
+        "featured": true
+      }
+    ],
+    "campaigns": [
+      {
+        "id": "new-centre",
+        "title": "New Omar Ibn Al Khattab Centre",
+        "description": "Help us build a new community centre to serve our growing congregation",
+        "goal": 2000000,
+        "raised": 850000,
+        "percentage": 42.5,
+        "priority": "high",
+        "color": "terracotta-red"
+      },
+      {
+        "id": "school-expansion",
+        "title": "School Programs",
+        "description": "Support educational programs and resources for our students",
+        "goal": 150000,
+        "raised": 95000,
+        "percentage": 63.3,
+        "priority": "medium",
+        "color": "sage-green"
+      },
+      {
+        "id": "community-support",
+        "title": "Community Support",
+        "description": "Help families in need and community outreach programs",
+        "goal": 75000,
+        "raised": 45000,
+        "percentage": 60,
+        "priority": "medium",
+        "color": "wood"
+      }
+    ],
+    "impactAreas": [
+      {
+        "title": "Building Fund",
+        "description": "Construction and infrastructure for the new centre",
+        "icon": "🏗️",
+        "allocation": 70
+      },
+      {
+        "title": "Educational Programs",
+        "description": "Learning resources, technology, and curriculum development",
+        "icon": "📚",
+        "allocation": 15
+      },
+      {
+        "title": "Community Services",
+        "description": "Support for families and community outreach initiatives",
+        "icon": "🤝",
+        "allocation": 10
+      },
+      {
+        "title": "Operations",
+        "description": "Day-to-day operations and maintenance",
+        "icon": "⚙️",
+        "allocation": 5
+      }
+    ]
+  }
+}

@@ -1,0 +1,147 @@
+@import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+@theme {
+  --color-warm-white: #F2F0EC;
+  --color-terracotta-red-darker: #723A36;
+  --color-terracotta-red-dark: #81413C;
+  --color-terracotta-red: #8F4843;
+  --color-terracotta-red-light: #9A5A56;
+  --color-terracotta-red-lighter: #A56D69;
+  --color-wood-darker: #A56949;
+  --color-wood-dark: #B0764E;
+  --color-wood: #BB8452;
+  --color-wood-light: #C39365;
+  --color-wood-lighter: #C89D74;
+  --color-light-wood-darker: #9F8762;
+  --color-light-wood-dark: #B3986F;
+  --color-light-wood: #C7A97B;
+  --color-light-wood-light: #CDB288;
+  --color-light-wood-lighter: #D2BA95;
+  --color-soft-beige-darker: #AEA292;
+  --color-soft-beige-dark: #C3B6A4;
+  --color-soft-beige: #D9CAB6;
+  --color-soft-beige-light: #DDCFBD;
+  --color-soft-beige-lighter: #E1D5C5;
+  --color-soft-beige-lightest: #FAF4EC;
+  --color-wood2-darker: #9F7C61;
+  --color-wood2-dark: #B38F6F;
+  --color-wood2: #C7A37C;
+  --color-wood2-light: #D2AF8B;
+  --color-wood2-lighter: #DDBB9A;
+  --color-sage-green-darker: #3f4409;
+  --color-sage-green-dark: #5b5f32;
+  --color-sage-green: #8B8F65;
+  --color-sage-green-light: #bdc19c;
+  --color-sage-green-lighter: #eef0e0;
+  --color-deep-teal: #2E3F44;
+  
+  --font-family-sans: 'Inter', sans-serif;
+  --font-family-serif: 'Playfair Display', serif;
+  --font-family-arabic: 'Amiri', serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+.arabic-text {
+  font-family: 'Amiri', serif;
+  direction: rtl;
+}
+
+.islamic-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%238F4843' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Line clamp utilities */
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.line-clamp-3 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+/* Premium Typography Classes */
+.display-xl {
+  font-size: 8rem;
+  line-height: 0.9;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.display-lg {
+  font-size: 6rem;
+  line-height: 0.9;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.display-md {
+  font-size: 4.5rem;
+  line-height: 0.95;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* Islamic Pattern Animations */
+.islamic-pattern-animate {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%238F4843' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  animation: patternMove 20s linear infinite;
+}
+
+@keyframes patternMove {
+  0% { background-position: 0 0; }
+  100% { background-position: 60px 60px; }
+}
+
+/* Glass morphism effects */
+.glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glass-dark {
+  background: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Gradient text effects */
+.gradient-text {
+  background: linear-gradient(135deg, #8F4843 0%, #2E3F44 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F2F0EC;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #8F4843;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #723A36;
+}

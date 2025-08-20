@@ -1,0 +1,69 @@
+{
+  "mcp": {
+    "inputs": [
+      {
+        "type": "promptString",
+        "id": "github_token",
+        "description": "GitHub Personal Access Token for Islamic School Project",
+        "password": true
+      }
+    ],
+    "servers": {
+      "github-official": {
+        "command": "npx",
+        "args": [
+          "-y", "@modelcontextprotocol/server-github"
+        ],
+        "env": {
+          "GITHUB_PERSONAL_ACCESS_TOKEN": "${github_token}"
+        }
+      },
+      "github-docker": {
+        "command": "docker",
+        "args": [
+          "run", "-i", "--rm", "-e", "GITHUB_PERSONAL_ACCESS_TOKEN",
+          "ghcr.io/github/github-mcp-server"
+        ],
+        "env": {
+          "GITHUB_PERSONAL_ACCESS_TOKEN": "${github_token}"
+        }
+      },
+      "filesystem": {
+        "command": "npx",
+        "args": [
+          "-y", "@modelcontextprotocol/server-filesystem",
+          "/Users/mohammad/Projects/oiaaedmonton.ca"
+        ]
+      },
+      "web-fetch": {
+        "command": "npx",
+        "args": [
+          "-y", "@modelcontextprotocol/server-fetch"
+        ]
+      },
+      "memory": {
+        "command": "npx",
+        "args": [
+          "-y", "@modelcontextprotocol/server-memory"
+        ]
+      },
+      "git": {
+        "command": "npx",
+        "args": [
+          "-y", "@modelcontextprotocol/server-git",
+          "--repository", "/Users/mohammad/Projects/oiaaedmonton.ca"
+        ]
+      },
+      "playwright": {
+        "command": "docker",
+        "args": [
+          "run", "-i", "--rm", "--init", "--pull=always",
+          "mcr.microsoft.com/playwright/mcp"
+        ],
+        "env": {
+          "BASE_URL": "http://localhost:3001"
+        }
+      }
+    }
+  }
+}

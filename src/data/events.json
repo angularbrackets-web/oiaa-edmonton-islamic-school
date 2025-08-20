@@ -1,0 +1,133 @@
+{
+  "pastEvents": [
+    {
+      "id": "design-construction-presentation-2024",
+      "title": "Southside Islamic School Design & Construction Presentation",
+      "subtitle": "Community Event",
+      "date": "2024-10-23",
+      "description": "Comprehensive presentation showcasing the design and construction plans for our new Islamic school facility",
+      "type": "presentation",
+      "category": "community",
+      "media": {
+        "type": "youtube",
+        "url": "https://www.youtube-nocookie.com/embed/osecI-VKmiE?si=U7C3jhT1KVINsBub",
+        "embedId": "osecI-VKmiE"
+      },
+      "featured": true
+    },
+    {
+      "id": "new-centre-preview-2024",
+      "title": "New Centre Preview",
+      "subtitle": "Building Progress Update",
+      "date": "2024-03-30",
+      "description": "Exciting preview of the new Omar Ibn Al Khattab Centre showing architectural plans and expected features",
+      "type": "preview",
+      "category": "building",
+      "media": {
+        "type": "streamable",
+        "url": "https://streamable.com/e/0kktoh?loop=0",
+        "embedId": "0kktoh"
+      },
+      "featured": true
+    },
+    {
+      "id": "soil-testing-2024",
+      "title": "Soil Testing Completed",
+      "subtitle": "Construction Milestone",
+      "date": "2024-03-28",
+      "description": "Important milestone reached with completion of soil testing for the new centre construction site",
+      "type": "milestone",
+      "category": "construction",
+      "media": {
+        "type": "streamable",
+        "url": "https://streamable.com/e/1p3zlg?loop=0",
+        "embedId": "1p3zlg"
+      },
+      "featured": false
+    },
+    {
+      "id": "announcement-video-2024",
+      "title": "Official Announcement",
+      "subtitle": "New Centre Project Launch",
+      "date": "2024-03-22",
+      "description": "Official announcement video introducing the new Omar Ibn Al Khattab Centre project to the community",
+      "type": "announcement",
+      "category": "project-launch",
+      "media": {
+        "type": "streamable",
+        "url": "https://streamable.com/e/z9cu1p?loop=0",
+        "embedId": "z9cu1p"
+      },
+      "featured": true
+    }
+  ],
+  "upcomingEvents": [
+    {
+      "id": "ground-breaking-ceremony-2025",
+      "title": "Official Ground Breaking Ceremony",
+      "subtitle": "Historic Milestone",
+      "date": "2025-07-23",
+      "description": "Join us for the official groundbreaking ceremony of our new Islamic school in South Edmonton. A significant milestone bringing together families, community leaders, and supporters to witness the official start of construction.",
+      "type": "ceremony",
+      "category": "milestone",
+      "location": "New Centre Construction Site, South Edmonton",
+      "ticketPrice": 0,
+      "featured": true,
+      "significance": "This moment marks the beginning of an exciting new chapter for our growing community, establishing a thriving centre of learning, faith, and community."
+    },
+    {
+      "id": "fundraising-dinner-2025",
+      "title": "Annual Fundraising Dinner",
+      "subtitle": "Community Gathering",
+      "date": "2025-04-15",
+      "description": "Join us for an evening of community fellowship and support for the new centre project",
+      "type": "fundraiser",
+      "category": "community",
+      "location": "Current OIAC Centre",
+      "ticketPrice": 75,
+      "featured": true
+    },
+    {
+      "id": "construction-update-2025",
+      "title": "Construction Progress Meeting",
+      "subtitle": "Community Update",
+      "date": "2025-02-28",
+      "description": "Monthly update on new centre construction progress and upcoming milestones",
+      "type": "update",
+      "category": "building",
+      "location": "Community Hall",
+      "ticketPrice": 0,
+      "featured": false
+    }
+  ],
+  "eventCategories": [
+    {
+      "id": "community",
+      "name": "Community Events",
+      "description": "Gatherings and social events for our community",
+      "color": "terracotta-red",
+      "icon": "👥"
+    },
+    {
+      "id": "fundraising",
+      "name": "Fundraising",
+      "description": "Events to support our building and community projects",
+      "color": "sage-green",
+      "icon": "💰"
+    },
+    {
+      "id": "educational",
+      "name": "Educational",
+      "description": "Learning workshops and presentations",
+      "color": "wood",
+      "icon": "📚"
+    },
+    {
+      "id": "construction",
+      "name": "Building Updates",
+      "description": "Progress updates on our new centre construction",
+      "color": "deep-teal",
+      "icon": "🏗️"
+    }
+  ]
+}

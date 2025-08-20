@@ -1,0 +1,75 @@
+{
+  "programs": [
+    {
+      "id": "elementary",
+      "title": "Elementary Program",
+      "age": "Ages 6-10",
+      "description": "Foundation building with Islamic studies, Quranic memorization, and core academics",
+      "features": [
+        "Quran Memorization",
+        "Arabic Language",
+        "Math & Science",
+        "Islamic Studies"
+      ],
+      "color": "terracotta-red",
+      "icon": "🌱",
+      "tuition": 850,
+      "curriculum": "Foundation curriculum focusing on Islamic values and academic fundamentals"
+    },
+    {
+      "id": "middle-school",
+      "title": "Middle School Program",
+      "age": "Ages 11-13",
+      "description": "Advanced learning with character development and leadership preparation",
+      "features": [
+        "Advanced Arabic",
+        "Islamic History",
+        "STEM Programs",
+        "Leadership Skills"
+      ],
+      "color": "sage-green",
+      "icon": "📚",
+      "tuition": 950,
+      "curriculum": "Comprehensive curriculum preparing students for high school success"
+    },
+    {
+      "id": "high-school",
+      "title": "High School Program",
+      "age": "Ages 14-18",
+      "description": "University preparation with strong Islamic foundation and career guidance",
+      "features": [
+        "University Prep",
+        "Islamic Philosophy",
+        "Career Counseling",
+        "Community Service"
+      ],
+      "color": "wood",
+      "icon": "🎓",
+      "tuition": 1050,
+      "curriculum": "Advanced curriculum with university preparation and career guidance"
+    }
+  ],
+  "additionalPrograms": [
+    {
+      "title": "Weekend Islamic School",
+      "description": "Saturday & Sunday programs for community children",
+      "icon": "🕌",
+      "schedule": "Weekends",
+      "tuition": 200
+    },
+    {
+      "title": "Sports & Activities",
+      "description": "Soccer, basketball, arts, and extracurricular activities",
+      "icon": "🏃‍♂️",
+      "schedule": "After school",
+      "tuition": 100
+    },
+    {
+      "title": "Parent Education",
+      "description": "Workshops and seminars for parents and families",
+      "icon": "👨‍👩‍👧‍👦",
+      "schedule": "Monthly",
+      "tuition": 0
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "school": {
+    "name": "OIA Academy Edmonton",
+    "tagline": "Nurturing minds, hearts, and souls through quality education rooted in Islamic values and academic excellence",
+    "mission": "To provide an exceptional educational experience that nurtures confident, compassionate, and capable Muslim leaders who will contribute positively to society while maintaining strong Islamic identity and values.",
+    "arabicText": "بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ"
+  },
+  "contact": {
+    "address": {
+      "street": "123 Islamic Center Drive",
+      "city": "Edmonton",
+      "province": "AB",
+      "postalCode": "T6X 1A1",
+      "country": "Canada"
+    },
+    "phone": "(780) 123-4567",
+    "email": "info@oiaaedmonton.ca",
+    "admissionsEmail": "admissions@oiaaedmonton.ca",
+    "hours": {
+      "weekdays": "8:00 AM - 3:30 PM",
+      "saturday": "9:00 AM - 2:00 PM (Weekend School)",
+      "office": "8:00 AM - 4:00 PM"
+    }
+  },
+  "features": [
+    {
+      "title": "Academic Excellence",
+      "description": "Our curriculum combines rigorous academic standards with Islamic studies, preparing students for success in both this world and the hereafter.",
+      "icon": "📚",
+      "color": "terracotta-red"
+    },
+    {
+      "title": "Islamic Values",
+      "description": "We instill strong Islamic values, character building, and spiritual development in every aspect of our educational approach.",
+      "icon": "🕌",
+      "color": "sage-green"
+    },
+    {
+      "title": "Holistic Development",
+      "description": "We focus on developing the mind, body, and spirit through diverse programs including arts, sports, and community service.",
+      "icon": "🌟",
+      "color": "wood"
+    }
+  ]
+}

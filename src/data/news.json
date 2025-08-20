@@ -1,0 +1,46 @@
+{
+  "news": [
+    {
+      "id": "groundbreaking-ceremony-announcement-2025",
+      "title": "Official Groundbreaking Ceremony - July 23, 2025",
+      "excerpt": "Historic milestone as we officially break ground for our new Islamic school in South Edmonton, marking the beginning of an exciting new chapter.",
+      "content": "In July 2025, we held the groundbreaking ceremony for our new Islamic school in South Edmonton, a significant milestone in our journey to establish a thriving centre of learning, faith, and community. The event brought together families, community leaders, and dedicated supporters who gathered to witness the official start of construction. This moment marked the beginning of an exciting new chapter for our growing community. Join us as we transform our vision into reality, creating a space where future generations will learn, grow, and strengthen their faith.",
+      "date": "2025-01-25",
+      "author": "Building Committee",
+      "published": true,
+      "featured": true,
+      "category": "milestone",
+      "image": "/uploads/images/new-center/ground-breaking-ceremony/MAIN.JPG"
+    },
+    {
+      "id": "welcome-2025",
+      "title": "Welcome to the 2025 Academic Year!",
+      "excerpt": "We're excited to welcome our students back for another year of Islamic education and academic excellence.",
+      "content": "As we begin the 2025 academic year, OIA Academy Edmonton is proud to announce new programs, enhanced facilities, and continued commitment to providing exceptional Islamic education. Our dedicated faculty and staff are ready to guide our students through another successful year of learning and growth.",
+      "date": "2025-01-15",
+      "author": "Principal Ahmad Hassan",
+      "published": true,
+      "featured": true
+    },
+    {
+      "id": "ramadan-2025",
+      "title": "Ramadan Programs and Schedule",
+      "excerpt": "Join us for special Ramadan programs including Quran recitation, iftar gatherings, and spiritual development activities.",
+      "content": "This blessed month of Ramadan, OIA Academy will be hosting special programs designed to enhance our students' spiritual journey. We invite families to participate in our community iftar dinners, Taraweeh prayers, and educational seminars about the significance of Ramadan.",
+      "date": "2025-02-28",
+      "author": "Imam Abdullah Rahman",
+      "published": true,
+      "featured": false
+    },
+    {
+      "id": "science-fair-2025",
+      "title": "Annual Science Fair - Innovation in Islamic Education",
+      "excerpt": "Students showcase their scientific projects while exploring the wonders of Allah's creation.",
+      "content": "Our annual science fair highlights the perfect integration of scientific inquiry with Islamic values. Students present projects that explore natural phenomena through the lens of Islamic teachings, demonstrating how faith and science work together in perfect harmony.",
+      "date": "2025-03-10",
+      "author": "Science Department",
+      "published": true,
+      "featured": false
+    }
+  ]
+}
