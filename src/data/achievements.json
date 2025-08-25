@@ -1,0 +1,37 @@
+{
+  "achievements": [
+    {
+      "id": "new-centre-2025",
+      "title": "$5M New Omar Ibn Al Khattab Centre",
+      "description": "State-of-the-art 50,000 sq ft facility with modern classrooms, gymnasium, and prayer hall",
+      "date": "2025-08-10",
+      "type": "construction",
+      "icon": "TrendingUp",
+      "featured": true,
+      "order": 1,
+      "backgroundImage": "/uploads/images/new-center/new.oiac.1.png"
+    },
+    {
+      "id": "university-acceptance-2025",
+      "title": "98% University Acceptance Rate",
+      "description": "Our graduates excel in top universities across Canada including U of A, UBC, and McGill",
+      "date": "2025-08-08", 
+      "type": "academic",
+      "icon": "Award",
+      "featured": true,
+      "order": 2,
+      "backgroundImage": "/uploads/images/new-center/new.oiac.5.png"
+    },
+    {
+      "id": "provincial-excellence-2025",
+      "title": "Provincial Excellence Awards",
+      "description": "Recognized for outstanding Islamic education and community leadership programs",
+      "date": "2025-08-05",
+      "type": "community", 
+      "icon": "Users",
+      "featured": true,
+      "order": 3,
+      "backgroundImage": "/uploads/images/new-center/ground-breaking-ceremony/MAIN.JPG"
+    }
+  ]
+}

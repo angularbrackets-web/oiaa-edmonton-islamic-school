@@ -1,6 +1,8 @@
 'use client'
 
 import { useState } from 'react'
+import Icon from '@/components/ui/Icon'
+import { CONTACT_INFO } from '@/lib/constants'
 
 interface FormData {
   firstName: string
@@ -93,62 +95,102 @@ export default function Contact() {
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-warm-white mb-6">
-            Get In Touch
+            Visit Our Campus
           </h2>
           <div className="w-24 h-1 bg-wood mx-auto mb-8"></div>
           <p className="text-xl text-soft-beige-lightest max-w-3xl mx-auto">
-            We welcome you to visit our campus and learn more about our programs. 
-            Contact us today to schedule a tour or discuss enrollment.
+            Experience OIA Academy firsthand! Schedule a personalized campus tour, meet our faculty, 
+            and discover why families choose our Islamic educational community.
           </p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-12">
-          <div className="space-y-8">
-            <div className="flex items-start space-x-4">
-              <div className="w-12 h-12 bg-wood rounded-full flex items-center justify-center flex-shrink-0 shadow-md">
-                <span className="text-warm-white text-xl">📍</span>
-              </div>
-              <div className="text-warm-white">
-                <h3 className="text-xl font-bold mb-2">Address</h3>
-                <p className="text-soft-beige-lightest">
-                  123 Islamic Center Drive<br />
-                  Edmonton, AB T6X 1A1<br />
-                  Canada
-                </p>
-              </div>
+          <div className="space-y-6">
+            {/* Quick Action Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <a 
+                href={`tel:${CONTACT_INFO.phone.link}`}
+                className="group bg-wood hover:bg-wood-dark rounded-xl p-6 transition-all duration-300 hover:scale-105 hover:shadow-xl"
+              >
+                <div className="flex items-center space-x-3 mb-3">
+                  <Icon name="phone" size={24} className="text-warm-white group-hover:scale-110 transition-transform" aria-hidden="true" />
+                  <h3 className="text-lg font-bold text-warm-white">Call Now</h3>
+                </div>
+                <p className="text-soft-beige-lightest text-sm mb-2">Speak with our admissions team</p>
+                <p className="text-warm-white font-semibold">{CONTACT_INFO.phone.display}</p>
+              </a>
+
+              <a 
+                href={`https://maps.google.com/?q=${encodeURIComponent(`${CONTACT_INFO.school.address.street} ${CONTACT_INFO.school.address.city} ${CONTACT_INFO.school.address.province}`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group bg-wood hover:bg-wood-dark rounded-xl p-6 transition-all duration-300 hover:scale-105 hover:shadow-xl"
+              >
+                <div className="flex items-center space-x-3 mb-3">
+                  <Icon name="location" size={24} className="text-warm-white group-hover:scale-110 transition-transform" aria-hidden="true" />
+                  <h3 className="text-lg font-bold text-warm-white">Directions</h3>
+                </div>
+                <p className="text-soft-beige-lightest text-sm mb-2">Get directions to our campus</p>
+                <p className="text-warm-white font-semibold text-sm">{CONTACT_INFO.school.address.street}</p>
+              </a>
             </div>
 
-            <div className="flex items-start space-x-4">
-              <div className="w-12 h-12 bg-wood rounded-full flex items-center justify-center flex-shrink-0 shadow-md">
-                <span className="text-warm-white text-xl">📞</span>
+            {/* Tour Booking Card */}
+            <div className="bg-warm-white rounded-xl p-6 shadow-lg border-2 border-wood">
+              <div className="flex items-center space-x-3 mb-4">
+                <Icon name="calendar" size={28} className="text-terracotta-red" aria-hidden="true" />
+                <h3 className="text-2xl font-bold text-terracotta-red">Book Your Tour</h3>
               </div>
-              <div className="text-warm-white">
-                <h3 className="text-xl font-bold mb-2">Phone & Email</h3>
-                <p className="text-soft-beige-lightest">
-                  Phone: (780) 123-4567<br />
-                  Email: info@oiaaedmonton.ca<br />
-                  Admissions: admissions@oiaaedmonton.ca
-                </p>
+              <p className="text-deep-teal mb-4">
+                Experience our Islamic educational environment, meet our teachers, and see our facilities.
+              </p>
+              <div className="space-y-3">
+                <div className="flex items-center space-x-3 text-sm text-deep-teal">
+                  <Icon name="clock" size={16} className="text-terracotta-red" aria-hidden="true" />
+                  <span>Tours available {CONTACT_INFO.tour.availability}</span>
+                </div>
+                <div className="flex items-center space-x-3 text-sm text-deep-teal">
+                  <Icon name="users" size={16} className="text-terracotta-red" aria-hidden="true" />
+                  <span>{CONTACT_INFO.tour.description}</span>
+                </div>
+                <div className="flex items-center space-x-3 text-sm text-deep-teal">
+                  <Icon name="graduation" size={16} className="text-terracotta-red" aria-hidden="true" />
+                  <span>Meet with admissions counselor</span>
+                </div>
               </div>
+              <button className="w-full mt-4 bg-terracotta-red hover:bg-terracotta-red-dark text-warm-white py-3 px-6 rounded-lg font-bold transition-all duration-300 hover:shadow-lg">
+                Schedule Tour
+              </button>
             </div>
 
-            <div className="flex items-start space-x-4">
-              <div className="w-12 h-12 bg-wood rounded-full flex items-center justify-center flex-shrink-0 shadow-md">
-                <span className="text-warm-white text-xl">🕐</span>
-              </div>
-              <div className="text-warm-white">
-                <h3 className="text-xl font-bold mb-2">School Hours</h3>
-                <p className="text-soft-beige-lightest">
-                  Monday - Friday: 8:00 AM - 3:30 PM<br />
-                  Saturday: 9:00 AM - 2:00 PM (Weekend School)<br />
-                  Office Hours: 8:00 AM - 4:00 PM
-                </p>
-              </div>
+            {/* Quick Links */}
+            <div className="flex flex-wrap gap-3">
+              <a 
+                href="/admissions" 
+                className="inline-flex items-center space-x-2 bg-warm-white/20 hover:bg-warm-white/30 text-warm-white px-4 py-2 rounded-lg transition-colors duration-300 backdrop-blur-sm"
+              >
+                <Icon name="info" size={16} aria-hidden="true" />
+                <span className="text-sm font-medium">Admissions Info</span>
+              </a>
+              <a 
+                href="/tuition" 
+                className="inline-flex items-center space-x-2 bg-warm-white/20 hover:bg-warm-white/30 text-warm-white px-4 py-2 rounded-lg transition-colors duration-300 backdrop-blur-sm"
+              >
+                <Icon name="donate" size={16} aria-hidden="true" />
+                <span className="text-sm font-medium">Tuition & Fees</span>
+              </a>
+              <a 
+                href="/programs" 
+                className="inline-flex items-center space-x-2 bg-warm-white/20 hover:bg-warm-white/30 text-warm-white px-4 py-2 rounded-lg transition-colors duration-300 backdrop-blur-sm"
+              >
+                <Icon name="book" size={16} aria-hidden="true" />
+                <span className="text-sm font-medium">Our Programs</span>
+              </a>
             </div>
           </div>
 
           <div className="bg-warm-white rounded-lg p-8 shadow-lg border border-soft-beige">
-            <h3 className="text-2xl font-bold text-terracotta-red mb-6">Send us a Message</h3>
+            <h3 className="text-2xl font-bold text-terracotta-red mb-6">Request Information</h3>
             {formState.isSuccess ? (
               <div className="text-center py-8">
                 <div className="text-6xl text-sage-green mb-4">✓</div>
@@ -215,17 +257,18 @@ export default function Contact() {
                   className="w-full px-4 py-3 border border-soft-beige rounded-lg focus:ring-2 focus:ring-terracotta-red focus:border-transparent text-deep-teal transition-all duration-200"
                 >
                   <option value="">Select Inquiry Type</option>
-                  <option value="admissions">Admissions</option>
+                  <option value="tour">Schedule Campus Tour</option>
+                  <option value="admissions">Admissions Inquiry</option>
                   <option value="programs">Programs Information</option>
-                  <option value="visit">Campus Visit</option>
-                  <option value="donation">Donation & Support</option>
-                  <option value="career">Career Opportunities</option>
-                  <option value="other">Other</option>
+                  <option value="tuition">Tuition & Financial Aid</option>
+                  <option value="enrollment">Current Year Enrollment</option>
+                  <option value="transfer">Transfer Student</option>
+                  <option value="other">Other Question</option>
                 </select>
                 <textarea
                   name="message"
                   rows={4}
-                  placeholder="Your message... *"
+                  placeholder="Tell us about your interest in OIA Academy, grade level needed, or specific questions... *"
                   value={formData.message}
                   onChange={handleInputChange}
                   required
@@ -242,7 +285,7 @@ export default function Contact() {
                       Sending...
                     </>
                   ) : (
-                    'Send Message'
+                    'Send Inquiry'
                   )}
                 </button>
               </form>
@@ -250,25 +293,6 @@ export default function Contact() {
           </div>
         </div>
 
-        <div className="mt-16 text-center">
-          <div className="inline-flex space-x-6">
-            <a href="#" className="text-wood hover:text-soft-beige-lightest transition-colors duration-300">
-              <span className="text-2xl">📘</span>
-            </a>
-            <a href="#" className="text-wood hover:text-soft-beige-lightest transition-colors duration-300">
-              <span className="text-2xl">📸</span>
-            </a>
-            <a href="#" className="text-wood hover:text-soft-beige-lightest transition-colors duration-300">
-              <span className="text-2xl">🐦</span>
-            </a>
-            <a href="#" className="text-wood hover:text-soft-beige-lightest transition-colors duration-300">
-              <span className="text-2xl">📺</span>
-            </a>
-          </div>
-          <p className="text-soft-beige-lightest mt-4">
-            Follow us on social media for updates and news
-          </p>
-        </div>
       </div>
     </section>
   )

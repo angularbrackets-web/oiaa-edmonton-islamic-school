@@ -2,23 +2,26 @@
 
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
+import Avatar from './admin/Avatar'
 
 interface FacultyMember {
-  id: string
+  id?: string
   name: string
-  arabicName: string
+  arabic_name?: string
   position: string
   department: string
-  email: string
-  qualifications: string[]
-  experience: string
-  specialization: string
-  bio: string
-  image: string
-  languages: string[]
-  subjects: string[]
-  achievements: string[]
-  featured: boolean
+  email?: string
+  qualifications?: string[]
+  experience?: string
+  specialization?: string
+  bio?: string
+  image?: string
+  languages?: string[]
+  subjects?: string[]
+  grade?: string
+  achievements?: string[]
+  featured?: boolean
+  published?: boolean
 }
 
 interface Department {
@@ -59,11 +62,15 @@ export default function Faculty() {
       })
   }, [])
 
-  const filteredFaculty = facultyData?.faculty.filter(member => 
-    selectedDepartment === 'all' || member.department.toLowerCase().replace(/\s+/g, '-') === selectedDepartment
+  const filteredFaculty = facultyData?.faculty?.filter(member => 
+    selectedDepartment === 'all' || 
+    member.department.toLowerCase().replace(/\s+/g, '-') === selectedDepartment ||
+    member.grade?.toLowerCase().replace(/\s+/g, '-') === selectedDepartment
   ) || []
 
-  const featuredFaculty = facultyData?.faculty.filter(member => member.featured) || []
+  const leadershipFaculty = facultyData?.faculty?.filter(member => 
+    member.position.toLowerCase().includes('principal')
+  ) || []
 
   if (loading) {
     return (
@@ -118,61 +125,64 @@ export default function Faculty() {
         <div className="grid md:grid-cols-4 gap-6 mb-16">
           <div className="bg-soft-beige-lightest rounded-lg p-6 text-center border border-soft-beige">
             <div className="text-3xl text-terracotta-red font-bold mb-2">
-              {facultyData.stats.totalFaculty}
+              {facultyData.faculty?.length || 0}
             </div>
             <p className="text-deep-teal font-medium">Faculty Members</p>
           </div>
           <div className="bg-soft-beige-lightest rounded-lg p-6 text-center border border-soft-beige">
             <div className="text-3xl text-sage-green font-bold mb-2">
-              {facultyData.stats.averageExperience}
+              {facultyData.stats?.averageExperience || 10}+
             </div>
             <p className="text-deep-teal font-medium">Years Average Experience</p>
           </div>
           <div className="bg-soft-beige-lightest rounded-lg p-6 text-center border border-soft-beige">
             <div className="text-3xl text-wood font-bold mb-2">
-              {facultyData.stats.languages.length}
+              {facultyData.stats?.languages?.length || 2}
             </div>
             <p className="text-deep-teal font-medium">Languages Spoken</p>
           </div>
           <div className="bg-soft-beige-lightest rounded-lg p-6 text-center border border-soft-beige">
             <div className="text-3xl text-deep-teal font-bold mb-2">
-              {facultyData.stats.certifications}
+              {facultyData.stats?.certifications || 15}+
             </div>
             <p className="text-deep-teal font-medium">Certifications</p>
           </div>
         </div>
 
-        {/* Featured Faculty */}
-        {featuredFaculty.length > 0 && (
+        {/* Leadership Faculty */}
+        {leadershipFaculty.length > 0 && (
           <div className="mb-16">
             <h3 className="text-3xl font-bold text-terracotta-red mb-8 text-center">
               Leadership Team
             </h3>
             <div className="grid md:grid-cols-2 gap-12">
-              {featuredFaculty.map((member) => (
+              {leadershipFaculty.map((member) => (
                 <div key={member.id} className="bg-soft-beige-lightest rounded-lg overflow-hidden shadow-lg border border-soft-beige">
                   <div className="md:flex">
-                    <div className="md:w-1/3 relative h-64 md:h-auto">
-                      <div className="w-full h-full bg-soft-beige flex items-center justify-center">
-                        <div className="text-6xl text-terracotta-red">👤</div>
-                        {/* Image placeholder - replace when you add faculty photos */}
-                      </div>
+                    <div className="md:w-1/3 relative h-64 md:h-auto flex items-center justify-center bg-soft-beige">
+                      <Avatar 
+                        src={member.image}
+                        name={member.name}
+                        alt={`${member.name} profile photo`}
+                        size="xl"
+                        className="w-32 h-32"
+                      />
                     </div>
                     <div className="md:w-2/3 p-8">
                       <h4 className="text-2xl font-bold text-terracotta-red mb-2">
                         {member.name}
                       </h4>
                       <p className="arabic-text text-sage-green mb-2 text-lg">
-                        {member.arabicName}
+                        {member.arabic_name}
                       </p>
                       <p className="text-wood font-semibold mb-4">
                         {member.position}
                       </p>
                       <p className="text-deep-teal mb-4 text-sm leading-relaxed">
-                        {member.bio.substring(0, 200)}...
+                        {member.bio ? member.bio.substring(0, 200) + '...' : member.specialization}
                       </p>
                       <div className="flex flex-wrap gap-2 mb-4">
-                        {member.languages.map((lang) => (
+                        {member.languages?.map((lang) => (
                           <span key={lang} className="bg-sage-green/20 text-sage-green px-2 py-1 rounded text-xs">
                             {lang}
                           </span>
@@ -192,7 +202,7 @@ export default function Faculty() {
           </div>
         )}
 
-        {/* Department Filter */}
+        {/* Grade Filter */}
         <div className="mb-12">
           <div className="flex flex-wrap gap-2 justify-center">
             <button
@@ -205,18 +215,17 @@ export default function Faculty() {
             >
               All Faculty
             </button>
-            {facultyData.departments.map((dept) => (
+            {['Kindergarten', 'Grade 1', 'Grade 2', 'Grade 3', 'Grade 4', 'Grade 5', 'Grade 6'].map((grade) => (
               <button
-                key={dept.id}
-                onClick={() => setSelectedDepartment(dept.id)}
-                className={`px-6 py-3 rounded-full font-semibold transition-all duration-200 flex items-center ${
-                  selectedDepartment === dept.id
+                key={grade}
+                onClick={() => setSelectedDepartment(grade.toLowerCase().replace(/\s+/g, '-'))}
+                className={`px-6 py-3 rounded-full font-semibold transition-all duration-200 ${
+                  selectedDepartment === grade.toLowerCase().replace(/\s+/g, '-')
                     ? 'bg-terracotta-red text-warm-white shadow-lg'
                     : 'bg-soft-beige-lightest text-deep-teal hover:bg-soft-beige border border-soft-beige'
                 }`}
               >
-                <span className="mr-2">{dept.icon}</span>
-                {dept.name}
+                {grade}
               </button>
             ))}
           </div>
@@ -224,18 +233,25 @@ export default function Faculty() {
 
         {/* Faculty Grid */}
         <div className="grid md:grid-cols-3 gap-8">
-          {filteredFaculty.filter(member => !member.featured).map((member) => (
+          {filteredFaculty.filter(member => 
+            !member.position.toLowerCase().includes('principal')
+          ).map((member) => (
             <div key={member.id} className="bg-soft-beige-lightest rounded-lg overflow-hidden shadow-lg border border-soft-beige hover:shadow-xl transition-shadow duration-300">
               <div className="relative h-64 bg-soft-beige flex items-center justify-center">
-                <div className="text-6xl text-terracotta-red">👤</div>
-                {/* Image placeholder - replace when you add faculty photos */}
+                <Avatar 
+                  src={member.image}
+                  name={member.name}
+                  alt={`${member.name} profile photo`}
+                  size="xl"
+                  className="w-24 h-24"
+                />
               </div>
               <div className="p-6">
                 <h4 className="text-xl font-bold text-terracotta-red mb-2">
                   {member.name}
                 </h4>
                 <p className="arabic-text text-sage-green mb-2">
-                  {member.arabicName}
+                  {member.arabic_name}
                 </p>
                 <p className="text-wood font-semibold mb-3">
                   {member.position}
@@ -244,14 +260,19 @@ export default function Faculty() {
                   {member.specialization}
                 </p>
                 <div className="flex flex-wrap gap-1 mb-4">
-                  {member.subjects.slice(0, 3).map((subject) => (
+                  {member.subjects?.slice(0, 3).map((subject) => (
                     <span key={subject} className="bg-terracotta-red/10 text-terracotta-red px-2 py-1 rounded text-xs">
                       {subject}
                     </span>
                   ))}
-                  {member.subjects.length > 3 && (
+                  {(member.subjects?.length || 0) > 3 && (
                     <span className="text-sage-green text-xs px-2 py-1">
-                      +{member.subjects.length - 3} more
+                      +{(member.subjects?.length || 0) - 3} more
+                    </span>
+                  )}
+                  {member.grade && (
+                    <span className="bg-wood/20 text-wood px-2 py-1 rounded text-xs">
+                      {member.grade}
                     </span>
                   )}
                 </div>
@@ -277,7 +298,7 @@ export default function Faculty() {
                       {selectedMember.name}
                     </h3>
                     <p className="arabic-text text-sage-green text-xl mb-2">
-                      {selectedMember.arabicName}
+                      {selectedMember.arabic_name}
                     </p>
                     <p className="text-wood font-semibold text-lg">
                       {selectedMember.position}
@@ -316,41 +337,56 @@ export default function Faculty() {
                   </div>
 
                   <div>
-                    <div className="mb-6">
-                      <h4 className="font-bold text-terracotta-red mb-3">Qualifications</h4>
-                      <ul className="text-deep-teal space-y-1">
-                        {selectedMember.qualifications.map((qual, index) => (
-                          <li key={index} className="flex items-start">
-                            <span className="text-sage-green mr-2">•</span>
-                            {qual}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    <div className="mb-6">
-                      <h4 className="font-bold text-terracotta-red mb-3">Subjects</h4>
-                      <div className="flex flex-wrap gap-2">
-                        {selectedMember.subjects.map((subject) => (
-                          <span key={subject} className="bg-sage-green/20 text-sage-green px-3 py-1 rounded-full text-sm">
-                            {subject}
-                          </span>
-                        ))}
+                    {selectedMember.qualifications && selectedMember.qualifications.length > 0 && (
+                      <div className="mb-6">
+                        <h4 className="font-bold text-terracotta-red mb-3">Qualifications</h4>
+                        <ul className="text-deep-teal space-y-1">
+                          {selectedMember.qualifications.map((qual, index) => (
+                            <li key={index} className="flex items-start">
+                              <span className="text-sage-green mr-2">•</span>
+                              {qual}
+                            </li>
+                          ))}
+                        </ul>
                       </div>
-                    </div>
+                    )}
 
-                    <div className="mb-6">
-                      <h4 className="font-bold text-terracotta-red mb-3">Languages</h4>
-                      <div className="flex flex-wrap gap-2">
-                        {selectedMember.languages.map((lang) => (
-                          <span key={lang} className="bg-wood/20 text-wood px-3 py-1 rounded-full text-sm">
-                            {lang}
-                          </span>
-                        ))}
+                    {selectedMember.subjects && selectedMember.subjects.length > 0 && (
+                      <div className="mb-6">
+                        <h4 className="font-bold text-terracotta-red mb-3">Subjects</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {selectedMember.subjects.map((subject) => (
+                            <span key={subject} className="bg-sage-green/20 text-sage-green px-3 py-1 rounded-full text-sm">
+                              {subject}
+                            </span>
+                          ))}
+                        </div>
                       </div>
-                    </div>
+                    )}
 
-                    {selectedMember.achievements.length > 0 && (
+                    {selectedMember.grade && (
+                      <div className="mb-6">
+                        <h4 className="font-bold text-terracotta-red mb-3">Grade Level</h4>
+                        <span className="bg-wood/20 text-wood px-3 py-1 rounded-full text-sm">
+                          {selectedMember.grade}
+                        </span>
+                      </div>
+                    )}
+
+                    {selectedMember.languages && selectedMember.languages.length > 0 && (
+                      <div className="mb-6">
+                        <h4 className="font-bold text-terracotta-red mb-3">Languages</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {selectedMember.languages.map((lang) => (
+                            <span key={lang} className="bg-wood/20 text-wood px-3 py-1 rounded-full text-sm">
+                              {lang}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {selectedMember.achievements && selectedMember.achievements.length > 0 && (
                       <div className="mb-6">
                         <h4 className="font-bold text-terracotta-red mb-3">Achievements</h4>
                         <ul className="text-deep-teal space-y-1">
@@ -364,15 +400,17 @@ export default function Faculty() {
                       </div>
                     )}
 
-                    <div className="pt-4">
-                      <a
-                        href={`mailto:${selectedMember.email}`}
-                        className="inline-flex items-center bg-terracotta-red hover:bg-terracotta-red-dark text-warm-white px-6 py-3 rounded-lg font-semibold transition-colors duration-300"
-                      >
-                        <span className="mr-2">📧</span>
-                        Contact {selectedMember.name.split(' ')[0]}
-                      </a>
-                    </div>
+                    {selectedMember.email && (
+                      <div className="pt-4">
+                        <a
+                          href={`mailto:${selectedMember.email}`}
+                          className="inline-flex items-center bg-terracotta-red hover:bg-terracotta-red-dark text-warm-white px-6 py-3 rounded-lg font-semibold transition-colors duration-300"
+                        >
+                          <span className="mr-2">📧</span>
+                          Contact {selectedMember.name.split(' ')[0]}
+                        </a>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

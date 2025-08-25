@@ -1,0 +1,250 @@
+# Page snapshot
+
+```yaml
+- banner:
+  - link "☪ OIA Academy Edmonton":
+    - /url: /
+    - text: ☪
+    - heading "OIA Academy" [level=1]
+    - paragraph: Edmonton
+  - navigation:
+    - link "Home":
+      - /url: /
+    - link "About":
+      - /url: "#about"
+    - link "Programs":
+      - /url: "#programs"
+    - link "New Centre":
+      - /url: /new-centre
+    - link "Events":
+      - /url: /events
+    - link "News":
+      - /url: /news
+    - link "Gallery":
+      - /url: /gallery
+    - link "Careers":
+      - /url: /careers
+    - link "Contact":
+      - /url: "#contact"
+  - link "Donate":
+    - /url: /donate
+- main:
+  - text: Latest News from OIA Academy Edmonton Recent Updates
+  - button "Watch Videos"
+  - button "View Gallery"
+  - text: Preparing Tomorrow's Muslim Leaders Today
+  - heading "OIA Academy Edmonton" [level=1]
+  - text: بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ
+  - paragraph: 15 years of proven academic excellence, rooted in Islamic values, preparing students for university and life success.
+  - button "Book Your School Tour"
+  - button "Download Admission Guide"
+  - text: 15+ Years Excellence 500+ Students Served 98% University Acceptance
+  - button "Previous achievement"
+  - button "Next achievement"
+  - text: Recent Achievement Aug 7, 2025
+  - button "Go to achievement 1"
+  - button "Go to achievement 2"
+  - button "Go to achievement 3"
+  - heading "98% University Acceptance Rate" [level=3]
+  - paragraph: Our graduates excel in top universities across Canada including U of A, UBC, and McGill
+  - button "Learn More →"
+  - heading "Our Story" [level=2]
+  - paragraph: Founded on the principles of Islamic education and modern academic excellence, OIA Academy Edmonton has been nurturing minds, hearts, and souls for over a decade.
+  - text: 15+ Years of Excellence 500+ Students Served 25+ Expert Faculty 100% Islamic Values
+  - heading "What Makes Us Special" [level=3]
+  - text: 📚
+  - heading "Academic Excellence" [level=4]
+  - paragraph: Our curriculum combines rigorous academic standards with Islamic studies, preparing students for success in both this world and the hereafter.
+  - text: 🕌
+  - heading "Islamic Values" [level=4]
+  - paragraph: We instill strong Islamic values, character building, and spiritual development in every aspect of our educational approach.
+  - text: 🌟
+  - heading "Holistic Development" [level=4]
+  - paragraph: We focus on developing the mind, body, and spirit through diverse programs including arts, sports, and community service.
+  - text: 📖
+  - heading "Our Mission" [level=3]
+  - paragraph: To provide an exceptional educational experience that nurtures confident, compassionate, and capable Muslim leaders who will contribute positively to society while maintaining strong Islamic identity and values.
+  - heading "Our Journey" [level=3]
+  - text: "2009"
+  - heading "Foundation" [level=4]
+  - paragraph: OIA Academy Edmonton was established with a vision to provide quality Islamic education
+  - text: "2015"
+  - heading "Growth" [level=4]
+  - paragraph: Expanded programs and facilities to serve our growing community
+  - text: "2020"
+  - heading "Innovation" [level=4]
+  - paragraph: Integrated modern technology with traditional Islamic teaching methods
+  - text: "2025"
+  - heading "New Centre" [level=4]
+  - paragraph: Breaking ground on our new state-of-the-art facility
+  - heading "Academic Programs" [level=2]
+  - paragraph: Excellence in Islamic education from kindergarten through high school graduation.
+  - text: Program Overview
+  - button "Explore Programs"
+  - button "Student Work"
+  - button "All Programs 3"
+  - button "Elementary 0"
+  - button "Middle School 0"
+  - button "High School 0"
+  - text: 🌱
+  - heading "Elementary Program" [level=3]
+  - paragraph: Ages 6-10
+  - text: Foundation curriculum focusing on Islamic values and academic fundamentals
+  - paragraph: Foundation building with Islamic studies, Quranic memorization, and core academics
+  - heading "Key Highlights:" [level=4]
+  - text: Quran Memorization Arabic Language Math & Science $850 per month
+  - button "Explore Program"
+  - text: 📚
+  - heading "Middle School Program" [level=3]
+  - paragraph: Ages 11-13
+  - text: Comprehensive curriculum preparing students for high school success
+  - paragraph: Advanced learning with character development and leadership preparation
+  - heading "Key Highlights:" [level=4]
+  - text: Advanced Arabic Islamic History STEM Programs $950 per month
+  - button "Explore Program"
+  - text: 🎓
+  - heading "High School Program" [level=3]
+  - paragraph: Ages 14-18
+  - text: Advanced curriculum with university preparation and career guidance
+  - paragraph: University preparation with strong Islamic foundation and career guidance
+  - heading "Key Highlights:" [level=4]
+  - text: University Prep Islamic Philosophy Career Counseling $1050 per month
+  - button "Explore Program"
+  - heading "Additional Programs" [level=3]
+  - text: 🕌
+  - heading "Weekend Islamic School" [level=4]
+  - paragraph: Saturday & Sunday programs for community children
+  - paragraph: Weekends
+  - text: $200/month 🏃‍♂️
+  - heading "Sports & Activities" [level=4]
+  - paragraph: Soccer, basketball, arts, and extracurricular activities
+  - paragraph: After school
+  - text: $100/month 👨‍👩‍👧‍👦
+  - heading "Parent Education" [level=4]
+  - paragraph: Workshops and seminars for parents and families
+  - paragraph: Monthly
+  - heading "Our Dedicated Faculty" [level=2]
+  - paragraph: Meet our passionate educators who combine academic excellence with Islamic values to guide and inspire our students.
+  - text: "6"
+  - paragraph: Faculty Members
+  - text: "12"
+  - paragraph: Years Average Experience
+  - text: "5"
+  - paragraph: Languages Spoken
+  - text: "18"
+  - paragraph: Certifications
+  - heading "Leadership Team" [level=3]
+  - text: 👤
+  - heading "Ahmad Hassan" [level=4]
+  - paragraph: أحمد حسن
+  - paragraph: Principal
+  - paragraph: Principal Ahmad Hassan brings over 15 years of experience in Islamic education to OIA Academy. He holds a Master's degree in Educational Leadership and has dedicated his career to developing comprehen...
+  - text: English Arabic Urdu
+  - button "View Full Profile →"
+  - text: 👤
+  - heading "Abdullah Rahman" [level=4]
+  - paragraph: عبد الله الرحمن
+  - paragraph: Imam & Islamic Studies Director
+  - paragraph: Imam Abdullah Rahman is a graduate of Al-Azhar University with over 20 years of experience in Islamic education and community leadership. He leads our Islamic studies program and provides spiritual gu...
+  - text: Arabic English French
+  - button "View Full Profile →"
+  - button "All Faculty"
+  - button "🏛️ Administration"
+  - button "🕌 Islamic Studies"
+  - button "🌱 Elementary Education"
+  - button "📚 Secondary Education"
+  - button "✍️ Language Arts"
+  - button "🤝 Student Services"
+  - text: 👤
+  - heading "Sarah Al-Zahra" [level=4]
+  - paragraph: سارة الزهراء
+  - paragraph: Elementary Teacher
+  - paragraph: Early childhood development and integrated Islamic learning
+  - text: Mathematics Science Islamic Studies +1 more
+  - button "View Profile"
+  - text: 👤
+  - heading "Omar Khalil" [level=4]
+  - paragraph: عمر خليل
+  - paragraph: Science & Mathematics Teacher
+  - paragraph: STEM education and Islamic perspectives on scientific inquiry
+  - text: Mathematics Physics Chemistry +1 more
+  - button "View Profile"
+  - text: 👤
+  - heading "Fatima Noor" [level=4]
+  - paragraph: فاطمة نور
+  - paragraph: Arabic Language Coordinator
+  - paragraph: Arabic language acquisition and Islamic literature
+  - text: Arabic Language Islamic Literature Calligraphy
+  - button "View Profile"
+  - text: 👤
+  - heading "Aisha Mohamed" [level=4]
+  - paragraph: عائشة محمد
+  - paragraph: Student Counselor
+  - paragraph: Student mental health and Islamic counseling approaches
+  - text: Student Counseling Mental Health Study Skills
+  - button "View Profile"
+  - heading "Latest News & Updates" [level=2]
+  - paragraph: Stay updated with the latest developments, events, and achievements from our community.
+  - img "Official Groundbreaking Ceremony - July 23, 2025"
+  - text: Featured milestone
+  - heading "Official Groundbreaking Ceremony - July 23, 2025" [level=3]
+  - paragraph: Historic milestone as we officially break ground for our new Islamic school in South Edmonton, marking the beginning of an exciting new chapter.
+  - paragraph: Building Committee
+  - paragraph: January 24, 2025
+  - button "Read More"
+  - article:
+    - text: January 14, 2025
+    - heading "Welcome to the 2025 Academic Year!" [level=3]
+    - paragraph: We're excited to welcome our students back for another year of Islamic education and academic excellence.
+    - text: Principal Ahmad Hassan
+    - button "Read More →"
+  - article:
+    - text: February 27, 2025
+    - heading "Ramadan Programs and Schedule" [level=3]
+    - paragraph: Join us for special Ramadan programs including Quran recitation, iftar gatherings, and spiritual development activities.
+    - text: Imam Abdullah Rahman
+    - button "Read More →"
+  - article:
+    - text: March 9, 2025
+    - heading "Annual Science Fair - Innovation in Islamic Education" [level=3]
+    - paragraph: Students showcase their scientific projects while exploring the wonders of Allah's creation.
+    - text: Science Department
+    - button "Read More →"
+  - button "View All News"
+  - heading "Get In Touch" [level=2]
+  - paragraph: We welcome you to visit our campus and learn more about our programs. Contact us today to schedule a tour or discuss enrollment.
+  - text: 📍
+  - heading "Address" [level=3]
+  - paragraph: 123 Islamic Center Drive Edmonton, AB T6X 1A1 Canada
+  - text: 📞
+  - heading "Phone & Email" [level=3]
+  - paragraph: "Phone: (780) 123-4567 Email: info@oiaaedmonton.ca Admissions: admissions@oiaaedmonton.ca"
+  - text: 🕐
+  - heading "School Hours" [level=3]
+  - paragraph: "Monday - Friday: 8:00 AM - 3:30 PM Saturday: 9:00 AM - 2:00 PM (Weekend School) Office Hours: 8:00 AM - 4:00 PM"
+  - heading "Send us a Message" [level=3]
+  - textbox "First Name *"
+  - textbox "Last Name *"
+  - textbox "Email Address *"
+  - textbox "Phone Number"
+  - combobox:
+    - option "Select Inquiry Type" [selected]
+    - option "Admissions"
+    - option "Programs Information"
+    - option "Campus Visit"
+    - option "Donation & Support"
+    - option "Career Opportunities"
+    - option "Other"
+  - textbox "Your message... *"
+  - button "Send Message"
+  - link "📘":
+    - /url: "#"
+  - link "📸":
+    - /url: "#"
+  - link "🐦":
+    - /url: "#"
+  - link "📺":
+    - /url: "#"
+  - paragraph: Follow us on social media for updates and news
+- alert: OIA Academy
+```

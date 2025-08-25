@@ -1,151 +1,194 @@
 {
   "faculty": [
     {
-      "id": "principal-hassan",
-      "name": "Ahmad Hassan",
-      "arabicName": "أحمد حسن",
+      "id": "principal-mohamed-bush",
+      "name": "Mohamed Bush",
+      "arabicName": "محمد بوش",
       "position": "Principal",
       "department": "Administration",
-      "email": "principal@oiacedmonton.ca",
+      "email": "moejbush@gmail.com",
       "qualifications": [
-        "M.Ed. Educational Leadership",
-        "B.A. Islamic Studies",
-        "Alberta Teaching Certificate"
+        "Bachelor of Shariah Sciences - Al-Azhar University, Cairo, Egypt (1999)",
+        "Bachelor of Education - Ambrose University, Calgary, AB (2012)", 
+        "Master of Education in Adult Education - Yorkville University, Fredericton, NB (2015)",
+        "Permanent Teaching Certificate - Alberta Education (2016)",
+        "Leadership Certificate for Principals - BC Ministry of Education (2018)"
       ],
-      "experience": "15 years in Islamic education",
-      "specialization": "Educational leadership and Islamic curriculum development",
-      "bio": "Principal Ahmad Hassan brings over 15 years of experience in Islamic education to OIA Academy. He holds a Master's degree in Educational Leadership and has dedicated his career to developing comprehensive Islamic educational programs that prepare students for success in both this world and the hereafter.",
-      "image": "/uploads/images/faculty/principal-ahmad-hassan.jpg",
-      "languages": ["English", "Arabic", "Urdu"],
-      "subjects": ["Islamic Leadership", "Educational Administration"],
+      "experience": "Over a decade of experience in educational leadership with proven success in founding, scaling, and leading Islamic schools",
+      "specialization": "School Growth & Scaling, Institution Building, Curriculum Design, Operations & Compliance, Community Outreach, Islamic Scholarship, Staff Leadership",
+      "bio": "Experienced educational leader with a strong blend of Islamic scholarship and Western pedagogical expertise. Proven success in founding, scaling, and leading Islamic schools, with a focus on student growth, curriculum innovation, and community engagement. Brings the best of traditional Islamic and Western pedagogical traditions together, fostering academic excellence and creating environments where students thrive in both faith and knowledge.",
+      "image": "/uploads/documents/staff/principal-mohamed-bush.jpg",
+      "languages": ["English", "Arabic", "French"],
+      "subjects": ["Educational Leadership", "Islamic Studies", "Curriculum Development", "School Operations"],
+      "grade": "All Grades",
       "achievements": [
-        "Alberta Distinguished Educator Award 2023",
-        "Islamic Education Excellence Recognition 2022"
+        "Reorganized operations and passed ministerial inspection with distinction at BC Muslim School",
+        "Scaled enrollment from 170 to 400+ students at BCMS Richmond",
+        "Founded Al-Amal Learning Academy from scratch to 200+ students",
+        "Led construction of 8-classroom school wing at Surrey Muslim School",
+        "Scaled MAC Islamic School from K-3 to full K-9 licensing"
       ],
-      "featured": true
+      "featured": true,
+      "leadership": true
     },
     {
-      "id": "imam-rahman",
-      "name": "Abdullah Rahman",
-      "arabicName": "عبد الله الرحمن",
-      "position": "Imam & Islamic Studies Director",
-      "department": "Islamic Studies",
-      "email": "imam@oiacedmonton.ca",
-      "qualifications": [
-        "M.A. Islamic Studies - Al-Azhar University",
-        "Ijazah in Quran Recitation",
-        "Certificate in Islamic Counseling"
-      ],
-      "experience": "20 years in Islamic education and community leadership",
-      "specialization": "Quranic studies, Islamic jurisprudence, and spiritual guidance",
-      "bio": "Imam Abdullah Rahman is a graduate of Al-Azhar University with over 20 years of experience in Islamic education and community leadership. He leads our Islamic studies program and provides spiritual guidance to students, families, and the broader community.",
-      "image": "/uploads/images/faculty/imam-abdullah-rahman.jpg",
-      "languages": ["Arabic", "English", "French"],
-      "subjects": ["Quran", "Islamic Studies", "Arabic Language", "Fiqh"],
-      "achievements": [
-        "Community Leadership Award 2024",
-        "Quran Recitation Championship Judge"
-      ],
-      "featured": true
-    },
-    {
-      "id": "teacher-sarah",
-      "name": "Sarah Al-Zahra",
-      "arabicName": "سارة الزهراء",
-      "position": "Elementary Teacher",
+      "id": "teacher-hafsa-baig",
+      "name": "Hafsa Baig",
+      "arabicName": "حفصة بيغ",
+      "position": "Kindergarten Teacher",
       "department": "Elementary Education",
-      "email": "sarah.alzahra@oiacedmonton.ca",
+      "email": "hafsa.baig@oiaaedmonton.ca",
       "qualifications": [
-        "B.Ed. Elementary Education",
-        "Certificate in Montessori Education",
-        "Islamic Education Diploma"
+        "Bachelor of Elementary Education - University of Alberta"
       ],
-      "experience": "8 years in elementary education",
-      "specialization": "Early childhood development and integrated Islamic learning",
-      "bio": "Sarah Al-Zahra specializes in elementary education with a focus on integrating Islamic values into every aspect of learning. Her nurturing approach helps young students develop a strong foundation in both academic subjects and Islamic character.",
-      "image": "/uploads/images/faculty/teacher-sarah-alzahra.jpg",
-      "languages": ["English", "Arabic"],
-      "subjects": ["Mathematics", "Science", "Islamic Studies", "Arabic"],
-      "achievements": [
-        "Teacher of the Year 2023",
-        "Innovative Teaching Methods Award"
+      "experience": "Experienced in elementary classrooms",
+      "specialization": "Early childhood development, diverse learning styles, inclusive environment",
+      "bio": "Ma Sha'Allah, Hafsa Baig brings valuable experience in elementary classrooms, creating lessons that engage diverse learning styles. She is passionate about fostering a supportive and inclusive environment that promotes academic, social, and emotional growth while building strong relationships with students, parents, and colleagues.",
+      "image": "/uploads/images/faculty/teacher-hafsa-baig.jpg",
+      "languages": ["English"],
+      "subjects": ["Kindergarten", "Early Childhood Development"],
+      "grade": "Kindergarten",
+      "achievements": [],
+      "featured": true
+    },
+    {
+      "id": "teacher-nida-dar",
+      "name": "Nida Dar",
+      "arabicName": "ندا دار",
+      "position": "Grade 1 Teacher",
+      "department": "Elementary Education", 
+      "email": "nida.dar@oiaaedmonton.ca",
+      "qualifications": [
+        "Bachelor's in Media Studies",
+        "Master's in Social Sciences",
+        "Bachelor of Education - University of Alberta",
+        "Permanent Teacher Certification from Alberta"
       ],
+      "experience": "Over eight years of experience in Islamic school settings",
+      "specialization": "STEM, language arts, and social studies with faith integration",
+      "bio": "With over eight years of experience in Islamic school settings, Nida is dedicated to fostering a loving and inclusive classroom environment. Passionate about teaching with kindness, Nida believes that every child deserves to be nurtured and supported in their learning journey. She specializes in STEM, language arts, and social studies, with a focus on integrating faith and promoting student well-being.",
+      "image": "/uploads/images/faculty/teacher-nida-dar.jpg",
+      "languages": ["English"],
+      "subjects": ["STEM", "Language Arts", "Social Studies"],
+      "grade": "Grade 1",
+      "achievements": [],
+      "featured": true
+    },
+    {
+      "id": "teacher-mahjabeen-shaikh",
+      "name": "Mahjabeen Shaikh",
+      "arabicName": "محجبين شيخ",
+      "position": "Grade 2 Teacher",
+      "department": "Elementary Education",
+      "email": "mahjabeen.shaikh@oiaaedmonton.ca",
+      "qualifications": [
+        "Masters of Education - University of Ottawa",
+        "Permanent Teacher Certification from Alberta"
+      ],
+      "experience": "Over 10 years of experience integrating Islamic values into Alberta's curriculum",
+      "specialization": "Classroom management, curriculum planning, instructional strategies",
+      "bio": "Ma ShaAllah, Mahjabeen is a dedicated elementary teacher with over 10 years of experience integrating Islamic values into Alberta's curriculum. Her experience has equipped her with strong expertise in classroom management, curriculum planning, and instructional strategies. She creates inclusive and engaging classrooms, supporting diverse learners, leading extracurricular programs, mentoring new teachers, and collaborating with parents and staff to foster a supportive and thriving school community.",
+      "image": "/uploads/images/faculty/teacher-mahjabeen-shaikh.jpg",
+      "languages": ["English"],
+      "subjects": ["Alberta Curriculum", "Islamic Studies"],
+      "grade": "Grade 2",
+      "achievements": [],
+      "featured": true
+    },
+    {
+      "id": "teacher-fatima-damad",
+      "name": "Fatima Damad",
+      "arabicName": "فاطمة دماد",
+      "position": "Grade 3 Teacher",
+      "department": "Elementary Education",
+      "email": "fatima.damad@oiaaedmonton.ca",
+      "qualifications": [
+        "Bachelor of Arts",
+        "Bachelor of Education",
+        "Alberta-certified teacher"
+      ],
+      "experience": "Experienced in Language Arts and IB-inspired Units of Inquiry",
+      "specialization": "Faith-integrated, inquiry-based learning, creativity, critical thinking",
+      "bio": "Ma-Sha'Allah, Fatima is passionate about faith-integrated, inquiry-based learning that nurtures creativity, critical thinking, and student well-being. She builds supportive classrooms where students are encouraged to explore, question, and grow academically and personally.",
+      "image": "/uploads/images/faculty/teacher-fatima-damad.jpg",
+      "languages": ["English"],
+      "subjects": ["Language Arts", "Inquiry-Based Learning"],
+      "grade": "Grade 3",
+      "achievements": [],
       "featured": false
     },
     {
-      "id": "teacher-omar",
-      "name": "Omar Khalil",
-      "arabicName": "عمر خليل",
-      "position": "Science & Mathematics Teacher",
-      "department": "Secondary Education",
-      "email": "omar.khalil@oiacedmonton.ca",
+      "id": "teacher-fatima-shamas",
+      "name": "Fatima Shamas",
+      "arabicName": "فاطمة شماس",
+      "position": "Grade 4 Teacher",
+      "department": "Elementary Education",
+      "email": "fatima.shamas@oiaaedmonton.ca",
       "qualifications": [
-        "B.Sc. Mathematics",
-        "B.Ed. Secondary Education",
-        "Advanced Certificate in STEM Education"
+        "Bachelor of Education - University of Alberta"
       ],
-      "experience": "12 years in mathematics and science education",
-      "specialization": "STEM education and Islamic perspectives on scientific inquiry",
-      "bio": "Omar Khalil brings a unique perspective to science and mathematics education, demonstrating how scientific inquiry and Islamic principles work together harmoniously. His innovative teaching methods make complex concepts accessible to all students.",
-      "image": "/uploads/images/faculty/teacher-omar-khalil.jpg",
-      "languages": ["English", "Arabic"],
-      "subjects": ["Mathematics", "Physics", "Chemistry", "Computer Science"],
-      "achievements": [
-        "STEM Excellence Award 2024",
-        "Mathematics Competition Coach"
-      ],
+      "experience": "Experience in English and creative writing",
+      "specialization": "English, creative writing, fostering love for reading and writing",
+      "bio": "Ma-Sha Allah, Sister Fatima brings experience in English and creative writing and is passionate about fostering a love for reading and writing. She creates a supportive, engaging classroom that nurtures student growth and confidence.",
+      "image": "/uploads/images/faculty/teacher-fatima-shamas.jpg",
+      "languages": ["English"],
+      "subjects": ["English", "Creative Writing"],
+      "grade": "Grade 4",
+      "achievements": [],
       "featured": false
     },
     {
-      "id": "teacher-fatima",
-      "name": "Fatima Noor",
-      "arabicName": "فاطمة نور",
-      "position": "Arabic Language Coordinator",
-      "department": "Language Arts",
-      "email": "fatima.noor@oiacedmonton.ca",
+      "id": "teacher-nida-alvi",
+      "name": "Nida A. Alvi",
+      "arabicName": "ندا علوي",
+      "position": "Grade 5 Teacher",
+      "department": "Elementary Education",
+      "email": "nida.alvi@oiaaedmonton.ca",
       "qualifications": [
-        "M.A. Arabic Literature",
-        "Certificate in Arabic Language Teaching",
-        "Diploma in Islamic Calligraphy"
+        "Masters of Science (Physiology)",
+        "Bachelor of Education",
+        "Master's in English Literature and Linguistics",
+        "Permanent Teacher Certification from Ontario and Alberta"
       ],
-      "experience": "10 years in Arabic language instruction",
-      "specialization": "Arabic language acquisition and Islamic literature",
-      "bio": "Fatima Noor is passionate about preserving and teaching the Arabic language. Her comprehensive approach includes classical Arabic literature, modern communication skills, and the beautiful art of Islamic calligraphy.",
-      "image": "/uploads/images/faculty/teacher-fatima-noor.jpg",
-      "languages": ["Arabic", "English", "French"],
-      "subjects": ["Arabic Language", "Islamic Literature", "Calligraphy"],
-      "achievements": [
-        "Arabic Excellence Teaching Award",
-        "Cultural Preservation Recognition"
-      ],
+      "experience": "Years of teaching experience in both Islamic and public-school settings",
+      "specialization": "Individualized learning, student growth, curriculum planning",
+      "bio": "Ma-Sha'Allah, Nida brings years of teaching experience in both Islamic and public-school settings, focusing on individualized learning, student growth, and building strong relationships with students and parents. She is skilled in curriculum planning, lesson delivery, and classroom management, and will support and inspire the Grade 5 students while fostering a supportive and engaging learning environment.",
+      "image": "/uploads/images/faculty/teacher-nida-alvi.jpg",
+      "languages": ["English"],
+      "subjects": ["Science", "English Literature", "Curriculum Planning"],
+      "grade": "Grade 5",
+      "achievements": [],
       "featured": false
     },
     {
-      "id": "counselor-aisha",
-      "name": "Aisha Mohamed",
-      "arabicName": "عائشة محمد",
-      "position": "Student Counselor",
-      "department": "Student Services",
-      "email": "aisha.mohamed@oiacedmonton.ca",
+      "id": "teacher-sumaya-ali",
+      "name": "Sumaya Ali",
+      "arabicName": "سمية علي",
+      "position": "Grade 6 Teacher",
+      "department": "Elementary Education",
+      "email": "sumaya.ali@oiaaedmonton.ca",
       "qualifications": [
-        "M.A. Counseling Psychology",
-        "Certificate in Islamic Psychology",
-        "Family Therapy Certification"
+        "Bachelor of Education - University of Alberta"
       ],
-      "experience": "7 years in educational counseling",
-      "specialization": "Student mental health and Islamic counseling approaches",
-      "bio": "Aisha Mohamed provides comprehensive counseling services to our students, incorporating Islamic principles of mental health and well-being. She supports students through academic challenges, personal growth, and spiritual development.",
-      "image": "/uploads/images/faculty/counselor-aisha-mohamed.jpg",
-      "languages": ["English", "Arabic", "Somali"],
-      "subjects": ["Student Counseling", "Mental Health", "Study Skills"],
-      "achievements": [
-        "Student Support Excellence Award",
-        "Community Mental Health Recognition"
-      ],
+      "experience": "Valuable teaching experience as a Homeroom Teacher",
+      "specialization": "Lesson planning, differentiated instruction, classroom management",
+      "bio": "In ShaAllah, Sister Sumaya brings valuable teaching experience as a Homeroom Teacher, with expertise in lesson planning, differentiated instruction, and classroom management. Ma ShaAllah, she is passionate about creating an engaging and inclusive learning environment that fosters academic growth, Islamic values, and strong relationships with students, parents, and colleagues.",
+      "image": "/uploads/images/faculty/teacher-sumaya-ali.jpg",
+      "languages": ["English"],
+      "subjects": ["Homeroom Teaching", "Differentiated Instruction"],
+      "grade": "Grade 6",
+      "achievements": [],
       "featured": false
     }
   ],
   "departments": [
+    {
+      "id": "elementary-education",
+      "name": "Elementary Education",
+      "description": "Foundation learning for Kindergarten through Grade 6",
+      "icon": "🌱",
+      "color": "wood"
+    },
     {
       "id": "administration",
       "name": "Administration",
@@ -159,40 +202,13 @@
       "description": "Quranic studies, Islamic history, and spiritual guidance",
       "icon": "🕌",
       "color": "sage-green"
-    },
-    {
-      "id": "elementary-education",
-      "name": "Elementary Education",
-      "description": "Foundation learning for ages 6-10",
-      "icon": "🌱",
-      "color": "wood"
-    },
-    {
-      "id": "secondary-education",
-      "name": "Secondary Education",
-      "description": "Advanced learning for ages 11-18",
-      "icon": "📚",
-      "color": "deep-teal"
-    },
-    {
-      "id": "language-arts",
-      "name": "Language Arts",
-      "description": "Arabic, English, and linguistic studies",
-      "icon": "✍️",
-      "color": "wood2"
-    },
-    {
-      "id": "student-services",
-      "name": "Student Services",
-      "description": "Counseling, support, and student well-being",
-      "icon": "🤝",
-      "color": "sage-green"
     }
   ],
   "stats": {
-    "totalFaculty": 6,
-    "averageExperience": 12,
-    "languages": ["English", "Arabic", "French", "Urdu", "Somali"],
-    "certifications": 18
+    "totalFaculty": 8,
+    "averageExperience": 10,
+    "languages": ["English", "Arabic", "French"],
+    "certifications": 20,
+    "grades": ["Kindergarten", "Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5", "Grade 6"]
   }
 }
