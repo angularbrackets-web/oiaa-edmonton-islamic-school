@@ -217,38 +217,44 @@ export default function About() {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 1.8 }}
         >
-          <h3 className="text-4xl font-serif font-bold text-center text-terracotta-red mb-16">Our Journey</h3>
+          <h3 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-center text-terracotta-red mb-8 sm:mb-12 lg:mb-16 break-words">Our Journey</h3>
           <div className="relative">
-            {/* Timeline Line */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-terracotta-red to-sage-green rounded-full"></div>
+            {/* Timeline Line - Hide on mobile for better readability */}
+            <div className="hidden sm:block absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-terracotta-red to-sage-green rounded-full"></div>
             
-            <div className="space-y-16">
+            <div className="space-y-8 sm:space-y-16">
               {timeline.map((item, index) => {
                 const IconComponent = item.icon
                 const isLeft = index % 2 === 0
                 return (
                   <motion.div 
                     key={index}
-                    className={`flex items-center ${isLeft ? 'flex-row' : 'flex-row-reverse'}`}
+                    className={`flex flex-col sm:flex-row items-center sm:items-center ${isLeft ? 'sm:flex-row' : 'sm:flex-row-reverse'}`}
                     initial={{ opacity: 0, x: isLeft ? -100 : 100 }}
                     animate={isInView ? { opacity: 1, x: 0 } : {}}
                     transition={{ duration: 0.8, delay: 2 + index * 0.2 }}
                   >
-                    <div className={`w-5/12 ${isLeft ? 'text-right pr-8' : 'text-left pl-8'}`}>
-                      <div className="bg-white rounded-2xl p-6 shadow-lg border border-soft-beige">
-                        <div className="text-3xl font-bold text-terracotta-red mb-2">{item.year}</div>
-                        <h4 className="text-xl font-bold text-deep-teal mb-3">{item.title}</h4>
-                        <p className="text-deep-teal/80">{item.description}</p>
+                    {/* Mobile: Icon first, then content */}
+                    <div className="sm:hidden w-16 h-16 bg-gradient-to-br from-terracotta-red to-wood rounded-full flex items-center justify-center shadow-lg border-4 border-white mb-4">
+                      <IconComponent className="w-8 h-8 text-warm-white" />
+                    </div>
+                    
+                    <div className={`w-full sm:w-5/12 ${isLeft ? 'sm:text-right sm:pr-8' : 'sm:text-left sm:pl-8'}`}>
+                      <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-lg border border-soft-beige">
+                        <div className="text-2xl sm:text-3xl font-bold text-terracotta-red mb-2">{item.year}</div>
+                        <h4 className="text-lg sm:text-xl font-bold text-deep-teal mb-3 break-words">{item.title}</h4>
+                        <p className="text-sm sm:text-base text-deep-teal/80 leading-relaxed break-words">{item.description}</p>
                       </div>
                     </div>
                     
-                    <div className="w-2/12 flex justify-center">
+                    {/* Desktop: Icon in center */}
+                    <div className="hidden sm:flex w-2/12 justify-center">
                       <div className="w-16 h-16 bg-gradient-to-br from-terracotta-red to-wood rounded-full flex items-center justify-center shadow-lg border-4 border-white">
                         <IconComponent className="w-8 h-8 text-warm-white" />
                       </div>
                     </div>
                     
-                    <div className="w-5/12"></div>
+                    <div className="hidden sm:block w-5/12"></div>
                   </motion.div>
                 )
               })}

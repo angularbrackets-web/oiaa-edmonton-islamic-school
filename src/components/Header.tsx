@@ -50,19 +50,19 @@ export default function Header() {
   ]
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out ${
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out max-w-full overflow-x-hidden ${
       isVisible ? 'translate-y-0' : '-translate-y-full'
     } ${
       isScrolled 
         ? 'bg-warm-white/80 backdrop-blur-xl border-b border-soft-beige/60 shadow-lg shadow-terracotta-red/5' 
         : 'bg-warm-white/95 backdrop-blur-md border-b border-soft-beige shadow-sm'
     }`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className={`flex justify-between items-center transition-all duration-300 ${
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full box-border">
+        <div className={`flex justify-between items-center transition-all duration-300 w-full min-w-0 ${
           isScrolled ? 'h-14' : 'h-16'
         }`}>
           {/* Logo with enhanced animations */}
-          <div className="flex items-center">
+          <div className="flex items-center flex-shrink-0 min-w-0">
             <Link href="/" className="flex items-center space-x-3 group">
               <div className="relative transition-all duration-300 group-hover:scale-105">
                 <Image
@@ -110,10 +110,10 @@ export default function Header() {
           </div>
 
           {/* Animated Mobile menu button */}
-          <div className="md:hidden">
+          <div className="md:hidden flex-shrink-0">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="relative w-10 h-10 text-deep-teal hover:text-terracotta-red focus:outline-none focus:text-terracotta-red transition-colors duration-200 group"
+              className="relative w-10 h-10 text-deep-teal hover:text-terracotta-red focus:outline-none focus:text-terracotta-red transition-colors duration-200 group touch-manipulation"
               aria-label="Toggle mobile menu"
             >
               <div className="absolute inset-0 flex items-center justify-center">
@@ -134,10 +134,10 @@ export default function Header() {
         </div>
 
         {/* Enhanced Mobile Navigation Menu */}
-        <div className={`md:hidden overflow-hidden transition-all duration-500 ease-out ${
+        <div className={`md:hidden overflow-hidden transition-all duration-500 ease-out w-full ${
           isMobileMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
         }`}>
-          <div className="px-2 pt-2 pb-3 space-y-1 bg-warm-white/95 backdrop-blur-xl border-t border-soft-beige/60 shadow-lg">
+          <div className="px-2 pt-2 pb-3 space-y-1 bg-warm-white/95 backdrop-blur-xl border-t border-soft-beige/60 shadow-lg w-full box-border">
             {navigation.map((item, index) => (
               <Link
                 key={item.name}

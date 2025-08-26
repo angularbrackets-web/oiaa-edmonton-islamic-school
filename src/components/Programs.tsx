@@ -356,10 +356,10 @@ export default function Programs() {
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8 }}
         >
-          <div className="max-w-7xl mx-auto flex justify-between items-center">
+          <div className="max-w-7xl mx-auto flex flex-col sm:flex-row sm:justify-between sm:items-center gap-6 sm:gap-4 px-4 sm:px-6 lg:px-8 w-full box-border">
             <div>
               <motion.h2 
-                className="display-lg font-serif text-terracotta-red mb-4"
+                className="text-2xl sm:text-3xl lg:text-4xl xl:display-lg font-serif text-terracotta-red mb-4 break-words px-2 sm:px-0"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
@@ -557,7 +557,7 @@ export default function Programs() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.4 }}
                 >
-                  <h3 className="display-md font-serif text-terracotta-red mb-8 text-center">Additional Programs</h3>
+                  <h3 className="text-xl sm:text-2xl lg:text-3xl xl:display-md font-serif text-terracotta-red mb-8 text-center break-words px-2 sm:px-0">Additional Programs</h3>
                   <div className="grid md:grid-cols-3 gap-8">
                     {additionalPrograms.map((program, index) => (
                       <motion.div 

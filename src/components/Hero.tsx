@@ -637,10 +637,10 @@ export default function Hero() {
                 </div>
 
                 {/* Right: Media Buttons - Enhanced Animations */}
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 flex-wrap justify-center sm:justify-end">
                   <motion.button 
                     onClick={() => setIsVideoPlaying(true)}
-                    className="relative flex items-center gap-2 bg-black/80 hover:bg-black/90 backdrop-blur-md text-white px-4 py-2 rounded-full transition-all duration-300 overflow-hidden group border border-white/40 shadow-xl"
+                    className="relative flex items-center gap-2 bg-black/80 hover:bg-black/90 backdrop-blur-md text-white px-4 py-2 rounded-full transition-all duration-300 overflow-hidden group border border-white/40 shadow-xl min-w-0 flex-shrink-0"
                     whileHover={{ 
                       scale: 1.05,
                       boxShadow: "0 15px 35px rgba(0, 0, 0, 0.6)"
@@ -734,7 +734,7 @@ export default function Hero() {
                   
                   <motion.button 
                     onClick={() => setIsGalleryMode(true)}
-                    className="relative flex items-center gap-2 bg-black/80 hover:bg-black/90 backdrop-blur-md text-white px-4 py-2 rounded-full transition-all duration-300 overflow-hidden group border border-white/40 shadow-xl"
+                    className="relative flex items-center gap-2 bg-black/80 hover:bg-black/90 backdrop-blur-md text-white px-4 py-2 rounded-full transition-all duration-300 overflow-hidden group border border-white/40 shadow-xl min-w-0 flex-shrink-0"
                     whileHover={{ 
                       scale: 1.05,
                       boxShadow: "0 15px 35px rgba(0, 0, 0, 0.6)"
@@ -883,11 +883,11 @@ export default function Hero() {
 
 
         {/* Main Content */}
-        <div className="flex-1 flex">
-          {/* Left Text Overlay Panel - 40% Width */}
+        <div className="flex-1 flex flex-col lg:flex-row">
+          {/* Left Text Overlay Panel - Responsive Width */}
           {!isVideoPlaying && !isGalleryMode && (
             <motion.div 
-              className="w-2/5 relative z-20 flex flex-col justify-center"
+              className="w-full lg:w-2/5 relative z-20 flex flex-col justify-center order-2 lg:order-1"
               initial={{ opacity: 0, x: -100 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
@@ -895,7 +895,7 @@ export default function Hero() {
               {/* Semi-transparent Dark Charcoal Overlay */}
               <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/80 to-black/70 backdrop-blur-sm" />
               
-              <div className="relative z-10 px-12 py-16 flex flex-col h-full">
+              <div className="relative z-10 px-6 sm:px-8 lg:px-12 py-8 sm:py-12 lg:py-16 flex flex-col h-full min-h-[500px] lg:min-h-auto">
                 {/* Animated Achievement Content */}
                 <div className="flex-1">
                   {achievements.length > 0 && achievements[currentAchievement] && currentAchievement < achievements.length && (
@@ -919,7 +919,7 @@ export default function Hero() {
 
                       {/* Main Headline (Middle) */}
                       <motion.h1 
-                        className="text-4xl md:text-5xl lg:text-6xl font-black text-white leading-[0.9] tracking-tight"
+                        className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black text-white leading-tight lg:leading-[0.9] tracking-tight break-words"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.4 }}
@@ -929,7 +929,7 @@ export default function Hero() {
 
                       {/* Subheading (Bottom) */}
                       <motion.p 
-                        className="text-white/80 text-lg font-normal leading-relaxed max-w-md"
+                        className="text-white/80 text-base sm:text-lg font-normal leading-relaxed max-w-full lg:max-w-md"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.6 }}
@@ -985,7 +985,7 @@ export default function Hero() {
 
                 {/* Static Call to Action Section - Always Visible */}
                 <div className="flex flex-col gap-4 pt-8 border-t border-white/10 mt-8">
-                  <div className="flex gap-3">
+                  <div className="flex flex-col sm:flex-row gap-3">
                     <motion.button 
                       className="relative bg-terracotta-red hover:bg-terracotta-red-dark text-warm-white px-6 py-3 rounded-lg font-bold transition-all duration-300 shadow-lg overflow-hidden text-sm flex-1"
                       whileHover={{ 
@@ -1031,8 +1031,8 @@ export default function Hero() {
             </motion.div>
           )}
 
-          {/* Right Side - Full Media Display (60% Width) */}
-          <div className={`${!isVideoPlaying && !isGalleryMode ? 'w-3/5' : 'w-full'} relative`}>
+          {/* Right Side - Full Media Display - Responsive Width */}
+          <div className={`${!isVideoPlaying && !isGalleryMode ? 'w-full lg:w-3/5 order-1 lg:order-2' : 'w-full'} relative min-h-[300px] sm:min-h-[400px] lg:min-h-auto`}>
             {!isVideoPlaying && !isGalleryMode && achievements.length > 0 && achievements[currentAchievement] && currentAchievement < achievements.length && (
               <motion.div
                 key={currentAchievement}
