@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import Icon from '@/components/ui/Icon'
 import SocialLinks from '@/components/ui/SocialLinks'
 import { CONTACT_INFO, QUICK_LINKS } from '@/lib/constants'
@@ -17,8 +18,14 @@ export default function Footer() {
           <div className="lg:col-span-2">
             <div className="mb-6">
               <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-terracotta-red rounded-lg flex items-center justify-center mr-4">
-                  <Icon name="crescent" size={24} className="text-warm-white" aria-hidden="true" />
+                <div className="w-12 h-12 mr-4">
+                  <Image
+                    src="/images/OIA_Academy_Logo.png"
+                    alt="OIA Academy Edmonton - Omar Ibn Al-Khattab Academy"
+                    width={48}
+                    height={48}
+                    className="w-12 h-12 object-contain"
+                  />
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-terracotta-red">{CONTACT_INFO.school.name}</h3>

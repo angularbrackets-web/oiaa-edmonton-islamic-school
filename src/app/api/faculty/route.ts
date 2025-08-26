@@ -12,9 +12,9 @@ export async function GET(request: Request) {
     
     return NextResponse.json({ faculty })
   } catch (error) {
-    console.error('Error fetching faculty:', error)
+    console.error('Error fetching faculty from Supabase:', error)
     return NextResponse.json(
-      { error: 'Failed to load faculty data' },
+      { error: 'Failed to load faculty data from database' },
       { status: 500 }
     )
   }

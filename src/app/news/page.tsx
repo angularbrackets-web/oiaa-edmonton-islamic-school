@@ -155,6 +155,7 @@ export default function NewsPage() {
                         alt={article.title}
                         fill
                         className="object-cover"
+                        unoptimized
                       />
                       <div className="absolute top-4 left-4">
                         <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
@@ -163,7 +164,7 @@ export default function NewsPage() {
                           <span className="mr-1">
                             {categoryIcons[article.category as keyof typeof categoryIcons] || categoryIcons.general}
                           </span>
-                          {article.category.replace('-', ' ')}
+{(article.category || 'general').replace('-', ' ')}
                         </span>
                       </div>
                       {article.featured && (
@@ -180,9 +181,11 @@ export default function NewsPage() {
                       <span className="text-sage-green text-sm font-medium">
                         {formatDate(article.publish_date)}
                       </span>
-                      <span className="text-deep-teal text-sm">
-                        By {article.author}
-                      </span>
+{article.author && (
+                        <span className="text-deep-teal text-sm">
+                          By {article.author}
+                        </span>
+                      )}
                     </div>
                     <h2 className="text-xl font-bold text-terracotta-red mb-3 leading-tight">
                       {article.title}
@@ -209,7 +212,7 @@ export default function NewsPage() {
                         )}
                       </div>
                       <Link
-                        href={`/news/${article.slug}`}
+                        href={`/news/${article.slug || article.id}`}
                         className="text-terracotta-red hover:text-terracotta-red-dark font-semibold text-sm transition-colors duration-200"
                       >
                         Read More →

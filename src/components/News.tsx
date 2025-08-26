@@ -123,13 +123,15 @@ export default function News() {
           {/* Featured Article */}
           <div className="lg:col-span-1">
             <div className="bg-warm-white rounded-lg overflow-hidden shadow-lg border border-soft-beige hover:shadow-xl transition-shadow duration-300">
-              {featuredArticle.featured_image && (
+{featuredArticle.featured_image && (
                 <div className="relative h-64 bg-soft-beige">
                   <Image
                     src={featuredArticle.featured_image}
                     alt={featuredArticle.title}
                     fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     className="object-cover"
+                    unoptimized
                   />
                   <div className="absolute top-4 left-4">
                     <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
@@ -138,7 +140,7 @@ export default function News() {
                       <span className="mr-1">
                         {categoryIcons[featuredArticle.category as keyof typeof categoryIcons] || categoryIcons.general}
                       </span>
-                      {featuredArticle.category.replace('-', ' ')}
+{(featuredArticle.category || 'general').replace('-', ' ')}
                     </span>
                   </div>
                 </div>
@@ -148,9 +150,11 @@ export default function News() {
                   <span className="text-sage-green text-sm font-medium">
                     {formatDate(featuredArticle.publish_date)}
                   </span>
-                  <span className="text-deep-teal text-sm">
-                    By {featuredArticle.author}
-                  </span>
+{featuredArticle.author && (
+                    <span className="text-deep-teal text-sm">
+                      By {featuredArticle.author}
+                    </span>
+                  )}
                 </div>
                 <h3 className="text-2xl font-bold text-terracotta-red mb-4 leading-tight">
                   {featuredArticle.title}
@@ -172,7 +176,7 @@ export default function News() {
                     ))}
                   </div>
                   <Link
-                    href={`/news/${featuredArticle.slug}`}
+                    href={`/news/${featuredArticle.slug || featuredArticle.id}`}
                     className="inline-flex items-center text-terracotta-red hover:text-terracotta-red-dark font-semibold transition-colors duration-200"
                   >
                     Read More →
@@ -187,13 +191,15 @@ export default function News() {
             {recentArticles.map((article) => (
               <div key={article.id} className="bg-warm-white rounded-lg overflow-hidden shadow-lg border border-soft-beige hover:shadow-xl transition-shadow duration-300">
                 <div className="flex">
-                  {article.featured_image && (
+{article.featured_image && (
                     <div className="relative w-1/3 h-32 bg-soft-beige flex-shrink-0">
                       <Image
                         src={article.featured_image}
                         alt={article.title}
                         fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 33vw, 25vw"
                         className="object-cover"
+                        unoptimized
                       />
                     </div>
                   )}
@@ -205,7 +211,7 @@ export default function News() {
                         <span className="mr-1">
                           {categoryIcons[article.category as keyof typeof categoryIcons] || categoryIcons.general}
                         </span>
-                        {article.category.replace('-', ' ')}
+{(article.category || 'general').replace('-', ' ')}
                       </span>
                       <span className="text-sage-green text-xs font-medium">
                         {formatDate(article.publish_date)}
@@ -218,7 +224,7 @@ export default function News() {
                       {article.excerpt || article.content.substring(0, 120) + '...'}
                     </p>
                     <Link
-                      href={`/news/${article.slug}`}
+                      href={`/news/${article.slug || article.id}`}
                       className="text-terracotta-red hover:text-terracotta-red-dark font-semibold text-sm transition-colors duration-200"
                     >
                       Read More →

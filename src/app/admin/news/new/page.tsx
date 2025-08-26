@@ -23,7 +23,7 @@ export default function NewNewsArticlePage() {
     featured_image: '',
     category: 'general',
     tags: '',
-    author: 'Admin',
+    author: '',
     featured: false,
     published: true,
     publish_date: new Date().toISOString().split('T')[0]
@@ -195,7 +195,7 @@ export default function NewNewsArticlePage() {
 
               <div>
                 <label htmlFor="author" className="block text-sm font-medium text-deep-teal mb-2">
-                  Author
+                  Author (Optional)
                 </label>
                 <input
                   type="text"

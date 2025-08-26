@@ -65,7 +65,7 @@ export default function About() {
     }
   ]
   return (
-    <section id="about" className="py-32 bg-gradient-to-b from-soft-beige-lightest to-warm-white relative overflow-hidden" ref={ref}>
+    <div id="about" ref={ref} className="py-32">
       {/* Background Elements */}
       <div className="absolute inset-0">
         <div className="absolute top-0 left-0 w-96 h-96 bg-terracotta-red/5 rounded-full blur-3xl"></div>
@@ -256,6 +256,6 @@ export default function About() {
           </div>
         </motion.div>
       </div>
-    </section>
+    </div>
   )
 }

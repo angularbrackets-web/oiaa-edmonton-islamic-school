@@ -29,6 +29,17 @@ export default function Avatar({ src, alt, name, size = 'md', className = '' }: 
     xl: 'w-12 h-12'
   }
 
+  // Check if the image source is from a valid CDN/image service
+  const isValidImageUrl = (url: string) => {
+    if (!url) return false
+    return url.includes('supabase.co') || 
+           url.includes('supabase.in') || 
+           url.includes('cloudinary.com') ||
+           url.includes('res.cloudinary.com') ||
+           url.startsWith('http://') || 
+           url.startsWith('https://')
+  }
+
   // Generate initials from name
   const getInitials = (name: string) => {
     return name
@@ -59,6 +70,15 @@ export default function Avatar({ src, alt, name, size = 'md', className = '' }: 
     return colors[index]
   }
 
+  // Get fallback avatar URL - using UI Avatars service
+  const getFallbackAvatar = (name: string, size: string) => {
+    const sizeMap = { xs: 32, sm: 48, md: 64, lg: 96, xl: 128 }
+    const pixelSize = sizeMap[size as keyof typeof sizeMap]
+    const initials = getInitials(name)
+    // Using a neutral color scheme for Islamic school context
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&size=${pixelSize}&background=e5ddd5&color=8b4513&format=svg&rounded=true&font-size=0.33`
+  }
+
   const handleImageLoad = () => {
     setImageLoading(false)
   }
@@ -70,13 +90,16 @@ export default function Avatar({ src, alt, name, size = 'md', className = '' }: 
 
   const baseClasses = `${sizeClasses[size]} rounded-full object-cover border-2 border-soft-beige flex-shrink-0 ${className}`
 
-  // If we have a valid image source and no error, show the image
-  if (src && !imageError) {
+  // Only use image if it's from a valid URL and hasn't errored
+  const validImageSrc = src && isValidImageUrl(src) && !imageError ? src : null
+
+  // If we have a valid image source, show it
+  if (validImageSrc) {
     return (
       <div className="relative">
         <div className={`${baseClasses} bg-soft-beige-lightest flex items-center justify-center`}>
           <img
-            src={src}
+            src={validImageSrc}
             alt={alt}
             className={`${baseClasses} bg-transparent`}
             onLoad={handleImageLoad}
@@ -92,7 +115,29 @@ export default function Avatar({ src, alt, name, size = 'md', className = '' }: 
     )
   }
 
-  // Fallback to initials with colored background
+  // If no valid image URL, try to use the fallback avatar service
+  if (!src || !isValidImageUrl(src)) {
+    return (
+      <div className="relative">
+        <div className={`${baseClasses} bg-soft-beige-lightest flex items-center justify-center`}>
+          <img
+            src={getFallbackAvatar(name, size)}
+            alt={alt}
+            className={`${baseClasses} bg-transparent`}
+            onLoad={handleImageLoad}
+            onError={handleImageError}
+          />
+        </div>
+        {imageLoading && (
+          <div className={`${baseClasses} bg-gray-200 animate-pulse absolute inset-0 flex items-center justify-center`}>
+            <UserIcon className={`${iconSizes[size]} text-gray-400`} />
+          </div>
+        )}
+      </div>
+    )
+  }
+
+  // Final fallback to initials with colored background (if external service fails)
   return (
     <div className={`${baseClasses} ${getAvatarColor(name)} flex items-center justify-center text-white font-semibold`}>
       {getInitials(name)}

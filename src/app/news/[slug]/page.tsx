@@ -54,7 +54,9 @@ export default function NewsArticlePage() {
     fetch('/api/news')
       .then(res => res.json())
       .then(data => {
-        const currentArticle = data.news.find((a: NewsArticle) => a.slug === params.slug)
+        const currentArticle = data.news.find((a: NewsArticle) => 
+          a.slug === params.slug || a.id === params.slug
+        )
         
         if (!currentArticle) {
           setNotFound(true)
@@ -174,7 +176,7 @@ export default function NewsArticlePage() {
                   <span className="mr-1">
                     {categoryIcons[article.category as keyof typeof categoryIcons] || categoryIcons.general}
                   </span>
-                  {article.category.replace('-', ' ')}
+{(article.category || 'general').replace('-', ' ')}
                 </span>
                 {article.featured && (
                   <span className="bg-terracotta-red text-warm-white px-3 py-1 rounded-full text-sm font-semibold">
@@ -198,10 +200,12 @@ export default function NewsArticlePage() {
                   <span className="font-semibold">📅</span>
                   <span>{formatDate(article.publish_date)}</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="font-semibold">👤</span>
-                  <span>By {article.author}</span>
-                </div>
+{article.author && (
+                  <div className="flex items-center gap-2">
+                    <span className="font-semibold">👤</span>
+                    <span>By {article.author}</span>
+                  </div>
+                )}
               </div>
 
               {article.tags && article.tags.length > 0 && (
@@ -223,6 +227,7 @@ export default function NewsArticlePage() {
                   alt={article.title}
                   fill
                   className="object-cover"
+                  unoptimized
                 />
               </div>
             )}
@@ -245,7 +250,7 @@ export default function NewsArticlePage() {
                 {relatedArticles.map((relatedArticle) => (
                   <Link
                     key={relatedArticle.id}
-                    href={`/news/${relatedArticle.slug}`}
+                    href={`/news/${relatedArticle.slug || relatedArticle.id}`}
                     className="group"
                   >
                     <div className="bg-soft-beige-lightest rounded-lg overflow-hidden shadow-lg border border-soft-beige hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
@@ -256,6 +261,7 @@ export default function NewsArticlePage() {
                             alt={relatedArticle.title}
                             fill
                             className="object-cover group-hover:scale-105 transition-transform duration-300"
+                            unoptimized
                           />
                         </div>
                       )}

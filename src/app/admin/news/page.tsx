@@ -47,7 +47,7 @@ export default function NewsAdminPage() {
   const loadNews = () => {
     setLoading(true)
     const categoryParam = selectedCategory === 'all' ? '' : `&category=${selectedCategory}`
-    fetch(`/api/news?${categoryParam}`)
+    fetch(`/api/news?admin=true${categoryParam}`)
       .then(res => res.json())
       .then(data => {
         setNewsData(data)
@@ -272,7 +272,7 @@ export default function NewsAdminPage() {
                       </td>
                       <td className="px-6 py-4">
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-sage-green/20 text-sage-green">
-                          {article.category.replace('-', ' ')}
+{(article.category || 'general').replace('-', ' ')}
                         </span>
                       </td>
                       <td className="px-6 py-4 text-sm text-deep-teal">

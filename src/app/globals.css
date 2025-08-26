@@ -39,6 +39,11 @@
   --color-deep-charcoal: #1B1B1B;
   --color-deep-charcoal-light: #2A2A2A;
   
+  /* Diagonal separator utilities */
+  --diagonal-subtle: 2vw;
+  --diagonal-medium: 4vw;
+  --diagonal-strong: 6vw;
+  
   --font-family-sans: 'Inter', sans-serif;
   --font-family-serif: 'Playfair Display', serif;
   --font-family-arabic: 'Amiri', serif;
@@ -146,4 +151,93 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #723A36;
+}
+
+/* Diagonal Section Utilities */
+.diagonal-down-subtle {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--diagonal-subtle)), 0 100%);
+}
+
+.diagonal-down-medium {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--diagonal-medium)), 0 100%);
+}
+
+.diagonal-down-strong {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--diagonal-strong)), 0 100%);
+}
+
+.diagonal-up-subtle {
+  clip-path: polygon(0 var(--diagonal-subtle), 100% 0, 100% 100%, 0 100%);
+}
+
+.diagonal-up-medium {
+  clip-path: polygon(0 var(--diagonal-medium), 100% 0, 100% 100%, 0 100%);
+}
+
+.diagonal-up-strong {
+  clip-path: polygon(0 var(--diagonal-strong), 100% 0, 100% 100%, 0 100%);
+}
+
+.diagonal-both-subtle {
+  clip-path: polygon(0 var(--diagonal-subtle), 100% 0, 100% calc(100% - var(--diagonal-subtle)), 0 100%);
+}
+
+.diagonal-both-medium {
+  clip-path: polygon(0 var(--diagonal-medium), 100% 0, 100% calc(100% - var(--diagonal-medium)), 0 100%);
+}
+
+.diagonal-both-strong {
+  clip-path: polygon(0 var(--diagonal-strong), 100% 0, 100% calc(100% - var(--diagonal-strong)), 0 100%);
+}
+
+/* Responsive diagonal adjustments */
+@media (max-width: 768px) {
+  :root {
+    --diagonal-subtle: 4vw;
+    --diagonal-medium: 6vw;
+    --diagonal-strong: 8vw;
+  }
+}
+
+/* Diagonal background animations */
+@keyframes shimmer {
+  0% { 
+    transform: translateX(-100%); 
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  100% { 
+    transform: translateX(100%); 
+    opacity: 0;
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.diagonal-shimmer {
+  animation: shimmer 4s ease-in-out infinite;
+}
+
+.diagonal-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Gradient pulse for animated backgrounds */
+@keyframes gradient-pulse {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.gradient-animate {
+  background-size: 200% 200%;
+  animation: gradient-pulse 4s ease infinite;
 }

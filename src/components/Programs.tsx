@@ -256,7 +256,8 @@ export default function Programs() {
   const gridStudentWork = generateGridLayout(filteredStudentWork, gridCycle)
 
   return (
-    <section id="programs" className="relative min-h-screen overflow-hidden">
+    <div className="relative min-h-screen py-32">
+      <div id="programs">
       {/* Background */}
       <div className="absolute inset-0">
         {mode === 'gallery' ? (
@@ -743,6 +744,7 @@ export default function Programs() {
           )}
         </div>
       </div>
-    </section>
+      </div>
+    </div>
   )
 }

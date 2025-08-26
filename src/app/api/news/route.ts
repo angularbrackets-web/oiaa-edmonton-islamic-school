@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase'
-import path from 'path'
-import fs from 'fs'
 
 export async function GET(request: NextRequest) {
   try {
@@ -9,12 +7,17 @@ export async function GET(request: NextRequest) {
     const limit = searchParams.get('limit') ? parseInt(searchParams.get('limit')!) : null
     const category = searchParams.get('category')
     const featured = searchParams.get('featured')
+    const admin = searchParams.get('admin')
 
     let query = supabase
       .from('news')
       .select('*')
-      .eq('published', true)
-      .order('publish_date', { ascending: false })
+      .order('created_at', { ascending: false })
+
+    // Only filter by published status if not in admin mode
+    if (admin !== 'true') {
+      query = query.eq('published', true)
+    }
 
     if (category && category !== 'all') {
       query = query.eq('category', category)
@@ -32,38 +35,11 @@ export async function GET(request: NextRequest) {
 
     if (error) {
       console.error('Supabase error:', error)
-      console.log('Falling back to JSON data...')
-      
-      // Fallback to JSON file data if database is not available
-      try {
-        const filePath = path.join(process.cwd(), 'src/data/news.json')
-        const jsonData = JSON.parse(fs.readFileSync(filePath, 'utf8'))
-        
-        let filteredNews = jsonData.news.filter((article: any) => article.published)
-        
-        // Apply category filter
-        if (category && category !== 'all') {
-          filteredNews = filteredNews.filter((article: any) => article.category === category)
-        }
-        
-        // Apply featured filter
-        if (featured === 'true') {
-          filteredNews = filteredNews.filter((article: any) => article.featured)
-        }
-        
-        // Sort by publish_date (most recent first)
-        filteredNews.sort((a: any, b: any) => new Date(b.publish_date).getTime() - new Date(a.publish_date).getTime())
-        
-        // Apply limit
-        if (limit) {
-          filteredNews = filteredNews.slice(0, limit)
-        }
-        
-        return NextResponse.json({ news: filteredNews })
-      } catch (fileError) {
-        console.error('Failed to load fallback JSON data:', fileError)
-        return NextResponse.json({ error: 'Failed to fetch news' }, { status: 500 })
-      }
+      return NextResponse.json({ error: 'Failed to fetch news from database' }, { status: 500 })
+    }
+
+    if (!data) {
+      return NextResponse.json({ news: [] })
     }
 
     // Transform data to match the expected format
@@ -71,17 +47,17 @@ export async function GET(request: NextRequest) {
       news: data.map(article => ({
         id: article.id,
         title: article.title,
-        arabic_title: article.arabic_title,
-        slug: article.slug,
+        arabic_title: article.arabic_title || null,
+        slug: article.slug || (article.title ? article.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') : article.id),
         excerpt: article.excerpt,
         content: article.content,
-        featured_image: article.featured_image,
-        category: article.category,
+        featured_image: article.featured_image || article.image_url || null,
+        category: article.category || 'general',
         tags: article.tags || [],
-        author: article.author,
-        featured: article.featured,
-        published: article.published,
-        publish_date: article.publish_date,
+        author: article.author || 'Admin',
+        featured: article.featured || false,
+        published: article.published !== false,
+        publish_date: article.publish_date || article.created_at,
         created_at: article.created_at,
         updated_at: article.updated_at
       }))
@@ -106,23 +82,21 @@ export async function POST(request: NextRequest) {
         .replace(/(^-|-$)/g, '')
     }
 
-    // Create new article
+    // Create new article with only basic fields
+    const insertData: any = {
+      title: body.title,
+      content: body.content
+    }
+
+    // Add optional basic fields one by one
+    if (body.category) insertData.category = body.category
+    if (body.author) insertData.author = body.author
+    if (typeof body.featured === 'boolean') insertData.featured = body.featured
+    if (typeof body.published === 'boolean') insertData.published = body.published
+
     const { error } = await supabase
       .from('news')
-      .insert({
-        title: body.title,
-        arabic_title: body.arabic_title,
-        slug: body.slug || generateSlug(body.title),
-        excerpt: body.excerpt,
-        content: body.content,
-        featured_image: body.featured_image,
-        category: body.category || 'general',
-        tags: body.tags || [],
-        author: body.author || 'Admin',
-        featured: body.featured || false,
-        published: body.published || true,
-        publish_date: body.publish_date || new Date().toISOString()
-      })
+      .insert(insertData)
 
     if (error) {
       console.error('Supabase error:', error)
@@ -145,12 +119,20 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: 'Article ID is required' }, { status: 400 })
     }
 
+    // Build update object with only basic fields
+    const updateObject: any = {}
+
+    // Add fields that should exist
+    if (updateData.title !== undefined) updateObject.title = updateData.title
+    if (updateData.content !== undefined) updateObject.content = updateData.content
+    if (updateData.category !== undefined) updateObject.category = updateData.category
+    if (updateData.author !== undefined) updateObject.author = updateData.author || null
+    if (typeof updateData.featured === 'boolean') updateObject.featured = updateData.featured
+    if (typeof updateData.published === 'boolean') updateObject.published = updateData.published
+
     const { error } = await supabase
       .from('news')
-      .update({
-        ...updateData,
-        updated_at: new Date().toISOString()
-      })
+      .update(updateObject)
       .eq('id', id)
 
     if (error) {

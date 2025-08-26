@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import Icon from '@/components/ui/Icon'
 
 export default function Header() {
@@ -63,9 +64,16 @@ export default function Header() {
           {/* Logo with enhanced animations */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-3 group">
-              <div className="relative w-10 h-10 bg-gradient-to-br from-terracotta-red to-terracotta-red-dark rounded-full flex items-center justify-center shadow-md group-hover:shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:rotate-12">
-                <Icon name="crescent" size={24} className="text-warm-white transition-transform duration-300 group-hover:scale-110" aria-hidden="true" />
-                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-transparent via-warm-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="relative transition-all duration-300 group-hover:scale-105">
+                <Image
+                  src="/images/OIA_Academy_Logo.png"
+                  alt="OIA Academy Edmonton - Omar Ibn Al-Khattab Academy"
+                  width={48}
+                  height={48}
+                  className="w-12 h-12 object-contain transition-transform duration-300 group-hover:scale-110"
+                  priority
+                />
+                <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-transparent via-warm-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
               <div className="hidden sm:block">
                 <h1 className="text-xl font-bold text-terracotta-red group-hover:text-terracotta-red-dark transition-colors duration-200">OIA Academy</h1>
