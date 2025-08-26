@@ -571,7 +571,228 @@ export default function Hero() {
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
             <div className="max-w-7xl mx-auto px-6 py-4">
-              <div className="flex items-center justify-between">
+              {/* Mobile: Stacked Layout */}
+              <div className="block sm:hidden">
+                {/* Text on first line */}
+                <div className="flex flex-col items-center text-center mb-4">
+                  <motion.div 
+                    className="text-terracotta-red text-sm font-bold mb-2"
+                    animate={{
+                      textShadow: [
+                        "0 0 0px rgba(217, 119, 96, 0)",
+                        "0 0 6px rgba(217, 119, 96, 0.4)",
+                        "0 0 0px rgba(217, 119, 96, 0)"
+                      ]
+                    }}
+                    transition={{
+                      duration: 4,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                  >
+                    Preparing Tomorrow's Muslim Leaders Today
+                  </motion.div>
+                </div>
+                
+                {/* Buttons on second line */}
+                <div className="flex items-center justify-center gap-3">
+                  <motion.button 
+                    onClick={() => setIsVideoPlaying(true)}
+                    className="relative flex items-center gap-2 bg-black/80 hover:bg-black/90 backdrop-blur-md text-white px-4 py-2 rounded-full transition-all duration-300 overflow-hidden group border border-white/40 shadow-xl min-w-0 flex-shrink-0"
+                    whileHover={{ 
+                      scale: 1.05,
+                      boxShadow: "0 15px 35px rgba(0, 0, 0, 0.6)"
+                    }}
+                    whileTap={{ scale: 0.95 }}
+                    animate={{
+                      boxShadow: [
+                        "0 8px 25px rgba(0, 0, 0, 0.4)",
+                        "0 12px 30px rgba(239, 68, 68, 0.3)",
+                        "0 8px 25px rgba(0, 0, 0, 0.4)"
+                      ]
+                    }}
+                    transition={{
+                      boxShadow: {
+                        duration: 3,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                      }
+                    }}
+                  >
+                    {/* Animated shimmer effect */}
+                    <motion.div 
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+                      animate={{
+                        x: ["-100%", "200%"]
+                      }}
+                      transition={{
+                        duration: 2.5,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        repeatDelay: 3
+                      }}
+                    />
+                    
+                    {/* Pulsing play icon with glow */}
+                    <motion.div
+                      animate={{
+                        scale: [1, 1.2, 1],
+                        filter: [
+                          "drop-shadow(0 0 0px rgba(239, 68, 68, 0))",
+                          "drop-shadow(0 0 8px rgba(239, 68, 68, 0.8))",
+                          "drop-shadow(0 0 0px rgba(239, 68, 68, 0))"
+                        ]
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                      }}
+                      className="relative z-10"
+                    >
+                      <Play className="w-4 h-4" />
+                    </motion.div>
+                    
+                    {/* Animated text with subtle glow */}
+                    <motion.span 
+                      className="text-sm font-medium relative z-10"
+                      animate={{
+                        textShadow: [
+                          "0 0 0px rgba(255, 255, 255, 0)",
+                          "0 0 8px rgba(255, 255, 255, 0.5)",
+                          "0 0 0px rgba(255, 255, 255, 0)"
+                        ]
+                      }}
+                      transition={{
+                        duration: 2.5,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: 0.5
+                      }}
+                    >
+                      Videos
+                    </motion.span>
+                    
+                    {/* Rotating border gradient */}
+                    <motion.div 
+                      className="absolute inset-0 rounded-full"
+                      style={{
+                        background: "conic-gradient(from 0deg, transparent, rgba(239, 68, 68, 0.3), transparent)"
+                      }}
+                      animate={{
+                        rotate: [0, 360]
+                      }}
+                      transition={{
+                        duration: 4,
+                        repeat: Infinity,
+                        ease: "linear"
+                      }}
+                    />
+                  </motion.button>
+                  
+                  <motion.button 
+                    onClick={() => setIsGalleryMode(true)}
+                    className="relative flex items-center gap-2 bg-black/80 hover:bg-black/90 backdrop-blur-md text-white px-4 py-2 rounded-full transition-all duration-300 overflow-hidden group border border-white/40 shadow-xl min-w-0 flex-shrink-0"
+                    whileHover={{ 
+                      scale: 1.05,
+                      boxShadow: "0 15px 35px rgba(0, 0, 0, 0.6)"
+                    }}
+                    whileTap={{ scale: 0.95 }}
+                    animate={{
+                      boxShadow: [
+                        "0 8px 25px rgba(0, 0, 0, 0.4)",
+                        "0 12px 30px rgba(20, 184, 166, 0.3)",
+                        "0 8px 25px rgba(0, 0, 0, 0.4)"
+                      ]
+                    }}
+                    transition={{
+                      boxShadow: {
+                        duration: 3.5,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: 1.5
+                      }
+                    }}
+                  >
+                    {/* Animated shimmer effect with different timing */}
+                    <motion.div 
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+                      animate={{
+                        x: ["-100%", "200%"]
+                      }}
+                      transition={{
+                        duration: 3,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        repeatDelay: 2.5,
+                        delay: 1
+                      }}
+                    />
+                    
+                    {/* Floating camera icon with teal glow */}
+                    <motion.div
+                      animate={{
+                        y: [0, -2, 0],
+                        rotate: [0, 5, -5, 0],
+                        filter: [
+                          "drop-shadow(0 0 0px rgba(20, 184, 166, 0))",
+                          "drop-shadow(0 0 8px rgba(20, 184, 166, 0.8))",
+                          "drop-shadow(0 0 0px rgba(20, 184, 166, 0))"
+                        ]
+                      }}
+                      transition={{
+                        duration: 2.5,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: 0.8
+                      }}
+                      className="relative z-10"
+                    >
+                      <Camera className="w-4 h-4" />
+                    </motion.div>
+                    
+                    {/* Animated text with teal glow */}
+                    <motion.span 
+                      className="text-sm font-medium relative z-10"
+                      animate={{
+                        textShadow: [
+                          "0 0 0px rgba(255, 255, 255, 0)",
+                          "0 0 8px rgba(255, 255, 255, 0.5)",
+                          "0 0 0px rgba(255, 255, 255, 0)"
+                        ]
+                      }}
+                      transition={{
+                        duration: 3,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: 1.2
+                      }}
+                    >
+                      Gallery
+                    </motion.span>
+                    
+                    {/* Rotating border gradient with teal accent */}
+                    <motion.div 
+                      className="absolute inset-0 rounded-full opacity-70"
+                      style={{
+                        background: "conic-gradient(from 180deg, transparent, rgba(20, 184, 166, 0.4), transparent)"
+                      }}
+                      animate={{
+                        rotate: [0, -360]
+                      }}
+                      transition={{
+                        duration: 5,
+                        repeat: Infinity,
+                        ease: "linear",
+                        delay: 0.5
+                      }}
+                    />
+                  </motion.button>
+                </div>
+              </div>
+
+              {/* Desktop: Side-by-side Layout */}
+              <div className="hidden sm:flex items-center justify-between">
                 {/* Left: Hero Messaging */}
                 <div className="flex-1">
                   <div className="flex items-center gap-6">
@@ -983,29 +1204,85 @@ export default function Hero() {
                   )}
                 </div>
 
-                {/* Static Call to Action Section - Always Visible */}
+                {/* Static Call to Action Section - Always Visible & Enhanced for Mobile */}
                 <div className="flex flex-col gap-4 pt-8 border-t border-white/10 mt-8">
-                  <div className="flex flex-col sm:flex-row gap-3">
+                  <div className="flex flex-col sm:flex-row gap-4">
                     <motion.button 
-                      className="relative bg-terracotta-red hover:bg-terracotta-red-dark text-warm-white px-6 py-3 rounded-lg font-bold transition-all duration-300 shadow-lg overflow-hidden text-sm flex-1"
+                      className="relative bg-terracotta-red hover:bg-terracotta-red-dark text-warm-white px-6 py-4 sm:py-3 rounded-xl sm:rounded-lg font-bold transition-all duration-300 shadow-lg overflow-hidden text-base sm:text-sm flex-1 min-h-[52px] sm:min-h-auto touch-manipulation"
                       whileHover={{ 
                         scale: 1.02,
-                        boxShadow: "0 10px 20px rgba(217, 119, 96, 0.4)"
+                        boxShadow: "0 12px 25px rgba(217, 119, 96, 0.5)"
                       }}
                       whileTap={{ scale: 0.98 }}
+                      animate={{
+                        boxShadow: [
+                          "0 8px 20px rgba(217, 119, 96, 0.3)",
+                          "0 12px 25px rgba(217, 119, 96, 0.4)",
+                          "0 8px 20px rgba(217, 119, 96, 0.3)"
+                        ]
+                      }}
+                      transition={{
+                        boxShadow: {
+                          duration: 2,
+                          repeat: Infinity,
+                          ease: "easeInOut"
+                        }
+                      }}
                     >
                       <span className="relative z-10">Book School Tour</span>
+                      {/* Enhanced mobile shimmer effect */}
+                      <motion.div 
+                        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent sm:hidden"
+                        animate={{
+                          x: ["-100%", "200%"]
+                        }}
+                        transition={{
+                          duration: 3,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                          repeatDelay: 4
+                        }}
+                      />
                     </motion.button>
                     
                     <motion.button 
-                      className="relative border border-white/50 hover:bg-white hover:text-black text-white px-6 py-3 rounded-lg font-bold transition-all duration-300 overflow-hidden text-sm flex-1"
+                      className="relative border-2 sm:border border-white/60 sm:border-white/50 hover:bg-white hover:text-black text-white px-6 py-4 sm:py-3 rounded-xl sm:rounded-lg font-bold transition-all duration-300 overflow-hidden text-base sm:text-sm flex-1 min-h-[52px] sm:min-h-auto touch-manipulation backdrop-blur-sm"
                       whileHover={{ 
                         scale: 1.02,
-                        boxShadow: "0 10px 20px rgba(255, 255, 255, 0.2)"
+                        boxShadow: "0 12px 25px rgba(255, 255, 255, 0.25)"
                       }}
                       whileTap={{ scale: 0.98 }}
+                      animate={{
+                        borderColor: [
+                          "rgba(255, 255, 255, 0.6)",
+                          "rgba(255, 255, 255, 0.8)",
+                          "rgba(255, 255, 255, 0.6)"
+                        ]
+                      }}
+                      transition={{
+                        borderColor: {
+                          duration: 2.5,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                          delay: 1
+                        }
+                      }}
                     >
                       <span className="relative z-10">Admission Guide</span>
+                      {/* Enhanced mobile glow effect */}
+                      <motion.div 
+                        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent rounded-xl sm:rounded-lg sm:hidden"
+                        animate={{
+                          x: ["-100%", "200%"]
+                        }}
+                        transition={{
+                          duration: 3.5,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                          repeatDelay: 3.5,
+                          delay: 1.5
+                        }}
+                      />
                     </motion.button>
                   </div>
 
