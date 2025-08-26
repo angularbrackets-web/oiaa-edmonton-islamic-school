@@ -65,7 +65,7 @@ export default function Footer() {
             <h4 className="text-lg font-bold text-terracotta-red mb-4">Contact Information</h4>
             <div className="space-y-3">
               <div className="flex items-start">
-                <Icon name="location" size={20} className="text-terracotta-red mr-2 mt-1 flex-shrink-0" aria-hidden="true" />
+                <Icon name="location" size={20} className="text-terracotta-red mr-2 mt-1 flex-shrink-0" aria-hidden={true} />
                 <div className="text-soft-beige-lightest text-sm">
                   <p>{CONTACT_INFO.school.address.street}</p>
                   <p>{CONTACT_INFO.school.address.city}, {CONTACT_INFO.school.address.province} {CONTACT_INFO.school.address.postalCode}</p>
@@ -73,7 +73,7 @@ export default function Footer() {
                 </div>
               </div>
               <div className="flex items-center">
-                <Icon name="phone" size={18} className="text-terracotta-red mr-2 flex-shrink-0" aria-hidden="true" />
+                <Icon name="phone" size={18} className="text-terracotta-red mr-2 flex-shrink-0" aria-hidden={true} />
                 <a 
                   href={`tel:${CONTACT_INFO.phone.link}`} 
                   className="text-soft-beige-lightest hover:text-terracotta-red transition-colors duration-300 text-sm"
@@ -82,7 +82,7 @@ export default function Footer() {
                 </a>
               </div>
               <div className="flex items-center">
-                <Icon name="email" size={18} className="text-terracotta-red mr-2 flex-shrink-0" aria-hidden="true" />
+                <Icon name="email" size={18} className="text-terracotta-red mr-2 flex-shrink-0" aria-hidden={true} />
                 <a 
                   href={`mailto:${CONTACT_INFO.emails.general}`} 
                   className="text-soft-beige-lightest hover:text-terracotta-red transition-colors duration-300 text-sm"
@@ -91,7 +91,7 @@ export default function Footer() {
                 </a>
               </div>
               <div className="flex items-center">
-                <Icon name="graduation" size={18} className="text-terracotta-red mr-2 flex-shrink-0" aria-hidden="true" />
+                <Icon name="graduation" size={18} className="text-terracotta-red mr-2 flex-shrink-0" aria-hidden={true} />
                 <a 
                   href={`mailto:${CONTACT_INFO.emails.admissions}`} 
                   className="text-soft-beige-lightest hover:text-terracotta-red transition-colors duration-300 text-sm"

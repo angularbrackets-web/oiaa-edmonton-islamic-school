@@ -234,8 +234,8 @@ export default function AchievementsManagementPage() {
               <CalendarIcon className="w-8 h-8 text-terracotta-red" />
               <div>
                 <p className="text-sm font-bold text-deep-teal">
-                  {achievements?.achievements?.length > 0 
-                    ? new Date(Math.max(...achievements.achievements.map(a => new Date(a.date).getTime()))).getFullYear()
+                  {achievements?.achievements && achievements.achievements.length > 0 
+                    ? new Date(Math.max.apply(Math, achievements.achievements.map(a => new Date(a.date).getTime()))).getFullYear()
                     : 'N/A'
                   }
                 </p>

@@ -233,7 +233,7 @@ async function migrateImagesToCloudinary() {
     console.log(`📊 Total images migrated: ${imageMappings.length}`)
     
     // Print summary
-    const folders = [...new Set(imageMappings.map(m => m.folder))]
+    const folders = Array.from(new Set(imageMappings.map(m => m.folder)))
     folders.forEach(folder => {
       const count = imageMappings.filter(m => m.folder === folder).length
       console.log(`   ${folder}: ${count} images`)

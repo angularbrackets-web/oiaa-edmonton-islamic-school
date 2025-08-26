@@ -113,7 +113,7 @@ export default function Contact() {
                 className="group bg-wood hover:bg-wood-dark rounded-xl p-6 transition-all duration-300 hover:scale-105 hover:shadow-xl"
               >
                 <div className="flex items-center space-x-3 mb-3">
-                  <Icon name="phone" size={24} className="text-warm-white group-hover:scale-110 transition-transform" aria-hidden="true" />
+                  <Icon name="phone" size={24} className="text-warm-white group-hover:scale-110 transition-transform" aria-hidden={true} />
                   <h3 className="text-lg font-bold text-warm-white">Call Now</h3>
                 </div>
                 <p className="text-soft-beige-lightest text-sm mb-2">Speak with our admissions team</p>
@@ -127,7 +127,7 @@ export default function Contact() {
                 className="group bg-wood hover:bg-wood-dark rounded-xl p-6 transition-all duration-300 hover:scale-105 hover:shadow-xl"
               >
                 <div className="flex items-center space-x-3 mb-3">
-                  <Icon name="location" size={24} className="text-warm-white group-hover:scale-110 transition-transform" aria-hidden="true" />
+                  <Icon name="location" size={24} className="text-warm-white group-hover:scale-110 transition-transform" aria-hidden={true} />
                   <h3 className="text-lg font-bold text-warm-white">Directions</h3>
                 </div>
                 <p className="text-soft-beige-lightest text-sm mb-2">Get directions to our campus</p>
@@ -138,7 +138,7 @@ export default function Contact() {
             {/* Tour Booking Card */}
             <div className="bg-warm-white rounded-xl p-6 shadow-lg border-2 border-wood">
               <div className="flex items-center space-x-3 mb-4">
-                <Icon name="calendar" size={28} className="text-terracotta-red" aria-hidden="true" />
+                <Icon name="calendar" size={28} className="text-terracotta-red" aria-hidden={true} />
                 <h3 className="text-2xl font-bold text-terracotta-red">Book Your Tour</h3>
               </div>
               <p className="text-deep-teal mb-4">
@@ -146,15 +146,15 @@ export default function Contact() {
               </p>
               <div className="space-y-3">
                 <div className="flex items-center space-x-3 text-sm text-deep-teal">
-                  <Icon name="clock" size={16} className="text-terracotta-red" aria-hidden="true" />
+                  <Icon name="clock" size={16} className="text-terracotta-red" aria-hidden={true} />
                   <span>Tours available {CONTACT_INFO.tour.availability}</span>
                 </div>
                 <div className="flex items-center space-x-3 text-sm text-deep-teal">
-                  <Icon name="users" size={16} className="text-terracotta-red" aria-hidden="true" />
+                  <Icon name="users" size={16} className="text-terracotta-red" aria-hidden={true} />
                   <span>{CONTACT_INFO.tour.description}</span>
                 </div>
                 <div className="flex items-center space-x-3 text-sm text-deep-teal">
-                  <Icon name="graduation" size={16} className="text-terracotta-red" aria-hidden="true" />
+                  <Icon name="graduation" size={16} className="text-terracotta-red" aria-hidden={true} />
                   <span>Meet with admissions counselor</span>
                 </div>
               </div>
@@ -169,21 +169,21 @@ export default function Contact() {
                 href="/admissions" 
                 className="inline-flex items-center space-x-2 bg-warm-white/20 hover:bg-warm-white/30 text-warm-white px-4 py-2 rounded-lg transition-colors duration-300 backdrop-blur-sm"
               >
-                <Icon name="info" size={16} aria-hidden="true" />
+                <Icon name="info" size={16} aria-hidden={true} />
                 <span className="text-sm font-medium">Admissions Info</span>
               </a>
               <a 
                 href="/tuition" 
                 className="inline-flex items-center space-x-2 bg-warm-white/20 hover:bg-warm-white/30 text-warm-white px-4 py-2 rounded-lg transition-colors duration-300 backdrop-blur-sm"
               >
-                <Icon name="donate" size={16} aria-hidden="true" />
+                <Icon name="donate" size={16} aria-hidden={true} />
                 <span className="text-sm font-medium">Tuition & Fees</span>
               </a>
               <a 
                 href="/programs" 
                 className="inline-flex items-center space-x-2 bg-warm-white/20 hover:bg-warm-white/30 text-warm-white px-4 py-2 rounded-lg transition-colors duration-300 backdrop-blur-sm"
               >
-                <Icon name="book" size={16} aria-hidden="true" />
+                <Icon name="book" size={16} aria-hidden={true} />
                 <span className="text-sm font-medium">Our Programs</span>
               </a>
             </div>

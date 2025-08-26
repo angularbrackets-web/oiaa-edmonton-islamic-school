@@ -19,7 +19,7 @@ export default function SocialLinks({ variant = 'footer', className = '' }: Soci
             className="w-10 h-10 bg-terracotta-red hover:bg-terracotta-red-dark rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
             aria-label={social.name}
           >
-            <Icon name={social.icon} size={20} className="text-white" aria-hidden="true" />
+            <Icon name={social.icon} size={20} className="text-white" aria-hidden={true} />
           </a>
         ))}
       </div>
@@ -38,7 +38,7 @@ export default function SocialLinks({ variant = 'footer', className = '' }: Soci
           className="text-wood hover:text-soft-beige-lightest transition-colors duration-300" 
           aria-label={social.name}
         >
-          <Icon name={social.icon} size={28} aria-hidden="true" />
+          <Icon name={social.icon} size={28} aria-hidden={true} />
         </a>
       ))}
     </div>

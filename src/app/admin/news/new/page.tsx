@@ -44,7 +44,7 @@ export default function NewNewsArticlePage() {
     if (name === 'title' && !formData.slug) {
       setFormData(prev => ({
         ...prev,
-        [name]: type === 'checkbox' ? checked : value,
+        [name]: value,
         slug: generateSlug(value)
       }))
     } else {
