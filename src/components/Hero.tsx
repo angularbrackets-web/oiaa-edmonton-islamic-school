@@ -571,31 +571,8 @@ export default function Hero() {
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
             <div className="max-w-7xl mx-auto px-6 py-4">
-              {/* Mobile: Stacked Layout */}
-              <div className="block sm:hidden">
-                {/* Text on first line */}
-                <div className="flex flex-col items-center text-center mb-4">
-                  <motion.div 
-                    className="text-terracotta-red text-sm font-bold mb-2"
-                    animate={{
-                      textShadow: [
-                        "0 0 0px rgba(217, 119, 96, 0)",
-                        "0 0 6px rgba(217, 119, 96, 0.4)",
-                        "0 0 0px rgba(217, 119, 96, 0)"
-                      ]
-                    }}
-                    transition={{
-                      duration: 4,
-                      repeat: Infinity,
-                      ease: "easeInOut"
-                    }}
-                  >
-                    Preparing Tomorrow's Muslim Leaders Today
-                  </motion.div>
-                </div>
-                
-                {/* Buttons on second line */}
-                <div className="flex items-center justify-center gap-3">
+              {/* Simplified Layout: Only Videos and Gallery Buttons */}
+              <div className="flex items-center justify-center gap-4">
                   <motion.button 
                     onClick={() => setIsVideoPlaying(true)}
                     className="relative flex items-center gap-2 bg-black/80 hover:bg-black/90 backdrop-blur-md text-white px-4 py-2 rounded-full transition-all duration-300 overflow-hidden group border border-white/40 shadow-xl min-w-0 flex-shrink-0"
@@ -791,74 +768,7 @@ export default function Hero() {
                 </div>
               </div>
 
-              {/* Desktop: Side-by-side Layout */}
-              <div className="hidden sm:flex items-center justify-between">
-                {/* Left: Hero Messaging */}
-                <div className="flex-1">
-                  <div className="flex items-center gap-6">
-                    {/* Primary Text */}
-                    <motion.div 
-                      className="text-terracotta-red text-sm font-bold"
-                      animate={{
-                        textShadow: [
-                          "0 0 0px rgba(217, 119, 96, 0)",
-                          "0 0 6px rgba(217, 119, 96, 0.4)",
-                          "0 0 0px rgba(217, 119, 96, 0)"
-                        ]
-                      }}
-                      transition={{
-                        duration: 4,
-                        repeat: Infinity,
-                        ease: "easeInOut"
-                      }}
-                    >
-                      Preparing Tomorrow's Muslim Leaders Today
-                    </motion.div>
-                    
-                    {/* School Name */}
-                    <motion.h1 
-                      className="text-lg font-black text-warm-white"
-                      animate={{
-                        textShadow: [
-                          "0 0 0px rgba(245, 245, 220, 0)",
-                          "0 0 4px rgba(245, 245, 220, 0.3)",
-                          "0 0 0px rgba(245, 245, 220, 0)"
-                        ]
-                      }}
-                      transition={{
-                        duration: 5,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                        delay: 1
-                      }}
-                    >
-                      {schoolInfo?.school.name || "OIA Academy Edmonton"}
-                    </motion.h1>
-                    
-                    {/* Arabic Text */}
-                    <motion.div 
-                      className="arabic-text text-sm text-sage-green hidden lg:block"
-                      animate={{
-                        filter: [
-                          "drop-shadow(0 0 0px rgba(34, 197, 94, 0))",
-                          "drop-shadow(0 0 4px rgba(34, 197, 94, 0.4))",
-                          "drop-shadow(0 0 0px rgba(34, 197, 94, 0))"
-                        ]
-                      }}
-                      transition={{
-                        duration: 5,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                        delay: 2
-                      }}
-                    >
-                      {schoolInfo?.school.arabicText || "بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ"}
-                    </motion.div>
-                  </div>
-                </div>
 
-                {/* Right: Media Buttons - Enhanced Animations */}
-                <div className="flex items-center gap-3 flex-wrap justify-center sm:justify-end">
                   <motion.button 
                     onClick={() => setIsVideoPlaying(true)}
                     className="relative flex items-center gap-2 bg-black/80 hover:bg-black/90 backdrop-blur-md text-white px-4 py-2 rounded-full transition-all duration-300 overflow-hidden group border border-white/40 shadow-xl min-w-0 flex-shrink-0"
@@ -1116,7 +1026,7 @@ export default function Hero() {
               {/* Semi-transparent Dark Charcoal Overlay */}
               <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/80 to-black/70 backdrop-blur-sm" />
               
-              <div className="relative z-10 px-6 sm:px-8 lg:px-12 py-8 sm:py-12 lg:py-16 flex flex-col h-full min-h-[500px] lg:min-h-auto">
+              <div className="relative z-10 px-4 sm:px-6 lg:px-12 py-6 sm:py-8 lg:py-16 flex flex-col h-full min-h-[400px] sm:min-h-[500px] lg:min-h-auto">
                 {/* Animated Achievement Content */}
                 <div className="flex-1">
                   {achievements.length > 0 && achievements[currentAchievement] && currentAchievement < achievements.length && (
@@ -1205,7 +1115,7 @@ export default function Hero() {
                 </div>
 
                 {/* Static Call to Action Section - Always Visible & Enhanced for Mobile */}
-                <div className="flex flex-col gap-4 pt-8 border-t border-white/10 mt-8">
+                <div className="flex flex-col gap-4 pt-8 border-t border-white/10 mt-8 relative z-30 w-full">
                   <div className="flex flex-col sm:flex-row gap-4">
                     <motion.button 
                       className="relative bg-terracotta-red hover:bg-terracotta-red-dark text-warm-white px-6 py-4 sm:py-3 rounded-xl sm:rounded-lg font-bold transition-all duration-300 shadow-lg overflow-hidden text-base sm:text-sm flex-1 min-h-[52px] sm:min-h-auto touch-manipulation"
@@ -1286,21 +1196,39 @@ export default function Hero() {
                     </motion.button>
                   </div>
 
-                  {/* Compact Live Stats */}
-                  <div className="flex justify-between text-center pt-4">
+                  {/* Enhanced Live Stats - Mobile Optimized */}
+                  <div className="flex justify-between text-center pt-6 relative z-30">
                     {[
                       { number: "15+", label: "Years" },
                       { number: "500+", label: "Students" },
                       { number: "98%", label: "University" }
                     ].map((stat, index) => (
-                      <div key={index}>
-                        <div className="text-lg font-black text-terracotta-red mb-1">
+                      <motion.div 
+                        key={index}
+                        className="bg-black/30 backdrop-blur-sm rounded-xl px-3 py-3 sm:bg-transparent sm:backdrop-blur-none sm:rounded-none sm:px-0 sm:py-0"
+                        animate={{
+                          boxShadow: [
+                            "0 4px 15px rgba(0, 0, 0, 0.2)",
+                            "0 6px 20px rgba(217, 119, 96, 0.2)",
+                            "0 4px 15px rgba(0, 0, 0, 0.2)"
+                          ]
+                        }}
+                        transition={{
+                          boxShadow: {
+                            duration: 3,
+                            repeat: Infinity,
+                            ease: "easeInOut",
+                            delay: index * 0.5
+                          }
+                        }}
+                      >
+                        <div className="text-xl sm:text-lg font-black text-terracotta-red mb-1 drop-shadow-lg">
                           {stat.number}
                         </div>
-                        <div className="text-white/70 text-xs font-medium">
+                        <div className="text-white/90 sm:text-white/70 text-sm sm:text-xs font-bold sm:font-medium">
                           {stat.label}
                         </div>
-                      </div>
+                      </motion.div>
                     ))}
                   </div>
                 </div>
