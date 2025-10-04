@@ -15,8 +15,8 @@ export const CONTACT_INFO = {
     link: '+17801234567'
   },
   emails: {
-    general: 'info@oiaaedmonton.ca',
-    admissions: 'admissions@oiaaedmonton.ca'
+    general: 'academy@oiacedmonton.ca',
+    admissions: 'academy@oiacedmonton.ca'
   },
   hours: {
     school: 'Monday - Friday: 8:00 AM - 3:30 PM',

@@ -48,13 +48,18 @@ export default function News() {
 
   useEffect(() => {
     fetch('/api/news?limit=4')
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to fetch')
+        return res.json()
+      })
       .then(data => {
         setNewsData(data)
         setLoading(false)
       })
       .catch(err => {
         console.error('Error loading news data:', err)
+        // Set empty data on error
+        setNewsData({ news: [] })
         setLoading(false)
       })
   }, [])

@@ -26,9 +26,28 @@ export default function About() {
 
   useEffect(() => {
     fetch('/api/school-info')
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to fetch')
+        return res.json()
+      })
       .then(data => setSchoolInfo(data))
-      .catch(err => console.error('Error loading school info:', err))
+      .catch(err => {
+        console.error('Error loading school info:', err)
+        // Set default data on error
+        setSchoolInfo({
+          school: {
+            mission: "To provide an exceptional educational experience that nurtures confident, compassionate, and capable Muslim leaders who will contribute positively to society while maintaining strong Islamic identity and values."
+          },
+          features: [
+            {
+              title: "Our Mission",
+              description: "Excellence in Islamic education",
+              icon: "📖",
+              color: "terracotta-red"
+            }
+          ]
+        })
+      })
   }, [])
 
   const stats = [
@@ -38,6 +57,9 @@ export default function About() {
     { number: '100%', label: 'Islamic Values', icon: Heart }
   ]
 
+  // REMOVED: Timeline data - moved to New Centre page
+  // Preserving for reference when implementing New Centre timeline
+  /*
   const timeline = [
     {
       year: '2009',
@@ -64,6 +86,7 @@ export default function About() {
       icon: Award
     }
   ]
+  */
   return (
     <div id="about" ref={ref} className="py-32">
       {/* Background Elements */}
@@ -144,7 +167,7 @@ export default function About() {
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 1.2 }}
           >
-            <h3 className="text-4xl font-serif font-bold text-terracotta-red mb-8">What Makes Us Special</h3>
+            <h3 className="text-4xl font-serif font-bold text-terracotta-red mb-8">Why Choose OIA Academy</h3>
             {schoolInfo?.features?.map((feature, index) => {
               const getGradientColor = (color: string) => {
                 switch (color) {
@@ -210,57 +233,18 @@ export default function About() {
           </motion.div>
         </div>
 
-        {/* Timeline Section */}
-        <motion.div 
-          className="mb-20"
-          initial={{ opacity: 0, y: 50 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 1.8 }}
-        >
-          <h3 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-center text-terracotta-red mb-8 sm:mb-12 lg:mb-16 break-words">Our Journey</h3>
-          <div className="relative">
-            {/* Timeline Line - Hide on mobile for better readability */}
-            <div className="hidden sm:block absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-terracotta-red to-sage-green rounded-full"></div>
-            
-            <div className="space-y-8 sm:space-y-16">
-              {timeline.map((item, index) => {
-                const IconComponent = item.icon
-                const isLeft = index % 2 === 0
-                return (
-                  <motion.div 
-                    key={index}
-                    className={`flex flex-col sm:flex-row items-center sm:items-center ${isLeft ? 'sm:flex-row' : 'sm:flex-row-reverse'}`}
-                    initial={{ opacity: 0, x: isLeft ? -100 : 100 }}
-                    animate={isInView ? { opacity: 1, x: 0 } : {}}
-                    transition={{ duration: 0.8, delay: 2 + index * 0.2 }}
-                  >
-                    {/* Mobile: Icon first, then content */}
-                    <div className="sm:hidden w-16 h-16 bg-gradient-to-br from-terracotta-red to-wood rounded-full flex items-center justify-center shadow-lg border-4 border-white mb-4">
-                      <IconComponent className="w-8 h-8 text-warm-white" />
-                    </div>
-                    
-                    <div className={`w-full sm:w-5/12 ${isLeft ? 'sm:text-right sm:pr-8' : 'sm:text-left sm:pl-8'}`}>
-                      <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-lg border border-soft-beige">
-                        <div className="text-2xl sm:text-3xl font-bold text-terracotta-red mb-2">{item.year}</div>
-                        <h4 className="text-lg sm:text-xl font-bold text-deep-teal mb-3 break-words">{item.title}</h4>
-                        <p className="text-sm sm:text-base text-deep-teal/80 leading-relaxed break-words">{item.description}</p>
-                      </div>
-                    </div>
-                    
-                    {/* Desktop: Icon in center */}
-                    <div className="hidden sm:flex w-2/12 justify-center">
-                      <div className="w-16 h-16 bg-gradient-to-br from-terracotta-red to-wood rounded-full flex items-center justify-center shadow-lg border-4 border-white">
-                        <IconComponent className="w-8 h-8 text-warm-white" />
-                      </div>
-                    </div>
-                    
-                    <div className="hidden sm:block w-5/12"></div>
-                  </motion.div>
-                )
-              })}
-            </div>
-          </div>
-        </motion.div>
+        {/* REMOVED: "Our Journey" Timeline Section */}
+        {/* This timeline has been moved to the New Centre page where it's more relevant */}
+        {/*
+        Timeline data and component code preserved below for future use in New Centre page:
+
+        const timeline = [
+          { year: '2009', title: 'Foundation', description: 'OIA Academy Edmonton was established...', icon: Star },
+          { year: '2015', title: 'Growth', description: 'Expanded programs and facilities...', icon: Users },
+          { year: '2020', title: 'Innovation', description: 'Integrated modern technology...', icon: Globe },
+          { year: '2025', title: 'New Centre', description: 'Breaking ground on our new facility...', icon: Award }
+        ]
+        */}
       </div>
     </div>
   )

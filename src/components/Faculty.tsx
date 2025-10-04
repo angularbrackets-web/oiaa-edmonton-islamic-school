@@ -51,13 +51,27 @@ export default function Faculty() {
 
   useEffect(() => {
     fetch('/api/faculty')
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to fetch')
+        return res.json()
+      })
       .then(data => {
         setFacultyData(data)
         setLoading(false)
       })
       .catch(err => {
         console.error('Error loading faculty data:', err)
+        // Set empty data on error
+        setFacultyData({
+          faculty: [],
+          departments: [],
+          stats: {
+            totalFaculty: 0,
+            averageExperience: 0,
+            languages: [],
+            certifications: 0
+          }
+        })
         setLoading(false)
       })
   }, [])

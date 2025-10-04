@@ -54,7 +54,9 @@ export default function Hero() {
   const [isPaused, setIsPaused] = useState(false)
 
 
-  // Videos data
+  // FUTURE FEATURE: Videos data - Commented out for Phase 1
+  // Uncomment when ready to re-enable Videos feature
+  /*
   const videos: Video[] = [
     {
       id: '1',
@@ -64,7 +66,7 @@ export default function Hero() {
       thumbnail: '/images/new-centre-thumb.jpg'
     },
     {
-      id: '2', 
+      id: '2',
       title: 'School Announcement',
       url: 'https://streamable.com/e/z9cu1p',
       description: 'Latest updates and announcements from OIA Academy',
@@ -78,8 +80,11 @@ export default function Hero() {
       thumbnail: '/images/student-life-thumb.jpg'
     }
   ]
+  */
 
-  // Gallery images data - using real images from new-centre folder
+  // FUTURE FEATURE: Gallery images data - Commented out for Phase 1
+  // Uncomment when ready to re-enable Gallery feature
+  /*
   const galleryImages: GalleryImage[] = [
     // New Centre Architectural Renderings (Facilities)
     { id: '1', src: '/uploads/images/new-center/new.oiac.1.png', alt: 'New Centre exterior view', category: 'facilities', aspectRatio: 'landscape' },
@@ -117,23 +122,23 @@ export default function Hero() {
     { id: '25', src: '/uploads/images/new-center/new.oiac.22.png', alt: 'Sustainable building features', category: 'facilities', aspectRatio: 'square' }
   ]
 
-  const filteredImages = galleryFilter === 'all' 
-    ? galleryImages 
+  const filteredImages = galleryFilter === 'all'
+    ? galleryImages
     : galleryImages.filter(img => img.category === galleryFilter)
 
   // Dynamic grid system with varying spans
   const [gridCycle, setGridCycle] = useState(0)
-  
+
   const generateGridLayout = (images: GalleryImage[], cycle: number) => {
     // Create a grid layout with dynamic spans
     return images.map((image, index) => {
       // Use cycle to vary which images get larger spans
       const cycleOffset = (index + cycle) % images.length
-      
+
       // Determine spans based on position and cycle
       const widthSpan = cycleOffset % 7 === 0 ? 2 : 1  // Every 7th image (offset by cycle) gets 2 width spans
       const heightSpan = cycleOffset % 5 === 0 ? 2 : 1 // Every 5th image (offset by cycle) gets 2 height spans
-      
+
       return {
         ...image,
         widthSpan,
@@ -144,27 +149,45 @@ export default function Hero() {
   }
 
   const gridImages = generateGridLayout(filteredImages, gridCycle)
-  
+
   // Change grid layout every cycle (when animation loops) - much slower cycle
   useEffect(() => {
     const interval = setInterval(() => {
       setGridCycle(prev => prev + 1)
     }, 120000) // Change layout every 2 minutes to match animation duration
-    
+
     return () => clearInterval(interval)
   }, [])
+  */
 
   useEffect(() => {
     // Load school info and achievements
     Promise.all([
-      fetch('/api/school-info').then(res => res.json()),
-      fetch('/api/achievements').then(res => res.json())
+      fetch('/api/school-info').then(res => {
+        if (!res.ok) throw new Error('Failed to fetch school info')
+        return res.json()
+      }),
+      fetch('/api/achievements').then(res => {
+        if (!res.ok) throw new Error('Failed to fetch achievements')
+        return res.json()
+      })
     ])
     .then(([schoolData, achievementsData]) => {
       setSchoolInfo(schoolData)
       setAchievements(achievementsData.achievements || [])
     })
-    .catch(err => console.error('Error loading data:', err))
+    .catch(err => {
+      console.error('Error loading data:', err)
+      // Set default data on error
+      setSchoolInfo({
+        school: {
+          name: 'OIA Academy Edmonton',
+          tagline: 'Islamic Excellence in Education',
+          arabicText: 'بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ'
+        }
+      })
+      setAchievements([])
+    })
   }, [])
 
   // Separate useEffect for achievement rotation
@@ -179,7 +202,7 @@ export default function Hero() {
           return nextIndex < achievements.length ? nextIndex : 0
         })
       }
-    }, 5000)
+    }, 10000) // Slowed down from 5000ms to 10000ms for better readability
 
     return () => clearInterval(interval)
   }, [isPaused, achievements.length])
@@ -312,7 +335,7 @@ export default function Hero() {
   }
 
   return (
-    <section className="relative h-screen overflow-hidden">
+    <section className="relative h-[70vh] overflow-hidden">{/* Reduced from h-screen (100vh) to 70vh for cleaner homepage */}
       {/* Video/Gallery/Background */}
       <div className="absolute inset-0">
         {isGalleryMode ? (
@@ -562,101 +585,54 @@ export default function Hero() {
 
       {/* Content */}
       <div className="relative z-10 h-full flex flex-col">
-        {/* Compact Top Panel - Navbar Size */}
+        {/* FUTURE FEATURE: Videos and Gallery Buttons - Commented out for Phase 1 */}
+        {/* Uncomment this section when ready to re-enable Videos and Gallery features */}
+        {/*
         {!isVideoPlaying && !isGalleryMode && (
-          <motion.div 
+          <motion.div
             className="sticky top-0 z-30 bg-gradient-to-r from-black/85 via-black/80 to-black/85 backdrop-blur-xl border-b border-white/10"
             initial={{ y: -60, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
             <div className="max-w-7xl mx-auto px-6 py-4">
-              {/* Simplified Layout: Only Videos and Gallery Buttons */}
               <div className="flex items-center justify-center gap-4">
-                <motion.button 
+                <motion.button
                   onClick={() => setIsVideoPlaying(true)}
                   className="relative flex items-center gap-2 bg-black/80 hover:bg-black/90 backdrop-blur-md text-white px-4 py-2 rounded-full transition-all duration-300 overflow-hidden group border border-white/40 shadow-xl min-w-0 flex-shrink-0"
-                  whileHover={{ 
-                    scale: 1.05,
-                    boxShadow: "0 15px 35px rgba(0, 0, 0, 0.6)"
-                  }}
+                  whileHover={{ scale: 1.05, boxShadow: "0 15px 35px rgba(0, 0, 0, 0.6)" }}
                   whileTap={{ scale: 0.95 }}
-                  animate={{
-                    boxShadow: [
-                      "0 8px 25px rgba(0, 0, 0, 0.4)",
-                      "0 12px 30px rgba(239, 68, 68, 0.3)",
-                      "0 8px 25px rgba(0, 0, 0, 0.4)"
-                    ]
-                  }}
-                  transition={{
-                    boxShadow: {
-                      duration: 3,
-                      repeat: Infinity,
-                      ease: "easeInOut"
-                    }
-                  }}
+                  animate={{ boxShadow: ["0 8px 25px rgba(0, 0, 0, 0.4)", "0 12px 30px rgba(239, 68, 68, 0.3)", "0 8px 25px rgba(0, 0, 0, 0.4)"] }}
+                  transition={{ boxShadow: { duration: 3, repeat: Infinity, ease: "easeInOut" } }}
                 >
                   <motion.div
                     animate={{
                       scale: [1, 1.2, 1],
-                      filter: [
-                        "drop-shadow(0 0 0px rgba(239, 68, 68, 0))",
-                        "drop-shadow(0 0 8px rgba(239, 68, 68, 0.8))",
-                        "drop-shadow(0 0 0px rgba(239, 68, 68, 0))"
-                      ]
+                      filter: ["drop-shadow(0 0 0px rgba(239, 68, 68, 0))", "drop-shadow(0 0 8px rgba(239, 68, 68, 0.8))", "drop-shadow(0 0 0px rgba(239, 68, 68, 0))"]
                     }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      ease: "easeInOut"
-                    }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                     className="relative z-10"
                   >
                     <Play className="w-4 h-4" />
                   </motion.div>
                   <span className="text-sm font-medium relative z-10">Videos</span>
                 </motion.button>
-                
-                <motion.button 
+
+                <motion.button
                   onClick={() => setIsGalleryMode(true)}
                   className="relative flex items-center gap-2 bg-black/80 hover:bg-black/90 backdrop-blur-md text-white px-4 py-2 rounded-full transition-all duration-300 overflow-hidden group border border-white/40 shadow-xl min-w-0 flex-shrink-0"
-                  whileHover={{ 
-                    scale: 1.05,
-                    boxShadow: "0 15px 35px rgba(0, 0, 0, 0.6)"
-                  }}
+                  whileHover={{ scale: 1.05, boxShadow: "0 15px 35px rgba(0, 0, 0, 0.6)" }}
                   whileTap={{ scale: 0.95 }}
-                  animate={{
-                    boxShadow: [
-                      "0 8px 25px rgba(0, 0, 0, 0.4)",
-                      "0 12px 30px rgba(20, 184, 166, 0.3)",
-                      "0 8px 25px rgba(0, 0, 0, 0.4)"
-                    ]
-                  }}
-                  transition={{
-                    boxShadow: {
-                      duration: 3.5,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                      delay: 1.5
-                    }
-                  }}
+                  animate={{ boxShadow: ["0 8px 25px rgba(0, 0, 0, 0.4)", "0 12px 30px rgba(20, 184, 166, 0.3)", "0 8px 25px rgba(0, 0, 0, 0.4)"] }}
+                  transition={{ boxShadow: { duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 1.5 } }}
                 >
                   <motion.div
                     animate={{
                       y: [0, -2, 0],
                       rotate: [0, 5, -5, 0],
-                      filter: [
-                        "drop-shadow(0 0 0px rgba(20, 184, 166, 0))",
-                        "drop-shadow(0 0 8px rgba(20, 184, 166, 0.8))",
-                        "drop-shadow(0 0 0px rgba(20, 184, 166, 0))"
-                      ]
+                      filter: ["drop-shadow(0 0 0px rgba(20, 184, 166, 0))", "drop-shadow(0 0 8px rgba(20, 184, 166, 0.8))", "drop-shadow(0 0 0px rgba(20, 184, 166, 0))"]
                     }}
-                    transition={{
-                      duration: 2.5,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                      delay: 0.8
-                    }}
+                    transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
                     className="relative z-10"
                   >
                     <Camera className="w-4 h-4" />
@@ -667,6 +643,7 @@ export default function Hero() {
             </div>
           </motion.div>
         )}
+        */}
 
         {/* Main Content */}
         <div className="flex-1 flex flex-col lg:flex-row">

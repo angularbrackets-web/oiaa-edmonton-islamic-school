@@ -78,9 +78,13 @@ export default function Programs() {
 
   useEffect(() => {
     fetch('/api/programs')
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to fetch')
+        return res.json()
+      })
       .then(data => setProgramsData(data))
       .catch(err => {
+        console.error('Error loading programs:', err)
         // Mock data for development
         const mockData = {
           programs: [
