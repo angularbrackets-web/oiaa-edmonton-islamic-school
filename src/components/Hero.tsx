@@ -44,10 +44,16 @@ export default function Hero() {
   const [schoolInfo, setSchoolInfo] = useState<SchoolInfo | null>(null)
   const [achievements, setAchievements] = useState<Achievement[]>([])
   const [currentAchievement, setCurrentAchievement] = useState(0)
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false)
-  const [currentVideo, setCurrentVideo] = useState(0)
-  const [isMuted, setIsMuted] = useState(true)
-  const [isPlaying, setIsPlaying] = useState(true)
+  /* FUTURE FEATURE: Video player state - Disabled for Phase 1 */
+  // For Phase 1, video features are disabled - setting constant false values
+  const isVideoPlaying = false
+  const setIsVideoPlaying = (..._args: any[]) => {} // No-op function
+  const currentVideo = 0
+  const setCurrentVideo = (..._args: any[]) => {} // No-op function
+  const isMuted = true
+  const setIsMuted = (..._args: any[]) => {} // No-op function
+  const isPlaying = true
+  const setIsPlaying = (..._args: any[]) => {} // No-op function
   const [videoRef, setVideoRef] = useState<HTMLVideoElement | null>(null)
   const [isGalleryMode, setIsGalleryMode] = useState(false)
   const [galleryFilter, setGalleryFilter] = useState<'all' | 'students' | 'facilities' | 'events' | 'achievements'>('all')
@@ -81,6 +87,9 @@ export default function Hero() {
     }
   ]
   */
+
+  // Dummy videos array for Phase 1 (prevents build errors while videos feature is disabled)
+  const videos: Video[] = []
 
   // FUTURE FEATURE: Gallery images data - Commented out for Phase 1
   // Uncomment when ready to re-enable Gallery feature
@@ -121,6 +130,10 @@ export default function Hero() {
     { id: '24', src: '/uploads/images/new-center/new.oiac.18.png', alt: 'Islamic art and decoration', category: 'facilities', aspectRatio: 'portrait' },
     { id: '25', src: '/uploads/images/new-center/new.oiac.22.png', alt: 'Sustainable building features', category: 'facilities', aspectRatio: 'square' }
   ]
+  */
+
+  // Dummy gallery images array for Phase 1 (prevents build errors while gallery feature is disabled)
+  const galleryImages: GalleryImage[] = []
 
   const filteredImages = galleryFilter === 'all'
     ? galleryImages
@@ -158,7 +171,6 @@ export default function Hero() {
 
     return () => clearInterval(interval)
   }, [])
-  */
 
   useEffect(() => {
     // Load school info and achievements
@@ -218,12 +230,14 @@ export default function Hero() {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        if (isVideoPlaying) {
-          exitVideo()
-        } else if (isGalleryMode) {
+        /* FUTURE FEATURE: Video exit handler - Commented out for Phase 1 */
+        // if (isVideoPlaying) {
+        //   exitVideo()
+        // } else
+        if (isGalleryMode) {
           exitGallery()
         }
-      } else if (!isVideoPlaying && !isGalleryMode) {
+      } else if (!isGalleryMode) { // Removed isVideoPlaying check for Phase 1
         // Achievement navigation with arrow keys (only in main hero view)
         if (event.key === 'ArrowLeft') {
           event.preventDefault()
@@ -242,7 +256,7 @@ export default function Hero() {
     return () => {
       document.removeEventListener('keydown', handleKeyDown)
     }
-  }, [isVideoPlaying, isGalleryMode])
+  }, [isGalleryMode]) // Removed isVideoPlaying dependency for Phase 1
 
 
 
@@ -262,21 +276,26 @@ export default function Hero() {
     }
   }
 
+  /* FUTURE FEATURE: Video navigation functions - Disabled for Phase 1 */
   const nextVideo = () => {
-    setCurrentVideo(prev => (prev + 1) % videos.length)
-    setIsPlaying(true)
+    // Disabled for Phase 1
+    // setCurrentVideo(prev => (prev + 1) % videos.length)
+    // setIsPlaying(true)
   }
 
   const prevVideo = () => {
-    setCurrentVideo(prev => prev === 0 ? videos.length - 1 : prev - 1)
-    setIsPlaying(true)
+    // Disabled for Phase 1
+    // setCurrentVideo(prev => prev === 0 ? videos.length - 1 : prev - 1)
+    // setIsPlaying(true)
   }
 
+  /* FUTURE FEATURE: Video control functions - Disabled for Phase 1 */
   const exitVideo = () => {
-    setIsVideoPlaying(false)
-    setCurrentVideo(0)
-    setIsMuted(true)
-    setIsPlaying(true)
+    // Disabled for Phase 1
+    // setIsVideoPlaying(false)
+    // setCurrentVideo(0)
+    // setIsMuted(true)
+    // setIsPlaying(true)
   }
 
   const exitGallery = () => {
@@ -285,26 +304,29 @@ export default function Hero() {
   }
 
   const rewindVideo = () => {
-    if (videoRef) {
-      videoRef.currentTime = Math.max(0, videoRef.currentTime - 10)
-    }
+    // Disabled for Phase 1
+    // if (videoRef) {
+    //   videoRef.currentTime = Math.max(0, videoRef.currentTime - 10)
+    // }
   }
 
   const forwardVideo = () => {
-    if (videoRef) {
-      videoRef.currentTime = Math.min(videoRef.duration, videoRef.currentTime + 10)
-    }
+    // Disabled for Phase 1
+    // if (videoRef) {
+    //   videoRef.currentTime = Math.min(videoRef.duration, videoRef.currentTime + 10)
+    // }
   }
 
   const togglePlayPause = () => {
-    if (videoRef) {
-      if (isPlaying) {
-        videoRef.pause()
-      } else {
-        videoRef.play()
-      }
-      setIsPlaying(!isPlaying)
-    }
+    // Disabled for Phase 1
+    // if (videoRef) {
+    //   if (isPlaying) {
+    //     videoRef.pause()
+    //   } else {
+    //     videoRef.play()
+    //   }
+    //   setIsPlaying(!isPlaying)
+    // }
   }
 
   const nextAchievement = () => {
