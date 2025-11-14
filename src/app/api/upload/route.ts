@@ -42,6 +42,9 @@ export async function POST(request: NextRequest) {
       success: true,
       url: result.secure_url,
       public_id: result.public_id,
+      width: result.width,
+      height: result.height,
+      format: result.format,
       mediaId: mediaData?.id
     })
 

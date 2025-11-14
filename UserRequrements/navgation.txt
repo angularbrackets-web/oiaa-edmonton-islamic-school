@@ -1,0 +1,44 @@
+🏠 Home
+
+📘 About Us
+   ├── Our Mission & Vision
+   ├── Our Story
+   ├── Our Board
+   ├── Our Staff & Faculty
+   └── Careers / Join Our Team
+
+🎓 Admissions
+   ├── Why Choose Us
+   ├── Application Process
+   ├── Fee Structure
+   ├── FAQs
+   └── Request a Tour / Enquiry
+
+📚 Academics
+   ├── Programs Overview
+   ├── Elementary / Middle / High School
+   ├── Islamic Studies Curriculum
+   └── Extracurriculars & Clubs
+
+🗞️ News & Events
+   ├── Announcements
+   ├── School Calendar
+   ├── Photo Gallery / Media
+   └── Past Events Archive
+
+🏗️ New Centre
+   ├── Project Overview
+   ├── Progress Updates / Gallery
+   ├── Support the Project (Donate)
+   └── FAQs
+
+💝 Donate
+   ├── Ways to Give
+   ├── Impact Stories
+   └── Volunteer Opportunities
+
+📞 Contact Us
+   ├── Contact Form
+   ├── Location / Map
+   ├── Office Hours
+   └── Social Media Links

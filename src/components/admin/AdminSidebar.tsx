@@ -3,12 +3,14 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { 
-  HomeIcon, 
-  BuildingOfficeIcon, 
-  UserGroupIcon, 
+import {
+  HomeIcon,
+  BuildingOfficeIcon,
+  UserGroupIcon,
   TrophyIcon,
   NewspaperIcon,
+  Bars3Icon,
+  DocumentTextIcon,
   ChevronDoubleLeftIcon,
   ChevronDoubleRightIcon
 } from '@heroicons/react/24/outline'
@@ -27,6 +29,18 @@ export default function AdminSidebar({ isCollapsed, onToggleCollapse }: SidebarP
       href: '/admin',
       icon: HomeIcon,
       exact: true
+    },
+    {
+      name: 'Navigation Menu',
+      href: '/admin/navigation',
+      icon: Bars3Icon,
+      exact: false
+    },
+    {
+      name: 'Pages',
+      href: '/admin/pages',
+      icon: DocumentTextIcon,
+      exact: false
     },
     {
       name: 'School Information',

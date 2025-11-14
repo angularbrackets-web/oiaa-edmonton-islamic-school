@@ -3,7 +3,9 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import Icon from '@/components/ui/Icon'
+import { ChevronDown } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import type { NavigationTreeNode } from '@/types/navigation'
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -12,24 +14,52 @@ export default function Header() {
   const [lastScrollY, setLastScrollY] = useState(0)
   const [scrollProgress, setScrollProgress] = useState(0)
 
+  // Navigation data state
+  const [navigationData, setNavigationData] = useState<NavigationTreeNode[]>([])
+  const [isLoadingNav, setIsLoadingNav] = useState(true)
+  const [navError, setNavError] = useState<string | null>(null)
+
+  // Mobile accordion state
+  const [openAccordions, setOpenAccordions] = useState<Set<string>>(new Set())
+
+  // Fetch navigation data from API
+  useEffect(() => {
+    fetch('/api/navigation?tree=true')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          setNavigationData(data.data || [])
+        } else {
+          setNavError(data.error || 'Failed to load navigation')
+        }
+      })
+      .catch(err => {
+        console.error('Navigation fetch error:', err)
+        setNavError(err.message)
+      })
+      .finally(() => {
+        setIsLoadingNav(false)
+      })
+  }, [])
+
   // Smart sticky navigation with scroll detection and progress tracking
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY
       const documentHeight = document.documentElement.scrollHeight - window.innerHeight
       const scrollPercentage = (currentScrollY / documentHeight) * 100
-      
+
       // Update scroll state for glassmorphism effect
       setIsScrolled(currentScrollY > 20)
       setScrollProgress(Math.min(scrollPercentage, 100))
-      
+
       // Smart hide/show behavior
       if (currentScrollY > lastScrollY && currentScrollY > 100) {
         setIsVisible(false) // Hide when scrolling down
       } else {
         setIsVisible(true) // Show when scrolling up
       }
-      
+
       setLastScrollY(currentScrollY)
     }
 
@@ -37,18 +67,24 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [lastScrollY])
 
-  const navigation = [
-    { name: 'Home', href: '/' },
-    { name: 'About', href: '#about' },
-    { name: 'Programs', href: '/programs' },
-    { name: 'Admissions', href: '/admissions' },
-    { name: 'New Centre', href: '/new-centre' },
-    { name: 'Events', href: '/events' },
-    { name: 'News', href: '/news' },
-    { name: 'Resources', href: '/resources' },
-    { name: 'Careers', href: '/careers' },
-    { name: 'Contact', href: '#contact' },
-  ]
+  // Toggle mobile accordion
+  const toggleAccordion = (id: string) => {
+    setOpenAccordions(prev => {
+      const next = new Set(prev)
+      if (next.has(id)) {
+        next.delete(id)
+      } else {
+        next.add(id)
+      }
+      return next
+    })
+  }
+
+  // Close mobile menu when navigating
+  const handleMobileNavClick = () => {
+    setIsMobileMenuOpen(false)
+    setOpenAccordions(new Set()) // Reset accordions
+  }
 
   const contactInfo = {
     phone: '(780) 123-4567',
@@ -57,7 +93,7 @@ export default function Header() {
   }
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out max-w-full overflow-x-hidden ${
+    <header className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ease-out max-w-full overflow-visible ${
       isVisible ? 'translate-y-0' : '-translate-y-full'
     } ${
       isScrolled
@@ -69,7 +105,7 @@ export default function Header() {
         <div className={`flex justify-between items-center transition-all duration-300 w-full border-b border-soft-beige/30 ${
           isScrolled ? 'py-2' : 'py-3'
         }`}>
-          {/* Logo - Bigger and more to the left */}
+          {/* Logo */}
           <Link href="/" className="flex items-center space-x-4 group flex-shrink-0">
             <div className="relative transition-all duration-300 group-hover:scale-105">
               <Image
@@ -146,22 +182,96 @@ export default function Header() {
           <div className={`flex justify-center items-center transition-all duration-300 ${
             isScrolled ? 'py-2' : 'py-3'
           }`}>
-            <nav className="flex items-center space-x-8">
-              {navigation.map((item, index) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className="relative text-deep-teal hover:text-terracotta-red transition-all duration-300 text-lg font-semibold group"
-                  style={{ animationDelay: `${index * 50}ms` }}
-                >
-                  <span className="relative z-10">{item.name}</span>
-                  <div className="absolute inset-x-0 -bottom-1 h-0.5 bg-gradient-to-r from-terracotta-red to-terracotta-red-dark scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
-                  <div className="absolute inset-0 bg-gradient-to-r from-terracotta-red/5 to-transparent rounded-lg scale-0 group-hover:scale-100 transition-transform duration-200 -z-10"></div>
+            {isLoadingNav ? (
+              // Loading skeleton
+              <div className="flex items-center space-x-8">
+                {[...Array(6)].map((_, i) => (
+                  <div key={i} className="h-6 w-20 bg-soft-beige/50 rounded animate-pulse" />
+                ))}
+              </div>
+            ) : navError ? (
+              // Error fallback - basic navigation
+              <nav className="flex items-center space-x-8">
+                <Link href="/" className="text-deep-teal hover:text-terracotta-red transition-colors text-lg font-semibold">
+                  Home
                 </Link>
-              ))}
-            </nav>
+                <Link href="/about-us" className="text-deep-teal hover:text-terracotta-red transition-colors text-lg font-semibold">
+                  About Us
+                </Link>
+                <Link href="/admissions" className="text-deep-teal hover:text-terracotta-red transition-colors text-lg font-semibold">
+                  Admissions
+                </Link>
+                <Link href="/contact" className="text-deep-teal hover:text-terracotta-red transition-colors text-lg font-semibold">
+                  Contact
+                </Link>
+              </nav>
+            ) : (
+              // Dynamic navigation with mega-menu
+              <nav className="flex items-center space-x-8">
+                {navigationData.map((item, index) => (
+                  <div key={item.id} className="relative group">
+                    {item.children && item.children.length > 0 ? (
+                      // Item with dropdown
+                      <>
+                        <button
+                          className="relative flex items-center gap-2 text-deep-teal hover:text-terracotta-red transition-all duration-300 text-lg font-semibold group/btn"
+                          style={{ animationDelay: `${index * 50}ms` }}
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                        >
+                          <span className="relative z-10">{item.label_en}</span>
+                          <ChevronDown className="w-4 h-4 group-hover:rotate-180 transition-transform duration-300" />
+                          <div className="absolute inset-x-0 -bottom-1 h-0.5 bg-gradient-to-r from-terracotta-red to-terracotta-red-dark scale-x-0 group-hover/btn:scale-x-100 transition-transform duration-300 origin-left"></div>
+                        </button>
 
-            {/* Donate Button */}
+                        {/* Mega-menu dropdown */}
+                        <div className="absolute top-full left-0 mt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-[9999]">
+                          <motion.div
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.3, ease: 'easeOut' }}
+                            className="bg-white/95 backdrop-blur-xl border border-soft-beige rounded-lg shadow-2xl min-w-[320px] p-6"
+                          >
+                            <div className="grid grid-cols-1 gap-2">
+                              {item.children.map((child) => (
+                                <Link
+                                  key={child.id}
+                                  href={child.href}
+                                  className="flex items-start gap-3 p-3 rounded-lg hover:bg-terracotta-red/5 transition-colors duration-200 group/child"
+                                >
+                                  <div className="flex-1 min-w-0">
+                                    <div className="font-semibold text-deep-teal group-hover/child:text-terracotta-red transition-colors">
+                                      {child.label_en}
+                                    </div>
+                                    {child.description_en && (
+                                      <div className="text-sm text-gray-600 mt-1 line-clamp-2">
+                                        {child.description_en}
+                                      </div>
+                                    )}
+                                  </div>
+                                </Link>
+                              ))}
+                            </div>
+                          </motion.div>
+                        </div>
+                      </>
+                    ) : (
+                      // Simple link (no children)
+                      <Link
+                        href={item.href}
+                        className="relative flex items-center gap-2 text-deep-teal hover:text-terracotta-red transition-all duration-300 text-lg font-semibold group/link"
+                        style={{ animationDelay: `${index * 50}ms` }}
+                      >
+                        <span className="relative z-10">{item.label_en}</span>
+                        <div className="absolute inset-x-0 -bottom-1 h-0.5 bg-gradient-to-r from-terracotta-red to-terracotta-red-dark scale-x-0 group-hover/link:scale-x-100 transition-transform duration-300 origin-left"></div>
+                      </Link>
+                    )}
+                  </div>
+                ))}
+              </nav>
+            )}
+
+            {/* Donate Button - Keep separate with special styling */}
             <Link
               href="/donate"
               className="ml-8 relative bg-gradient-to-r from-terracotta-red to-terracotta-red-dark hover:from-terracotta-red-dark hover:to-terracotta-red text-warm-white px-6 py-2 rounded-lg text-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 group overflow-hidden"
@@ -177,38 +287,99 @@ export default function Header() {
           isMobileMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
         }`}>
           <div className="px-2 pt-2 pb-3 space-y-1 bg-warm-white/95 backdrop-blur-xl border-t border-soft-beige/60 shadow-lg w-full box-border">
-            {navigation.map((item, index) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className={`block px-3 py-3 text-deep-teal hover:text-terracotta-red hover:bg-gradient-to-r hover:from-terracotta-red/5 hover:to-transparent rounded-lg text-lg font-semibold transition-all duration-300 transform ${
-                  isMobileMenuOpen
-                    ? 'translate-x-0 opacity-100'
-                    : 'translate-x-full opacity-0'
-                }`}
-                style={{
-                  transitionDelay: isMobileMenuOpen ? `${index * 50 + 100}ms` : '0ms'
-                }}
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                <span className="flex items-center space-x-2">
-                  <span className="w-1.5 h-1.5 bg-terracotta-red rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"></span>
-                  <span>{item.name}</span>
-                </span>
-              </Link>
-            ))}
+            {isLoadingNav ? (
+              // Loading skeleton for mobile
+              <div className="space-y-2">
+                {[...Array(6)].map((_, i) => (
+                  <div key={i} className="h-12 bg-soft-beige/50 rounded animate-pulse" />
+                ))}
+              </div>
+            ) : navError ? (
+              // Error fallback for mobile
+              <>
+                <Link href="/" className="block px-3 py-3 text-deep-teal hover:text-terracotta-red rounded-lg text-lg font-semibold" onClick={handleMobileNavClick}>
+                  Home
+                </Link>
+                <Link href="/about-us" className="block px-3 py-3 text-deep-teal hover:text-terracotta-red rounded-lg text-lg font-semibold" onClick={handleMobileNavClick}>
+                  About Us
+                </Link>
+                <Link href="/admissions" className="block px-3 py-3 text-deep-teal hover:text-terracotta-red rounded-lg text-lg font-semibold" onClick={handleMobileNavClick}>
+                  Admissions
+                </Link>
+              </>
+            ) : (
+              // Dynamic mobile navigation with accordion
+              navigationData.map((item, index) => (
+                <div key={item.id} className={`transform transition-all duration-300 ${
+                  isMobileMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
+                }`} style={{ transitionDelay: isMobileMenuOpen ? `${index * 50 + 100}ms` : '0ms' }}>
+                  {item.children && item.children.length > 0 ? (
+                    // Accordion item
+                    <div className="rounded-lg overflow-hidden">
+                      <button
+                        onClick={() => toggleAccordion(item.id)}
+                        className="w-full flex items-center justify-between px-3 py-3 text-deep-teal hover:text-terracotta-red hover:bg-gradient-to-r hover:from-terracotta-red/5 hover:to-transparent rounded-lg text-lg font-semibold transition-all duration-300"
+                        aria-expanded={openAccordions.has(item.id)}
+                        aria-label={`${item.label_en} menu`}
+                      >
+                        <span className="flex items-center gap-2">
+                          <span>{item.label_en}</span>
+                        </span>
+                        <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${
+                          openAccordions.has(item.id) ? 'rotate-180' : ''
+                        }`} />
+                      </button>
+
+                      {/* Accordion content */}
+                      <AnimatePresence>
+                        {openAccordions.has(item.id) && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.3, ease: 'easeInOut' }}
+                            className="overflow-hidden"
+                          >
+                            <div className="pl-8 pr-3 py-2 space-y-1">
+                              {item.children.map((child) => (
+                                <Link
+                                  key={child.id}
+                                  href={child.href}
+                                  className="flex items-center gap-2 px-3 py-2 text-deep-teal hover:text-terracotta-red hover:bg-terracotta-red/5 rounded-lg transition-colors duration-200"
+                                  onClick={handleMobileNavClick}
+                                >
+                                  <span>{child.label_en}</span>
+                                </Link>
+                              ))}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  ) : (
+                    // Simple link (no children)
+                    <Link
+                      href={item.href}
+                      className="block px-3 py-3 text-deep-teal hover:text-terracotta-red hover:bg-gradient-to-r hover:from-terracotta-red/5 hover:to-transparent rounded-lg text-lg font-semibold transition-all duration-300"
+                      onClick={handleMobileNavClick}
+                    >
+                      <span className="flex items-center gap-2">
+                        <span>{item.label_en}</span>
+                      </span>
+                    </Link>
+                  )}
+                </div>
+              ))
+            )}
+
+            {/* Donate button in mobile menu */}
             <div className={`pt-4 border-t border-soft-beige/60 transform transition-all duration-500 ${
-              isMobileMenuOpen
-                ? 'translate-y-0 opacity-100'
-                : 'translate-y-4 opacity-0'
-            }`}
-            style={{
-              transitionDelay: isMobileMenuOpen ? `${navigation.length * 50 + 200}ms` : '0ms'
-            }}>
+              isMobileMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+            }`} style={{ transitionDelay: isMobileMenuOpen ? `${(navigationData.length || 6) * 50 + 200}ms` : '0ms' }}>
               <Link
                 href="/donate"
                 className="block w-full text-center bg-gradient-to-r from-terracotta-red to-terracotta-red-dark hover:from-terracotta-red-dark hover:to-terracotta-red text-warm-white px-6 py-3 rounded-lg text-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={handleMobileNavClick}
               >
                 Donate Now
               </Link>
@@ -216,12 +387,12 @@ export default function Header() {
           </div>
         </div>
       </div>
-      
+
       {/* Scroll Progress Indicator */}
       <div className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-terracotta-red via-terracotta-red-dark to-terracotta-red transition-all duration-300"
            style={{ width: `${scrollProgress}%` }}
       ></div>
-      
+
       {/* Subtle Islamic Geometric Pattern Accent */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden opacity-5">
         <div className="absolute -top-2 -left-2 w-8 h-8 border border-terracotta-red transform rotate-45"></div>
