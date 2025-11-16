@@ -35,7 +35,7 @@ export async function GET(
     }
 
     // Filter blocks that have this component_id in their content
-    const relevantBlocks = (blocks || []).filter(block => {
+    const relevantBlocks = (blocks || []).filter((block: any) => {
       try {
         // The content is already parsed as JSON by Supabase
         const content = block.content as any
