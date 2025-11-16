@@ -125,7 +125,7 @@ export const facultyService = {
       .from('faculty')
       .select('*')
       .order('grade', { ascending: true })
-    
+
     if (error) throw error
     return data || []
   },
@@ -137,7 +137,7 @@ export const facultyService = {
       .select('*')
       .eq('published', true)
       .order('grade', { ascending: true })
-    
+
     if (error) throw error
     return data || []
   },
@@ -149,7 +149,7 @@ export const facultyService = {
       .select('*')
       .eq('id', id)
       .single()
-    
+
     if (error) throw error
     return data
   },
@@ -161,7 +161,7 @@ export const facultyService = {
       .insert(faculty)
       .select()
       .single()
-    
+
     if (error) throw error
     return data
   },
@@ -174,7 +174,7 @@ export const facultyService = {
       .eq('id', id)
       .select()
       .single()
-    
+
     if (error) throw error
     return data
   },
@@ -185,7 +185,7 @@ export const facultyService = {
       .from('faculty')
       .delete()
       .eq('id', id)
-    
+
     if (error) throw error
   },
 
@@ -197,7 +197,7 @@ export const facultyService = {
       .eq('department', department)
       .eq('published', true)
       .order('grade', { ascending: true })
-    
+
     if (error) throw error
     return data || []
   },
@@ -210,7 +210,7 @@ export const facultyService = {
       .eq('featured', true)
       .eq('published', true)
       .order('grade', { ascending: true })
-    
+
     if (error) throw error
     return data || []
   }
