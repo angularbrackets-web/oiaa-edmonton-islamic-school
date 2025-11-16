@@ -1,13 +1,15 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { ReusableComponent, COMPONENT_CATEGORY_COLORS } from '@/types/cms'
 import {
   PencilIcon,
   TrashIcon,
   DocumentDuplicateIcon,
   EyeIcon,
-  EyeSlashIcon
+  EyeSlashIcon,
+  Squares2X2Icon
 } from '@heroicons/react/24/outline'
 
 interface ComponentCardProps {
@@ -157,16 +159,27 @@ export default function ComponentCard({ component, onEdit, onDelete }: Component
         </div>
 
         {/* Actions */}
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => onEdit(component)}
-            className="flex-1 flex items-center justify-center gap-1 px-3 py-2 bg-terracotta-red text-white rounded hover:bg-terracotta-red/90 transition-colors text-sm"
-          >
-            <PencilIcon className="w-4 h-4" />
-            Edit
-          </button>
+        <div className="space-y-2">
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => onEdit(component)}
+              className="flex-1 flex items-center justify-center gap-1 px-3 py-2 bg-terracotta-red text-white rounded hover:bg-terracotta-red/90 transition-colors text-sm"
+            >
+              <PencilIcon className="w-4 h-4" />
+              Edit Info
+            </button>
 
-          <button
+            <Link
+              href={`/admin/components/${component.id}/edit`}
+              className="flex-1 flex items-center justify-center gap-1 px-3 py-2 bg-deep-teal text-white rounded hover:bg-deep-teal/90 transition-colors text-sm"
+            >
+              <Squares2X2Icon className="w-4 h-4" />
+              Edit Blocks
+            </Link>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
             onClick={handleDuplicate}
             disabled={duplicating}
             className="p-2 border border-soft-beige rounded hover:bg-soft-beige-lightest transition-colors"
@@ -195,6 +208,7 @@ export default function ComponentCard({ component, onEdit, onDelete }: Component
           >
             <TrashIcon className="w-4 h-4 text-red-600" />
           </button>
+          </div>
         </div>
       </div>
 
