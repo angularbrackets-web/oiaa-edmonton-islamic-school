@@ -37,11 +37,7 @@ export default function CreateComponentModal({
         return
       }
 
-      if (initialBlocks.length === 0) {
-        setError('Component must have at least one block. Please select blocks from a page first.')
-        setCreating(false)
-        return
-      }
+      // Allow empty components - users can add blocks later in the block editor
 
       const tagsArray = tags
         .split(',')
@@ -112,11 +108,11 @@ export default function CreateComponentModal({
 
           {/* Info Message */}
           {initialBlocks.length === 0 && (
-            <div className="bg-amber-50 border border-amber-200 text-amber-800 px-4 py-3 rounded-lg">
-              <p className="font-semibold mb-1">⚠️ No blocks selected</p>
+            <div className="bg-blue-50 border border-blue-200 text-blue-800 px-4 py-3 rounded-lg">
+              <p className="font-semibold mb-1">ℹ️ Creating empty component</p>
               <p className="text-sm">
-                To create a component, you need to select blocks from a page editor first.
-                Use the "Save as Component" button in the page editor.
+                You can create an empty component now and add blocks later using the "Edit Blocks" button.
+                Or, you can select blocks from a page editor first using "Save as Component".
               </p>
             </div>
           )}
@@ -247,7 +243,7 @@ export default function CreateComponentModal({
             </button>
             <button
               type="submit"
-              disabled={creating || initialBlocks.length === 0}
+              disabled={creating}
               className="px-6 py-2 bg-terracotta-red text-white rounded-lg hover:bg-terracotta-red/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {creating ? 'Creating...' : 'Create Component'}
