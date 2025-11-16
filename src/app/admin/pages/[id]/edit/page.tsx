@@ -450,7 +450,7 @@ function BlockEditor({
     if (updates.display_style !== undefined) setDisplayStyle(updates.display_style)
     if (updates.card_border_radius !== undefined) setCardBorderRadius(updates.card_border_radius)
     if (updates.card_shadow !== undefined) setCardShadow(updates.card_shadow)
-    if (updates.card_hover_effect !== undefined) setCardHoverEffect(updates.card_hover_effect)
+    if (updates.card_hover_effect !== undefined) setCardHoverEffect(updates.card_hover_effect ?? false)
   }
 
   return (
