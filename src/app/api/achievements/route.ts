@@ -15,7 +15,7 @@ export async function GET() {
 
     // Transform data to match the expected format
     const transformedData = {
-      achievements: data.map(achievement => ({
+      achievements: data.map((achievement: any) => ({
         id: achievement.id,
         title: achievement.title,
         description: achievement.description,
@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
       await supabase.from('achievements').delete().neq('id', '00000000-0000-0000-0000-000000000000')
 
       // Insert new achievements
-      for (const achievement of body.achievements) {
+      for (const achievement of body.achievements as any[]) {
         const { error } = await supabase
           .from('achievements')
           .insert({

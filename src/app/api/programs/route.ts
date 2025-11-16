@@ -28,7 +28,7 @@ export async function GET() {
 
     // Transform data to match the expected format
     const transformedData = {
-      programs: programsResult.data.map(program => ({
+      programs: programsResult.data.map((program: any) => ({
         id: program.id,
         title: program.title,
         age: program.age,
@@ -39,7 +39,7 @@ export async function GET() {
         tuition: program.tuition,
         curriculum: program.curriculum
       })),
-      additionalPrograms: additionalProgramsResult.data.map(program => ({
+      additionalPrograms: additionalProgramsResult.data.map((program: any) => ({
         title: program.title,
         description: program.description,
         icon: program.icon,

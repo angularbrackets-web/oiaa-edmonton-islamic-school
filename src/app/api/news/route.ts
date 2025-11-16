@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
 
     // Transform data to match the expected format
     const transformedData = {
-      news: data.map(article => ({
+      news: data.map((article: any) => ({
         id: article.id,
         title: article.title,
         arabic_title: article.arabic_title || null,
