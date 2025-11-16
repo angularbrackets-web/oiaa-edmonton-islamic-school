@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { ImageBlockContent } from '@/types/cms'
 import CloudinaryUploadWidget from '../CloudinaryUploadWidget'
+import MediaPicker from '../MediaPicker'
 import { PhotoIcon, TrashIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
 
@@ -14,6 +15,7 @@ interface ImageBlockEditorProps {
 export default function ImageBlockEditor({ content, onChange }: ImageBlockEditorProps) {
   const [uploadError, setUploadError] = useState<string | null>(null)
   const [isUploading, setIsUploading] = useState(false)
+  const [showMediaPicker, setShowMediaPicker] = useState(false)
 
   const handleUploadSuccess = (result: {
     secure_url: string
@@ -49,8 +51,28 @@ export default function ImageBlockEditor({ content, onChange }: ImageBlockEditor
     })
   }
 
+  const handleMediaSelect = (media: any) => {
+    onChange({
+      ...content,
+      url: media.url,
+      width: media.width,
+      height: media.height,
+      media_id: media.id
+    })
+    setShowMediaPicker(false)
+  }
+
   return (
     <div className="space-y-4">
+      {/* Media Picker Modal */}
+      {showMediaPicker && (
+        <MediaPicker
+          onSelect={handleMediaSelect}
+          onClose={() => setShowMediaPicker(false)}
+          type="image"
+          title="Select Image from Library"
+        />
+      )}
       {/* Image Upload/Preview Section */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -86,6 +108,13 @@ export default function ImageBlockEditor({ content, onChange }: ImageBlockEditor
             )}
 
             <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => setShowMediaPicker(true)}
+                className="px-4 py-2 bg-deep-teal text-white rounded-lg hover:bg-deep-teal/90 transition-colors"
+              >
+                Browse Library
+              </button>
               <CloudinaryUploadWidget
                 onSuccess={handleUploadSuccess}
                 onError={handleUploadError}
@@ -100,11 +129,20 @@ export default function ImageBlockEditor({ content, onChange }: ImageBlockEditor
           <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-terracotta-red transition-colors">
             <PhotoIcon className="w-12 h-12 mx-auto text-gray-400 mb-4" />
             <p className="text-gray-600 mb-4">No image selected</p>
-            <CloudinaryUploadWidget
-              onSuccess={handleUploadSuccess}
-              onError={handleUploadError}
-              folder="cms/pages"
-            />
+            <div className="flex gap-2 justify-center">
+              <button
+                type="button"
+                onClick={() => setShowMediaPicker(true)}
+                className="px-4 py-2 bg-deep-teal text-white rounded-lg hover:bg-deep-teal/90 transition-colors"
+              >
+                Browse Library
+              </button>
+              <CloudinaryUploadWidget
+                onSuccess={handleUploadSuccess}
+                onError={handleUploadError}
+                folder="cms/pages"
+              />
+            </div>
             {isUploading && (
               <p className="mt-2 text-sm text-deep-teal">Uploading...</p>
             )}
