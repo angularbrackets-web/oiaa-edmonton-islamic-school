@@ -12,7 +12,8 @@ import {
   Bars3Icon,
   DocumentTextIcon,
   ChevronDoubleLeftIcon,
-  ChevronDoubleRightIcon
+  ChevronDoubleRightIcon,
+  CubeIcon
 } from '@heroicons/react/24/outline'
 
 interface SidebarProps {
@@ -40,6 +41,12 @@ export default function AdminSidebar({ isCollapsed, onToggleCollapse }: SidebarP
       name: 'Pages',
       href: '/admin/pages',
       icon: DocumentTextIcon,
+      exact: false
+    },
+    {
+      name: 'Components',
+      href: '/admin/components',
+      icon: CubeIcon,
       exact: false
     },
     {

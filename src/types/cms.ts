@@ -463,3 +463,201 @@ export function getDefaultBlockContent(blockType: BlockType): BlockContent {
       return {}
   }
 }
+
+// ============================================================================
+// REUSABLE COMPONENTS TYPES
+// ============================================================================
+
+/**
+ * Block Configuration for Reusable Components
+ * Stores the complete definition of a block including its type, content, and styling
+ */
+export interface BlockConfiguration {
+  block_type: BlockType
+  content: BlockContent
+  content_ar?: BlockContent | null
+  styling?: {
+    background_color?: string | null
+    padding?: PaddingSize | null
+    padding_horizontal?: PaddingSize | null
+    custom_css_class?: string | null
+    container_width?: ContainerWidth | null
+    margin_top?: SpacingSize | null
+    margin_bottom?: SpacingSize | null
+    margin_horizontal?: SpacingSize | null
+    display_style?: DisplayStyle | null
+    card_border_color?: string | null
+    card_border_radius?: CardBorderRadius | null
+    card_shadow?: CardShadow | null
+    card_hover_effect?: boolean | null
+  }
+}
+
+/**
+ * Reusable Component
+ * A template containing one or more blocks that can be inserted into pages
+ */
+export interface ReusableComponent {
+  id: string
+  name: string
+  description: string | null
+  category: string
+  blocks_config: BlockConfiguration[]
+  thumbnail_url: string | null
+  tags: string[] | null
+  usage_count: number
+  last_used_at: string | null
+  is_active: boolean
+  created_at: string
+  updated_at: string
+  created_by: string | null
+  updated_by: string | null
+}
+
+/**
+ * Input for creating/updating reusable components
+ */
+export interface ReusableComponentInput {
+  name: string
+  description?: string | null
+  category?: string
+  blocks_config: BlockConfiguration[]
+  thumbnail_url?: string | null
+  tags?: string[] | null
+  is_active?: boolean
+}
+
+/**
+ * Component Instance
+ * Tracks where a component is used and allows per-instance overrides
+ */
+export interface ComponentInstance {
+  id: string
+  component_id: string
+  page_id: string
+  display_order: number
+  overrides: Record<string, any>
+  instance_name: string | null
+  created_at: string
+  last_synced_at: string | null
+}
+
+/**
+ * Input for creating component instances
+ */
+export interface ComponentInstanceInput {
+  component_id: string
+  page_id: string
+  display_order: number
+  overrides?: Record<string, any>
+  instance_name?: string | null
+}
+
+/**
+ * Component with instance information
+ */
+export interface ComponentWithInstances extends ReusableComponent {
+  instances: ComponentInstance[]
+}
+
+/**
+ * Component usage statistics
+ */
+export interface ComponentUsageStats {
+  page_id: string
+  page_title: string
+  page_slug: string
+  instance_count: number
+  last_used: string
+}
+
+/**
+ * Component categories
+ */
+export type ComponentCategory =
+  | 'general'
+  | 'hero'
+  | 'cta'
+  | 'stats'
+  | 'header'
+  | 'footer'
+  | 'content'
+  | 'testimonial'
+  | 'form'
+
+export const COMPONENT_CATEGORIES: Record<ComponentCategory, string> = {
+  general: 'General',
+  hero: 'Hero Sections',
+  cta: 'Call to Actions',
+  stats: 'Statistics',
+  header: 'Headers',
+  footer: 'Footers',
+  content: 'Content Blocks',
+  testimonial: 'Testimonials',
+  form: 'Forms'
+}
+
+export const COMPONENT_CATEGORY_COLORS: Record<ComponentCategory, string> = {
+  general: 'bg-gray-100 text-gray-800',
+  hero: 'bg-purple-100 text-purple-800',
+  cta: 'bg-green-100 text-green-800',
+  stats: 'bg-blue-100 text-blue-800',
+  header: 'bg-indigo-100 text-indigo-800',
+  footer: 'bg-slate-100 text-slate-800',
+  content: 'bg-amber-100 text-amber-800',
+  testimonial: 'bg-pink-100 text-pink-800',
+  form: 'bg-cyan-100 text-cyan-800'
+}
+
+/**
+ * Validation helpers for components
+ */
+export function validateComponentInput(input: ReusableComponentInput): ValidationError[] {
+  const errors: ValidationError[] = []
+
+  if (!input.name || input.name.trim().length === 0) {
+    errors.push({
+      field: 'name',
+      message: 'Component name is required',
+      code: 'REQUIRED_FIELD'
+    })
+  }
+
+  if (input.name && input.name.length > 100) {
+    errors.push({
+      field: 'name',
+      message: 'Component name must be less than 100 characters',
+      code: 'FIELD_TOO_LONG'
+    })
+  }
+
+  if (!input.blocks_config || input.blocks_config.length === 0) {
+    errors.push({
+      field: 'blocks_config',
+      message: 'Component must have at least one block',
+      code: 'REQUIRED_FIELD'
+    })
+  }
+
+  // Validate each block configuration
+  if (input.blocks_config && input.blocks_config.length > 0) {
+    input.blocks_config.forEach((block, index) => {
+      if (!block.block_type) {
+        errors.push({
+          field: `blocks_config[${index}].block_type`,
+          message: `Block ${index + 1} is missing block_type`,
+          code: 'REQUIRED_FIELD'
+        })
+      }
+      if (!block.content) {
+        errors.push({
+          field: `blocks_config[${index}].content`,
+          message: `Block ${index + 1} is missing content`,
+          code: 'REQUIRED_FIELD'
+        })
+      }
+    })
+  }
+
+  return errors
+}
