@@ -62,6 +62,7 @@ export type BlockType =
   | 'cards'
   | 'cta'
   | 'page_embed'
+  | 'component'    // Reusable Component: References a component from the library
   | 'section'      // Container: Groups blocks with shared styling
   | 'columns'      // Container: Multi-column layouts
   | 'hero'
@@ -205,6 +206,12 @@ export interface PageEmbedBlockContent extends BlockContent {
   page_id: string
   blocks_to_show: 'all' | string[]  // 'all' or array of specific block IDs
   show_title?: boolean  // Whether to show the embedded page's title
+}
+
+// Component Block - Embed reusable component from library
+export interface ComponentBlockContent extends BlockContent {
+  component_id: string  // Reference to reusable_components table
+  show_name?: boolean   // Whether to show the component's name
 }
 
 // Section Block - Container for grouping blocks with shared styling
@@ -366,6 +373,7 @@ export const BLOCK_TYPE_LABELS: Record<BlockType, string> = {
   cards: 'Cards',
   cta: 'Call to Action',
   page_embed: 'Page Embed',
+  component: 'Component',
   section: 'Section Container',
   columns: 'Columns Layout',
   hero: 'Hero Section',
@@ -384,6 +392,7 @@ export const BLOCK_TYPE_ICONS: Record<BlockType, string> = {
   cards: '🎴',
   cta: '🎯',
   page_embed: '🔗',
+  component: '🧩',
   section: '📦',
   columns: '📐',
   hero: '🌟',
@@ -443,6 +452,8 @@ export function getDefaultBlockContent(blockType: BlockType): BlockContent {
       return { title: 'Call to Action', buttons: [], alignment: 'center' }
     case 'page_embed':
       return { page_id: '', blocks_to_show: 'all', show_title: true }
+    case 'component':
+      return { component_id: '', show_name: false }
     case 'section':
       return {}  // Section blocks contain nested blocks
     case 'columns':

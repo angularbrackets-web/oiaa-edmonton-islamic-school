@@ -22,11 +22,11 @@ import ImageBlockEditor from '@/components/admin/blocks/ImageBlockEditor'
 import VideoBlockEditor from '@/components/admin/blocks/VideoBlockEditor'
 import CardsBlockEditor from '@/components/admin/blocks/CardsBlockEditor'
 import PageEmbedBlockEditor from '@/components/admin/blocks/PageEmbedBlockEditor'
-import CTABlockEditor from '@/components/admin/blocks/CTABlockEditor'
+import ComponentBlockEditor from '@/components/admin/blocks/ComponentBlockEditor'
 import SectionBlockEditor from '@/components/admin/blocks/SectionBlockEditor'
 import ColumnsBlockEditor from '@/components/admin/blocks/ColumnsBlockEditor'
 import SimplifiedLayoutControls from '@/components/admin/blocks/SimplifiedLayoutControls'
-import { TextBlockContent, ImageBlockContent, CTABlockContent, VideoBlockContent, CardsBlockContent, PageEmbedBlockContent, SectionBlockContent, ColumnsBlockContent } from '@/types/cms'
+import { TextBlockContent, ImageBlockContent, CTABlockContent, VideoBlockContent, CardsBlockContent, PageEmbedBlockContent, ComponentBlockContent, SectionBlockContent, ColumnsBlockContent } from '@/types/cms'
 
 export default function EditPagePage() {
   const params = useParams()
@@ -309,7 +309,7 @@ export default function EditPagePage() {
             <div className="bg-white rounded-xl shadow-lg p-4 border-2 border-terracotta-red">
               <h3 className="font-semibold text-gray-900 mb-3">Choose Block Type</h3>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                {(['text', 'image', 'video', 'cards', 'page_embed', 'cta'] as BlockType[]).map(type => (
+                {(['text', 'image', 'video', 'cards', 'component', 'page_embed', 'cta'] as BlockType[]).map(type => (
                   <button
                     key={type}
                     onClick={() => handleAddBlock(type)}
@@ -450,7 +450,7 @@ function BlockEditor({
     if (updates.display_style !== undefined) setDisplayStyle(updates.display_style)
     if (updates.card_border_radius !== undefined) setCardBorderRadius(updates.card_border_radius)
     if (updates.card_shadow !== undefined) setCardShadow(updates.card_shadow)
-    if (updates.card_hover_effect !== undefined) setCardHoverEffect(updates.card_hover_effect)
+    if (updates.card_hover_effect !== undefined) setCardHoverEffect(updates.card_hover_effect ?? false)
   }
 
   return (
@@ -521,6 +521,12 @@ function BlockEditor({
               content={editedContent as PageEmbedBlockContent}
               onChange={setEditedContent}
               currentPageId={currentPageId}
+            />
+          )}
+          {block.block_type === 'component' && (
+            <ComponentBlockEditor
+              content={editedContent as ComponentBlockContent}
+              onChange={setEditedContent}
             />
           )}
           {block.block_type === 'cta' && (
@@ -652,6 +658,20 @@ function BlockPreview({ block }: { block: ContentBlock }) {
       </div>
     ) : (
       <div className="text-sm text-gray-600">No page selected</div>
+    )
+  }
+  if (block.block_type === 'component') {
+    const content = block.content as ComponentBlockContent
+    return content.component_id ? (
+      <div className="text-sm text-gray-600">
+        <p className="font-medium">🧩 Component Block</p>
+        <p className="text-xs text-gray-500 mt-1">
+          Component ID: {content.component_id}
+          {content.show_name && ' (with name)'}
+        </p>
+      </div>
+    ) : (
+      <div className="text-sm text-gray-600">No component selected</div>
     )
   }
   if (block.block_type === 'cta') {
