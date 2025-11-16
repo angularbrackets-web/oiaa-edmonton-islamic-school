@@ -1,18 +1,24 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+// Create clients only if environment variables are available
+// This allows the build to succeed even without env vars
+export const supabase = supabaseUrl && supabaseAnonKey
+  ? createClient(supabaseUrl, supabaseAnonKey)
+  : null as any
 
 // Service role client for admin operations (bypasses RLS)
-export const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
-  auth: {
-    autoRefreshToken: false,
-    persistSession: false
-  }
-})
+export const supabaseAdmin = supabaseUrl && supabaseServiceKey
+  ? createClient(supabaseUrl, supabaseServiceKey, {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false
+      }
+    })
+  : null as any
 
 // Types for our database tables
 export interface SchoolInfo {
@@ -125,7 +131,7 @@ export const facultyService = {
       .from('faculty')
       .select('*')
       .order('grade', { ascending: true })
-    
+
     if (error) throw error
     return data || []
   },
@@ -137,7 +143,7 @@ export const facultyService = {
       .select('*')
       .eq('published', true)
       .order('grade', { ascending: true })
-    
+
     if (error) throw error
     return data || []
   },
@@ -149,7 +155,7 @@ export const facultyService = {
       .select('*')
       .eq('id', id)
       .single()
-    
+
     if (error) throw error
     return data
   },
@@ -161,7 +167,7 @@ export const facultyService = {
       .insert(faculty)
       .select()
       .single()
-    
+
     if (error) throw error
     return data
   },
@@ -174,7 +180,7 @@ export const facultyService = {
       .eq('id', id)
       .select()
       .single()
-    
+
     if (error) throw error
     return data
   },
@@ -185,7 +191,7 @@ export const facultyService = {
       .from('faculty')
       .delete()
       .eq('id', id)
-    
+
     if (error) throw error
   },
 
@@ -197,7 +203,7 @@ export const facultyService = {
       .eq('department', department)
       .eq('published', true)
       .order('grade', { ascending: true })
-    
+
     if (error) throw error
     return data || []
   },
@@ -210,7 +216,7 @@ export const facultyService = {
       .eq('featured', true)
       .eq('published', true)
       .order('grade', { ascending: true })
-    
+
     if (error) throw error
     return data || []
   }
