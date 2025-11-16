@@ -45,3 +45,9 @@ build/
 tmp/
 temp/
 .vercel
+
+# Testing artifacts
+.playwright-mcp/
+
+# Claude Code personal settings
+.claude/settings.local.json
