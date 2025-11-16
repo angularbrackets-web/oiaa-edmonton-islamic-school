@@ -1,9 +1,18 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ReusableComponent, COMPONENT_CATEGORIES } from '@/types/cms'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import CloudinaryUploadWidget from './CloudinaryUploadWidget'
+import Link from 'next/link'
+
+interface ComponentUsage {
+  page_id: string
+  page_title: string
+  page_slug: string
+  is_published: boolean
+  block_count: number
+}
 
 interface EditComponentModalProps {
   component: ReusableComponent
@@ -24,6 +33,31 @@ export default function EditComponentModal({
   const [isActive, setIsActive] = useState(component.is_active)
   const [updating, setUpdating] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [usage, setUsage] = useState<ComponentUsage[]>([])
+  const [loadingUsage, setLoadingUsage] = useState(false)
+  const [showUsageDetails, setShowUsageDetails] = useState(false)
+
+  // Fetch component usage details
+  useEffect(() => {
+    if (component.usage_count > 0) {
+      loadUsage()
+    }
+  }, [component.id, component.usage_count])
+
+  const loadUsage = async () => {
+    setLoadingUsage(true)
+    try {
+      const response = await fetch(`/api/components/${component.id}/usage`)
+      const data = await response.json()
+      if (data.success) {
+        setUsage(data.data.pages || [])
+      }
+    } catch (err) {
+      console.error('Error loading component usage:', err)
+    } finally {
+      setLoadingUsage(false)
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -106,10 +140,68 @@ export default function EditComponentModal({
           {/* Usage Warning */}
           {component.usage_count > 0 && (
             <div className="bg-amber-50 border border-amber-200 text-amber-800 px-4 py-3 rounded-lg">
-              <p className="font-semibold mb-1">⚠️ Component in use</p>
-              <p className="text-sm">
-                This component is used in {component.usage_count} place(s). Changes to blocks will update all instances.
-              </p>
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <p className="font-semibold mb-1">⚠️ Component in use</p>
+                  <p className="text-sm mb-2">
+                    This component is used in {component.usage_count} place(s). Changes to blocks will update all instances.
+                  </p>
+                </div>
+                {usage.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => setShowUsageDetails(!showUsageDetails)}
+                    className="text-xs underline hover:no-underline ml-2"
+                  >
+                    {showUsageDetails ? 'Hide' : 'Show'} details
+                  </button>
+                )}
+              </div>
+
+              {/* Usage Details */}
+              {showUsageDetails && (
+                <div className="mt-3 pt-3 border-t border-amber-300">
+                  {loadingUsage ? (
+                    <p className="text-sm">Loading usage details...</p>
+                  ) : usage.length > 0 ? (
+                    <div className="space-y-2">
+                      <p className="text-xs font-semibold uppercase tracking-wide">Used in:</p>
+                      {usage.map((item) => (
+                        <div
+                          key={item.page_id}
+                          className="flex items-center justify-between bg-white/50 rounded px-3 py-2"
+                        >
+                          <div className="flex-1">
+                            <Link
+                              href={`/admin/pages/${item.page_id}/edit`}
+                              className="text-sm font-medium hover:underline text-amber-900"
+                              target="_blank"
+                            >
+                              {item.page_title}
+                            </Link>
+                            <p className="text-xs text-amber-700">
+                              /{item.page_slug} • {item.block_count} block{item.block_count !== 1 ? 's' : ''}
+                            </p>
+                          </div>
+                          <div>
+                            {item.is_published ? (
+                              <span className="inline-block px-2 py-1 text-xs bg-green-100 text-green-800 rounded">
+                                Published
+                              </span>
+                            ) : (
+                              <span className="inline-block px-2 py-1 text-xs bg-gray-100 text-gray-600 rounded">
+                                Draft
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-sm">No usage details available.</p>
+                  )}
+                </div>
+              )}
             </div>
           )}
 
