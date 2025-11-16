@@ -5,7 +5,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/client'
+import { supabaseAdmin } from '@/lib/supabase'
 
 interface RouteParams {
   params: Promise<{
@@ -23,12 +23,11 @@ export async function GET(
 ) {
   try {
     const { id: componentId } = await params
-    const supabase = createClient()
 
     // Find all content_blocks with block_type='component' that reference this component
-    const { data: blocks, error: blocksError } = await supabase
+    const { data: blocks, error: blocksError } = await supabaseAdmin
       .from('content_blocks')
-      .select('id, page_id, display_order')
+      .select('id, page_id, display_order, content')
       .eq('block_type', 'component')
 
     if (blocksError) {
@@ -60,7 +59,7 @@ export async function GET(
     const pageIds = [...new Set(relevantBlocks.map(b => b.page_id))]
 
     // Fetch page details
-    const { data: pages, error: pagesError } = await supabase
+    const { data: pages, error: pagesError } = await supabaseAdmin
       .from('pages')
       .select('id, title, slug, is_published')
       .in('id', pageIds)
