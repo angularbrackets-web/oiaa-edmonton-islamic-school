@@ -56,7 +56,7 @@ export async function GET(
     }
 
     // Get unique page IDs
-    const pageIds = [...new Set(relevantBlocks.map(b => b.page_id))]
+    const pageIds = [...new Set(relevantBlocks.map((b: any) => b.page_id))]
 
     // Fetch page details
     const { data: pages, error: pagesError } = await supabaseAdmin
@@ -69,8 +69,8 @@ export async function GET(
     }
 
     // Map pages with block count
-    const usageData = (pages || []).map(page => {
-      const blockCount = relevantBlocks.filter(b => b.page_id === page.id).length
+    const usageData = (pages || []).map((page: any) => {
+      const blockCount = relevantBlocks.filter((b: any) => b.page_id === page.id).length
       return {
         page_id: page.id,
         page_title: page.title,
