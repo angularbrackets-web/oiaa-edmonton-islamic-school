@@ -4,11 +4,12 @@
  * Renders different block types on the frontend with layout control
  */
 
-import { ContentBlock, TextBlockContent, ImageBlockContent, CTABlockContent, VideoBlockContent, CardsBlockContent, PageEmbedBlockContent, SectionBlockContent, ColumnsBlockContent } from '@/types/cms'
+import { ContentBlock, TextBlockContent, ImageBlockContent, CTABlockContent, VideoBlockContent, CardsBlockContent, PageEmbedBlockContent, ComponentBlockContent, SectionBlockContent, ColumnsBlockContent } from '@/types/cms'
 import Link from 'next/link'
 import VideoBlock from './VideoBlock'
 import CardsBlock from './CardsBlock'
 import PageEmbedBlock from './PageEmbedBlock'
+import ComponentBlock from './ComponentBlock'
 import SectionBlock from './SectionBlock'
 import ColumnsBlock from './ColumnsBlock'
 import BlockLayoutWrapper from './BlockLayoutWrapper'
@@ -42,6 +43,7 @@ export default function BlockRenderer({ block }: BlockRendererProps) {
       {block.block_type === 'video' && <VideoBlock content={block.content as VideoBlockContent} />}
       {block.block_type === 'cards' && <CardsBlock content={block.content as CardsBlockContent} />}
       {block.block_type === 'page_embed' && <PageEmbedBlock content={block.content as PageEmbedBlockContent} />}
+      {block.block_type === 'component' && <ComponentBlock content={block.content as ComponentBlockContent} />}
       {block.block_type === 'cta' && <CTABlock content={block.content as CTABlockContent} />}
       {block.block_type === 'section' && <SectionBlock block={block} />}
       {block.block_type === 'columns' && <ColumnsBlock content={block.content as ColumnsBlockContent} block={block} />}
