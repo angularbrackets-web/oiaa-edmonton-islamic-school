@@ -52,11 +52,13 @@ export default function CloudinaryUploadWidget({
         console.error('Upload failed - Full error details:', {
           status: response.status,
           error: data.error,
+          errorType: data.errorType,
           details: data.details,
           stack: data.stack,
           env: data.env,
           fullResponse: data
         })
+        console.error('Error details (parsed):', data.details ? JSON.parse(data.details) : 'No details')
         throw new Error(errorMessage)
       }
 

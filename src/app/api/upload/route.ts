@@ -79,9 +79,19 @@ export async function POST(request: NextRequest) {
       stack: error instanceof Error ? error.stack : undefined,
       error
     })
+
+    // Serialize error properly
+    let errorDetails
+    try {
+      errorDetails = JSON.stringify(error, Object.getOwnPropertyNames(error))
+    } catch {
+      errorDetails = String(error)
+    }
+
     return NextResponse.json({
       error: error instanceof Error ? error.message : 'Internal server error',
-      details: String(error),
+      details: errorDetails,
+      errorType: error?.constructor?.name,
       stack: error instanceof Error ? error.stack : undefined,
       env: process.env.NODE_ENV
     }, { status: 500 })
