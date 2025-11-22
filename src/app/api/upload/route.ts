@@ -6,11 +6,7 @@ export async function POST(request: NextRequest) {
   try {
     // Validate Cloudinary environment variables
     if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
-      console.error('Missing Cloudinary environment variables:', {
-        CLOUDINARY_CLOUD_NAME: !!process.env.CLOUDINARY_CLOUD_NAME,
-        CLOUDINARY_API_KEY: !!process.env.CLOUDINARY_API_KEY,
-        CLOUDINARY_API_SECRET: !!process.env.CLOUDINARY_API_SECRET
-      })
+      console.error('Missing Cloudinary environment variables')
       return NextResponse.json({
         error: 'Server configuration error: Missing Cloudinary credentials'
       }, { status: 500 })
@@ -25,13 +21,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 })
     }
 
-    console.log('Uploading file:', {
-      name: file.name,
-      size: file.size,
-      type: file.type,
-      folder
-    })
-
     // Upload to Cloudinary
     const result = await uploadImage(file, folder) as any
 
@@ -39,11 +28,6 @@ export async function POST(request: NextRequest) {
       console.error('Cloudinary upload returned null/undefined result')
       return NextResponse.json({ error: 'Failed to upload image to Cloudinary' }, { status: 500 })
     }
-
-    console.log('Cloudinary upload successful:', {
-      public_id: result.public_id,
-      secure_url: result.secure_url
-    })
 
     // Save reference in Supabase
     const { data: mediaData, error: mediaError } = await supabase
@@ -74,26 +58,9 @@ export async function POST(request: NextRequest) {
     })
 
   } catch (error) {
-    console.error('Upload error details:', {
-      message: error instanceof Error ? error.message : 'Unknown error',
-      stack: error instanceof Error ? error.stack : undefined,
-      error
-    })
-
-    // Serialize error properly
-    let errorDetails
-    try {
-      errorDetails = JSON.stringify(error, Object.getOwnPropertyNames(error))
-    } catch {
-      errorDetails = String(error)
-    }
-
+    console.error('Upload error:', error)
     return NextResponse.json({
-      error: error instanceof Error ? error.message : 'Internal server error',
-      details: errorDetails,
-      errorType: error?.constructor?.name,
-      stack: error instanceof Error ? error.stack : undefined,
-      env: process.env.NODE_ENV
+      error: error instanceof Error ? error.message : 'Failed to upload image'
     }, { status: 500 })
   }
 }

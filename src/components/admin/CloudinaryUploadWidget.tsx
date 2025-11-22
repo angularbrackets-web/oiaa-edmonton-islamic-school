@@ -49,16 +49,7 @@ export default function CloudinaryUploadWidget({
 
       if (!response.ok) {
         const errorMessage = data.error || `Upload failed with status ${response.status}`
-        console.error('Upload failed - Full error details:', {
-          status: response.status,
-          error: data.error,
-          errorType: data.errorType,
-          details: data.details,
-          stack: data.stack,
-          env: data.env,
-          fullResponse: data
-        })
-        console.error('Error details (parsed):', data.details ? JSON.parse(data.details) : 'No details')
+        console.error('Upload failed:', errorMessage)
         throw new Error(errorMessage)
       }
 

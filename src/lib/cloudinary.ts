@@ -36,53 +36,28 @@ export function getOptimizedImageUrl(publicId: string, options?: {
 
 // Helper function to upload image
 export async function uploadImage(file: File, folder: string = 'islamic-school') {
-  try {
-    console.log('Starting Cloudinary upload:', {
-      fileName: file.name,
-      fileSize: file.size,
-      fileType: file.type,
-      folder
-    })
+  const bytes = await file.arrayBuffer()
+  const buffer = Buffer.from(bytes)
 
-    const bytes = await file.arrayBuffer()
-    const buffer = Buffer.from(bytes)
-
-    console.log('File converted to buffer, size:', buffer.length)
-
-    const result = await new Promise((resolve, reject) => {
-      const uploadStream = cloudinary.uploader.upload_stream(
-        {
-          folder,
-          resource_type: 'auto',
-          transformation: [
-            { quality: 'auto', fetch_format: 'auto' }
-          ]
-        },
-        (error, result) => {
-          if (error) {
-            console.error('Cloudinary upload_stream error:', {
-              message: error.message,
-              http_code: error.http_code,
-              error
-            })
-            reject(error)
-          } else {
-            console.log('Cloudinary upload_stream success')
-            resolve(result)
-          }
+  const result = await new Promise((resolve, reject) => {
+    cloudinary.uploader.upload_stream(
+      {
+        folder,
+        resource_type: 'auto',
+        transformation: [
+          { quality: 'auto', fetch_format: 'auto' }
+        ]
+      },
+      (error, result) => {
+        if (error) {
+          console.error('Cloudinary upload error:', error.message)
+          reject(error)
+        } else {
+          resolve(result)
         }
-      )
+      }
+    ).end(buffer)
+  })
 
-      uploadStream.end(buffer)
-    })
-
-    return result
-  } catch (error) {
-    console.error('uploadImage function error:', {
-      message: error instanceof Error ? error.message : 'Unknown error',
-      stack: error instanceof Error ? error.stack : undefined,
-      error
-    })
-    throw error
-  }
+  return result
 }
