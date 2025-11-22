@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase'
+import { supabaseAdmin } from '@/lib/supabase'
 import { cloudinary } from '@/lib/cloudinary'
 
 export async function DELETE(
@@ -9,8 +9,8 @@ export async function DELETE(
   try {
     const { id } = await params
 
-    // First, get the media record to obtain the public_id
-    const { data: mediaRecord, error: fetchError } = await supabase
+    // First, get the media record to obtain the public_id (using admin client to bypass RLS)
+    const { data: mediaRecord, error: fetchError } = await supabaseAdmin
       .from('media')
       .select('*')
       .eq('id', id)
@@ -30,8 +30,8 @@ export async function DELETE(
       // Continue with database deletion even if Cloudinary fails
     }
 
-    // Delete from Supabase
-    const { error: deleteError } = await supabase
+    // Delete from Supabase (using admin client to bypass RLS)
+    const { error: deleteError } = await supabaseAdmin
       .from('media')
       .delete()
       .eq('id', id)

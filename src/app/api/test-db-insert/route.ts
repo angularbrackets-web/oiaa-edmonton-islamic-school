@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase'
+import { supabaseAdmin } from '@/lib/supabase'
 
 // Test if we can insert into media table with new columns
 export async function GET() {
   try {
-    // Try to insert a test record
+    // Try to insert a test record (using admin client to bypass RLS)
     const testData = {
       url: 'https://test.example.com/test.jpg',
       alt: 'Test insert',
@@ -17,7 +17,7 @@ export async function GET() {
       original_filename: 'test.jpg'
     }
 
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
       .from('media')
       .insert(testData)
       .select()
@@ -36,7 +36,7 @@ export async function GET() {
 
     // Clean up test record
     if (data) {
-      await supabase.from('media').delete().eq('id', data.id)
+      await supabaseAdmin.from('media').delete().eq('id', data.id)
     }
 
     return NextResponse.json({

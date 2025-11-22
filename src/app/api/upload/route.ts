@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { uploadImage } from '@/lib/cloudinary'
-import { supabase } from '@/lib/supabase'
+import { supabaseAdmin } from '@/lib/supabase'
 
 export async function POST(request: NextRequest) {
   try {
@@ -29,8 +29,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Failed to upload image to Cloudinary' }, { status: 500 })
     }
 
-    // Save reference in Supabase with enhanced metadata
-    const { data: mediaData, error: mediaError } = await supabase
+    // Save reference in Supabase with enhanced metadata (using admin client to bypass RLS)
+    const { data: mediaData, error: mediaError } = await supabaseAdmin
       .from('media')
       .insert({
         url: result.secure_url,

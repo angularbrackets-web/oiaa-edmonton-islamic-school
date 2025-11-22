@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase'
+import { supabaseAdmin } from '@/lib/supabase'
 
 // Temporary debug endpoint to check media table
 export async function GET() {
   try {
-    // Get ALL media records
-    const { data: allMedia, error: allError } = await supabase
+    // Get ALL media records (using admin client to bypass RLS)
+    const { data: allMedia, error: allError } = await supabaseAdmin
       .from('media')
       .select('*')
       .order('created_at', { ascending: false })
@@ -18,7 +18,7 @@ export async function GET() {
     }
 
     // Get latest 10 media records
-    const { data: latestMedia, error: latestError } = await supabase
+    const { data: latestMedia, error: latestError } = await supabaseAdmin
       .from('media')
       .select('*')
       .order('created_at', { ascending: false })
