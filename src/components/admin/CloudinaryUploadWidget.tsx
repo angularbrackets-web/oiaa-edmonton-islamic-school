@@ -45,11 +45,17 @@ export default function CloudinaryUploadWidget({
         body: formData
       })
 
-      if (!response.ok) {
-        throw new Error('Upload failed')
-      }
-
       const data = await response.json()
+
+      if (!response.ok) {
+        const errorMessage = data.error || `Upload failed with status ${response.status}`
+        console.error('Upload failed:', {
+          status: response.status,
+          error: data.error,
+          details: data.details
+        })
+        throw new Error(errorMessage)
+      }
 
       if (data.success) {
         toast.success('Image uploaded successfully!')
@@ -64,8 +70,9 @@ export default function CloudinaryUploadWidget({
         throw new Error(data.error || 'Upload failed')
       }
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to upload image'
       console.error('Upload error:', error)
-      toast.error('Failed to upload image')
+      toast.error(errorMessage)
       onError?.(error)
     } finally {
       setUploading(false)
