@@ -170,7 +170,7 @@ export interface ImageGalleryBlockContent extends BlockContent {
 // Video Block
 export interface VideoBlockContent extends BlockContent {
   url: string // YouTube/Vimeo URL or uploaded video URL
-  videoType?: 'embed' | 'upload' // Embed (YouTube/Vimeo) or Upload (direct file)
+  videoType?: 'embed' | 'upload' | 'existing' // Embed (YouTube/Vimeo), Upload (direct file), or Existing (from media library)
   thumbnail?: string
   caption?: string
   autoplay?: boolean
