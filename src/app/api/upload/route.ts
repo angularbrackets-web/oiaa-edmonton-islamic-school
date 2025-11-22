@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Failed to upload image to Cloudinary' }, { status: 500 })
     }
 
-    // Save reference in Supabase
+    // Save reference in Supabase with enhanced metadata
     const { data: mediaData, error: mediaError } = await supabase
       .from('media')
       .insert({
@@ -37,7 +37,11 @@ export async function POST(request: NextRequest) {
         alt: alt,
         public_id: result.public_id,
         folder: folder,
-        file_type: result.resource_type
+        file_type: result.resource_type,
+        width: result.width,
+        height: result.height,
+        file_size: result.bytes,
+        original_filename: file.name
       })
       .select()
       .single()

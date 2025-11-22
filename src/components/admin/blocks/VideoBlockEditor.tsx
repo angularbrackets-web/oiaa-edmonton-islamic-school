@@ -3,6 +3,7 @@
 import { VideoBlockContent } from '@/types/cms'
 import { VideoCameraIcon } from '@heroicons/react/24/outline'
 import CloudinaryUploadWidget from '@/components/admin/CloudinaryUploadWidget'
+import MediaPicker from '@/components/admin/MediaPicker'
 import { useState } from 'react'
 
 interface VideoBlockEditorProps {
@@ -58,6 +59,7 @@ export default function VideoBlockEditor({ content, onChange }: VideoBlockEditor
   const embedUrl = getEmbedUrl(content.url || '')
   const { platform, id } = getVideoId(content.url || '')
   const videoType = content.videoType || 'embed'
+  const [showMediaPicker, setShowMediaPicker] = useState(false)
 
   const handleVideoUpload = (result: { secure_url: string; public_id: string }) => {
     onChange({
@@ -67,6 +69,15 @@ export default function VideoBlockEditor({ content, onChange }: VideoBlockEditor
     })
   }
 
+  const handleMediaSelect = (media: any) => {
+    onChange({
+      ...content,
+      url: media.url,
+      videoType: 'upload'
+    })
+    setShowMediaPicker(false)
+  }
+
   return (
     <div className="space-y-4">
       {/* Video Type Tabs */}
@@ -74,7 +85,7 @@ export default function VideoBlockEditor({ content, onChange }: VideoBlockEditor
         <label className="block text-sm font-medium text-gray-700 mb-2">
           Video Source
         </label>
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-wrap">
           <button
             type="button"
             onClick={() => onChange({ ...content, videoType: 'embed', url: '' })}
@@ -90,12 +101,26 @@ export default function VideoBlockEditor({ content, onChange }: VideoBlockEditor
             type="button"
             onClick={() => onChange({ ...content, videoType: 'upload', url: '' })}
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-              videoType === 'upload'
+              videoType === 'upload' && !showMediaPicker
                 ? 'bg-terracotta-red text-white'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
             ⬆️ Upload Video
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              onChange({ ...content, videoType: 'existing' })
+              setShowMediaPicker(true)
+            }}
+            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+              videoType === 'existing'
+                ? 'bg-terracotta-red text-white'
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            }`}
+          >
+            📁 Choose Existing
           </button>
         </div>
       </div>
@@ -186,6 +211,50 @@ export default function VideoBlockEditor({ content, onChange }: VideoBlockEditor
         </>
       )}
 
+      {/* Choose Existing Video Section */}
+      {videoType === 'existing' && (
+        <>
+          {content.url ? (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Selected Video
+              </label>
+              <div className="relative w-full aspect-video bg-gray-900 rounded-lg overflow-hidden">
+                <video
+                  src={content.url}
+                  controls
+                  className="w-full h-full"
+                >
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+              <div className="mt-3 flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowMediaPicker(true)}
+                  className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                >
+                  Change Video
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-terracotta-red transition-colors">
+              <VideoCameraIcon className="w-12 h-12 mx-auto text-gray-400 mb-4" />
+              <p className="text-gray-600 mb-4">No video selected</p>
+              <button
+                type="button"
+                onClick={() => setShowMediaPicker(true)}
+                className="inline-flex items-center gap-2 px-6 py-2 bg-terracotta-red text-white rounded-lg hover:bg-terracotta-red-dark transition-colors"
+              >
+                <VideoCameraIcon className="w-5 h-5" />
+                Browse Media Library
+              </button>
+            </div>
+          )}
+        </>
+      )}
+
       {/* Caption */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -213,6 +282,15 @@ export default function VideoBlockEditor({ content, onChange }: VideoBlockEditor
           Autoplay video (not recommended for accessibility)
         </label>
       </div>
+
+      {/* Media Picker Modal */}
+      <MediaPicker
+        isOpen={showMediaPicker}
+        onClose={() => setShowMediaPicker(false)}
+        onSelect={handleMediaSelect}
+        fileType="video"
+        title="Select Video"
+      />
     </div>
   )
 }
