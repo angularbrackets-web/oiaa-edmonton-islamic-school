@@ -81,7 +81,9 @@ export async function POST(request: NextRequest) {
     })
     return NextResponse.json({
       error: error instanceof Error ? error.message : 'Internal server error',
-      details: process.env.NODE_ENV === 'development' ? String(error) : undefined
+      details: String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+      env: process.env.NODE_ENV
     }, { status: 500 })
   }
 }
