@@ -50,6 +50,17 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Failed to fetch media' }, { status: 500 })
     }
 
+    console.log('Media API query:', {
+      page,
+      limit,
+      search,
+      type,
+      folder,
+      sort,
+      resultCount: data?.length,
+      totalCount: count
+    })
+
     return NextResponse.json({
       media: data || [],
       pagination: {
