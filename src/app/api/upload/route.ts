@@ -47,8 +47,19 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (mediaError) {
-      console.error('Supabase error (non-critical):', mediaError)
-      // Still return the Cloudinary URL even if database save fails
+      console.error('Supabase error:', mediaError)
+      // Return success with warning since Cloudinary upload succeeded
+      return NextResponse.json({
+        success: true,
+        url: result.secure_url,
+        public_id: result.public_id,
+        width: result.width,
+        height: result.height,
+        format: result.format,
+        mediaId: null,
+        warning: 'Image uploaded to Cloudinary but failed to save to database',
+        dbError: mediaError.message
+      })
     }
 
     return NextResponse.json({
