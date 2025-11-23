@@ -1271,7 +1271,7 @@ export default function Hero() {
 
         {/* Gallery Filter Controls */}
         {isGalleryMode && (
-          <motion.div 
+          <motion.div
             className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-20"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -1289,7 +1289,7 @@ export default function Hero() {
                       onClick={() => setGalleryFilter(filter.key as any)}
                       className={`transition-all duration-300 whitespace-nowrap px-4 py-2 rounded-full flex items-center gap-2 ${
                         galleryFilter === filter.key
-                          ? 'bg-white/20 text-white font-semibold' 
+                          ? 'bg-white/20 text-white font-semibold'
                           : 'text-white/60 hover:text-white/90 hover:bg-white/10'
                       }`}
                     >
@@ -1300,6 +1300,55 @@ export default function Hero() {
                     {index < 2 && <div className="w-px h-4 bg-white/20 mx-2" />}
                   </div>
                 ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        {/* Mobile Navigation Controls Overlay - Always visible at bottom on small screens */}
+        {!isVideoPlaying && !isGalleryMode && achievements.length > 0 && (
+          <motion.div
+            className="lg:hidden absolute bottom-6 left-1/2 transform -translate-x-1/2 z-30 w-auto"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8 }}
+          >
+            <div className="bg-black/80 backdrop-blur-md rounded-2xl px-6 py-4 border border-white/30 shadow-2xl">
+              <div className="flex items-center gap-4">
+                {/* Achievement dots navigation */}
+                <div className="flex gap-2">
+                  {achievements.map((_, index) => (
+                    <motion.button
+                      key={index}
+                      onClick={() => goToAchievement(index)}
+                      className={`w-4 h-4 rounded-full transition-all duration-300 focus:outline-none touch-manipulation ${
+                        index === currentAchievement ? 'bg-terracotta-red scale-125' : 'bg-white/30 active:bg-white/50'
+                      }`}
+                      whileTap={{ scale: 0.9 }}
+                      aria-label={`Go to achievement ${index + 1}`}
+                    />
+                  ))}
+                </div>
+
+                {/* Navigation Arrows */}
+                <div className="flex gap-2 border-l border-white/20 pl-4">
+                  <motion.button
+                    onClick={prevAchievement}
+                    className="bg-white/10 active:bg-white/20 text-white p-4 rounded-full transition-all duration-200 border border-white/20 touch-manipulation"
+                    whileTap={{ scale: 0.9 }}
+                    aria-label="Previous achievement"
+                  >
+                    <ChevronLeft className="w-6 h-6" />
+                  </motion.button>
+                  <motion.button
+                    onClick={nextAchievement}
+                    className="bg-white/10 active:bg-white/20 text-white p-4 rounded-full transition-all duration-200 border border-white/20 touch-manipulation"
+                    whileTap={{ scale: 0.9 }}
+                    aria-label="Next achievement"
+                  >
+                    <ChevronRight className="w-6 h-6" />
+                  </motion.button>
+                </div>
               </div>
             </div>
           </motion.div>
