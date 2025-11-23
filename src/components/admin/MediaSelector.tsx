@@ -70,13 +70,13 @@ export default function MediaSelector({
         </label>
       )}
 
-      {/* Tabs - Only show if no media selected or not compact */}
-      {!value && !compact && (
-        <div className="flex gap-2 mb-3">
+      {/* Tabs - Show when no media selected */}
+      {!value && (
+        <div className={`flex gap-2 ${compact ? 'mb-2' : 'mb-3'}`}>
           <button
             type="button"
             onClick={() => setActiveTab('upload')}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors text-sm ${
+            className={`${compact ? 'px-3 py-1.5 text-xs' : 'px-4 py-2 text-sm'} rounded-lg font-medium transition-colors ${
               activeTab === 'upload'
                 ? 'bg-terracotta-red text-white'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -87,7 +87,7 @@ export default function MediaSelector({
           <button
             type="button"
             onClick={() => setActiveTab('existing')}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors text-sm ${
+            className={`${compact ? 'px-3 py-1.5 text-xs' : 'px-4 py-2 text-sm'} rounded-lg font-medium transition-colors ${
               activeTab === 'existing'
                 ? 'bg-terracotta-red text-white'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
