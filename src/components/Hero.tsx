@@ -680,7 +680,7 @@ export default function Hero() {
               {/* Semi-transparent Dark Charcoal Overlay */}
               <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/80 to-black/70 backdrop-blur-sm" />
               
-              <div className="relative z-10 px-4 sm:px-6 lg:px-12 py-6 sm:py-8 lg:py-16 flex flex-col h-full min-h-[400px] sm:min-h-[500px] lg:min-h-auto">
+              <div className="relative z-10 px-4 sm:px-6 lg:px-12 py-6 sm:py-8 lg:py-16 pb-24 sm:pb-8 flex flex-col h-full min-h-[400px] sm:min-h-[500px] lg:min-h-auto">
                 {/* Animated Achievement Content */}
                 <div className="flex-1">
                   {achievements.length > 0 && achievements[currentAchievement] && currentAchievement < achievements.length && (
@@ -1004,7 +1004,7 @@ export default function Hero() {
               {/* Semi-transparent Dark Charcoal Overlay */}
               <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/80 to-black/70 backdrop-blur-sm" />
               
-              <div className="relative z-10 px-4 sm:px-6 lg:px-12 py-6 sm:py-8 lg:py-16 flex flex-col h-full min-h-[400px] sm:min-h-[500px] lg:min-h-auto">
+              <div className="relative z-10 px-4 sm:px-6 lg:px-12 py-6 sm:py-8 lg:py-16 pb-24 sm:pb-8 flex flex-col h-full min-h-[400px] sm:min-h-[500px] lg:min-h-auto">
                 {/* Animated Achievement Content */}
                 <div className="flex-1">
                   {achievements.length > 0 && achievements[currentAchievement] && currentAchievement < achievements.length && (
