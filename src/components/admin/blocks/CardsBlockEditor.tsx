@@ -2,7 +2,8 @@
 
 import { useState } from 'react'
 import { CardsBlockContent } from '@/types/cms'
-import { PlusIcon, TrashIcon, PhotoIcon } from '@heroicons/react/24/outline'
+import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline'
+import MediaSelector from '../MediaSelector'
 
 interface CardsBlockEditorProps {
   content: CardsBlockContent
@@ -153,100 +154,16 @@ export default function CardsBlockEditor({ content, onChange }: CardsBlockEditor
                 {/* Card Content (Expandable) */}
                 {expandedCard === index && (
                   <div className="p-4 space-y-4 bg-white">
-                    {/* Card Image */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Card Image (optional)
-                      </label>
-                      {card.image ? (
-                        <div className="space-y-2">
-                          <div className="relative w-full h-40 bg-gray-100 rounded-lg overflow-hidden group">
-                            <img
-                              src={card.image}
-                              alt={card.title}
-                              className="w-full h-full object-cover"
-                            />
-                            <button
-                              type="button"
-                              onClick={() => updateCard(index, 'image', '')}
-                              className="absolute top-2 right-2 p-1.5 bg-red-600 text-white rounded opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-700"
-                            >
-                              <TrashIcon className="w-4 h-4" />
-                            </button>
-                          </div>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              // Create a file input and trigger it
-                              const input = document.createElement('input')
-                              input.type = 'file'
-                              input.accept = 'image/*'
-                              input.onchange = async (e) => {
-                                const file = (e.target as HTMLInputElement).files?.[0]
-                                if (file) {
-                                  const formData = new FormData()
-                                  formData.append('file', file)
-                                  formData.append('folder', 'cms/cards')
-
-                                  try {
-                                    const response = await fetch('/api/upload', {
-                                      method: 'POST',
-                                      body: formData
-                                    })
-                                    const data = await response.json()
-                                    if (data.success) {
-                                      updateCard(index, 'image', data.url)
-                                    }
-                                  } catch (error) {
-                                    console.error('Upload error:', error)
-                                  }
-                                }
-                              }
-                              input.click()
-                            }}
-                            className="text-sm px-3 py-1.5 bg-gray-600 text-white rounded hover:bg-gray-700"
-                          >
-                            Replace Image
-                          </button>
-                        </div>
-                      ) : (
-                        <button
-                          type="button"
-                          onClick={() => {
-                            // Create a file input and trigger it
-                            const input = document.createElement('input')
-                            input.type = 'file'
-                            input.accept = 'image/*'
-                            input.onchange = async (e) => {
-                              const file = (e.target as HTMLInputElement).files?.[0]
-                              if (file) {
-                                const formData = new FormData()
-                                formData.append('file', file)
-                                formData.append('folder', 'cms/cards')
-
-                                try {
-                                  const response = await fetch('/api/upload', {
-                                    method: 'POST',
-                                    body: formData
-                                  })
-                                  const data = await response.json()
-                                  if (data.success) {
-                                    updateCard(index, 'image', data.url)
-                                  }
-                                } catch (error) {
-                                  console.error('Upload error:', error)
-                                }
-                              }
-                            }
-                            input.click()
-                          }}
-                          className="w-full border-2 border-dashed border-gray-300 rounded-lg p-6 hover:border-terracotta-red transition-colors"
-                        >
-                          <PhotoIcon className="w-8 h-8 mx-auto text-gray-400 mb-2" />
-                          <span className="text-sm text-gray-600 block">Click to Upload Image</span>
-                        </button>
-                      )}
-                    </div>
+                    {/* Card Media (Image or Video) */}
+                    <MediaSelector
+                      value={card.image || ''}
+                      onChange={(url) => updateCard(index, 'image', url)}
+                      type="both"
+                      folder="cms/cards"
+                      label="Card Image/Video (optional)"
+                      compact={true}
+                      showPreview={true}
+                    />
 
                     {/* Card Title */}
                     <div>
