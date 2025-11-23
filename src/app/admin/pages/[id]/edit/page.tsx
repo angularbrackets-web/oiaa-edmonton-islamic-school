@@ -584,6 +584,7 @@ function BlockEditor({
                   cardBorderRadius={cardBorderRadius}
                   cardShadow={cardShadow}
                   cardHoverEffect={cardHoverEffect}
+                  hideHeader={true}
                   onChange={handleLayoutChange}
                 />
               </div>

@@ -23,6 +23,7 @@ interface SimplifiedLayoutControlsProps {
   cardBorderRadius?: CardBorderRadius | null
   cardShadow?: CardShadow | null
   cardHoverEffect?: boolean | null
+  hideHeader?: boolean // Hide the header when used in a collapsible context
   onChange: (updates: {
     container_width?: ContainerWidth | null
     padding?: PaddingSize | null
@@ -100,6 +101,7 @@ export default function SimplifiedLayoutControls({
   cardBorderRadius = 'medium',
   cardShadow = 'subtle',
   cardHoverEffect = false,
+  hideHeader = false,
   onChange
 }: SimplifiedLayoutControlsProps) {
   const [showCustomPicker, setShowCustomPicker] = useState(false)
@@ -113,13 +115,15 @@ export default function SimplifiedLayoutControls({
 
   return (
     <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-6 space-y-6 border border-gray-200 shadow-sm">
-      <div className="flex items-center justify-between mb-2">
-        <h4 className="font-semibold text-base text-gray-800 flex items-center gap-2">
-          <span className="text-xl">🎨</span>
-          Layout & Styling
-        </h4>
-        <span className="text-xs text-gray-500 bg-white px-2 py-1 rounded">Simplified</span>
-      </div>
+      {!hideHeader && (
+        <div className="flex items-center justify-between mb-2">
+          <h4 className="font-semibold text-base text-gray-800 flex items-center gap-2">
+            <span className="text-xl">🎨</span>
+            Layout & Styling
+          </h4>
+          <span className="text-xs text-gray-500 bg-white px-2 py-1 rounded">Simplified</span>
+        </div>
+      )}
 
       {/* Container Width */}
       <div>
