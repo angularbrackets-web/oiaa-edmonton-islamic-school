@@ -550,9 +550,9 @@ function BlockEditor({
 
           {/* Layout Controls - Collapsible */}
           <div className="mt-6 pt-6 border-t border-gray-200">
-            <details className="group">
+            <details className="group bg-gray-50 rounded-lg border border-gray-200">
               <summary className="cursor-pointer list-none">
-                <div className="flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors border border-gray-200">
+                <div className="flex items-center justify-between p-4 hover:bg-gray-100 transition-colors rounded-lg">
                   <div className="flex items-center gap-3">
                     <span className="text-2xl">🎨</span>
                     <div>
@@ -561,8 +561,11 @@ function BlockEditor({
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-xs px-2 py-1 bg-white rounded border border-gray-300 text-gray-600">
+                    <span className="text-xs px-2 py-1 bg-white rounded border border-gray-300 text-gray-600 group-open:hidden">
                       Click to expand
+                    </span>
+                    <span className="text-xs px-2 py-1 bg-white rounded border border-gray-300 text-gray-600 hidden group-open:inline-block">
+                      Click to collapse
                     </span>
                     <svg className="w-5 h-5 text-gray-600 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -570,7 +573,7 @@ function BlockEditor({
                   </div>
                 </div>
               </summary>
-              <div className="mt-4">
+              <div className="px-4 pb-4">
                 <SimplifiedLayoutControls
                   containerWidth={containerWidth}
                   padding={padding}
