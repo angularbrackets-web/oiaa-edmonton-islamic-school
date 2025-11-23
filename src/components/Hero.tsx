@@ -680,7 +680,7 @@ export default function Hero() {
               {/* Semi-transparent Dark Charcoal Overlay */}
               <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/80 to-black/70 backdrop-blur-sm" />
               
-              <div className="relative z-10 px-4 sm:px-6 lg:px-12 py-6 sm:py-8 lg:py-16 pb-24 sm:pb-8 flex flex-col h-full min-h-[400px] sm:min-h-[500px] lg:min-h-auto">
+              <div className="relative z-10 px-4 sm:px-6 lg:px-12 py-6 sm:py-8 lg:py-16 pb-16 sm:pb-8 flex flex-col h-full min-h-[400px] sm:min-h-[500px] lg:min-h-auto">
                 {/* Animated Achievement Content */}
                 <div className="flex-1">
                   {achievements.length > 0 && achievements[currentAchievement] && currentAchievement < achievements.length && (
@@ -884,6 +884,48 @@ export default function Hero() {
                         </div>
                       </motion.div>
                     ))}
+                  </div>
+
+                  {/* Mobile Navigation - Inline below content */}
+                  <div className="lg:hidden flex justify-center mt-6 pt-6 border-t border-white/10">
+                    <div className="flex items-center gap-3 bg-gradient-to-r from-black/40 via-black/50 to-black/40 backdrop-blur-md rounded-full px-4 py-3 border border-white/20">
+                      {/* Previous Arrow */}
+                      <motion.button
+                        onClick={prevAchievement}
+                        className="text-white/80 active:text-white p-2 touch-manipulation"
+                        whileTap={{ scale: 0.85 }}
+                        aria-label="Previous"
+                      >
+                        <ChevronLeft className="w-5 h-5" strokeWidth={2.5} />
+                      </motion.button>
+
+                      {/* Dots - Compact spacing */}
+                      <div className="flex gap-1.5 px-2">
+                        {achievements.map((_, index) => (
+                          <motion.button
+                            key={index}
+                            onClick={() => goToAchievement(index)}
+                            className={`transition-all duration-300 touch-manipulation ${
+                              index === currentAchievement
+                                ? 'w-6 h-2 bg-terracotta-red rounded-full'
+                                : 'w-2 h-2 bg-white/40 rounded-full active:bg-white/60'
+                            }`}
+                            whileTap={{ scale: 0.8 }}
+                            aria-label={`Slide ${index + 1}`}
+                          />
+                        ))}
+                      </div>
+
+                      {/* Next Arrow */}
+                      <motion.button
+                        onClick={nextAchievement}
+                        className="text-white/80 active:text-white p-2 touch-manipulation"
+                        whileTap={{ scale: 0.85 }}
+                        aria-label="Next"
+                      >
+                        <ChevronRight className="w-5 h-5" strokeWidth={2.5} />
+                      </motion.button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1004,7 +1046,7 @@ export default function Hero() {
               {/* Semi-transparent Dark Charcoal Overlay */}
               <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/80 to-black/70 backdrop-blur-sm" />
               
-              <div className="relative z-10 px-4 sm:px-6 lg:px-12 py-6 sm:py-8 lg:py-16 pb-24 sm:pb-8 flex flex-col h-full min-h-[400px] sm:min-h-[500px] lg:min-h-auto">
+              <div className="relative z-10 px-4 sm:px-6 lg:px-12 py-6 sm:py-8 lg:py-16 pb-16 sm:pb-8 flex flex-col h-full min-h-[400px] sm:min-h-[500px] lg:min-h-auto">
                 {/* Animated Achievement Content */}
                 <div className="flex-1">
                   {achievements.length > 0 && achievements[currentAchievement] && currentAchievement < achievements.length && (
@@ -1209,6 +1251,48 @@ export default function Hero() {
                       </motion.div>
                     ))}
                   </div>
+
+                  {/* Mobile Navigation - Inline below content */}
+                  <div className="lg:hidden flex justify-center mt-6 pt-6 border-t border-white/10">
+                    <div className="flex items-center gap-3 bg-gradient-to-r from-black/40 via-black/50 to-black/40 backdrop-blur-md rounded-full px-4 py-3 border border-white/20">
+                      {/* Previous Arrow */}
+                      <motion.button
+                        onClick={prevAchievement}
+                        className="text-white/80 active:text-white p-2 touch-manipulation"
+                        whileTap={{ scale: 0.85 }}
+                        aria-label="Previous"
+                      >
+                        <ChevronLeft className="w-5 h-5" strokeWidth={2.5} />
+                      </motion.button>
+
+                      {/* Dots - Compact spacing */}
+                      <div className="flex gap-1.5 px-2">
+                        {achievements.map((_, index) => (
+                          <motion.button
+                            key={index}
+                            onClick={() => goToAchievement(index)}
+                            className={`transition-all duration-300 touch-manipulation ${
+                              index === currentAchievement
+                                ? 'w-6 h-2 bg-terracotta-red rounded-full'
+                                : 'w-2 h-2 bg-white/40 rounded-full active:bg-white/60'
+                            }`}
+                            whileTap={{ scale: 0.8 }}
+                            aria-label={`Slide ${index + 1}`}
+                          />
+                        ))}
+                      </div>
+
+                      {/* Next Arrow */}
+                      <motion.button
+                        onClick={nextAchievement}
+                        className="text-white/80 active:text-white p-2 touch-manipulation"
+                        whileTap={{ scale: 0.85 }}
+                        aria-label="Next"
+                      >
+                        <ChevronRight className="w-5 h-5" strokeWidth={2.5} />
+                      </motion.button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -1305,54 +1389,6 @@ export default function Hero() {
           </motion.div>
         )}
 
-        {/* Mobile Navigation Controls Overlay - Elegant minimal design */}
-        {!isVideoPlaying && !isGalleryMode && achievements.length > 0 && (
-          <motion.div
-            className="lg:hidden absolute bottom-4 left-1/2 transform -translate-x-1/2 z-30"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.6, duration: 0.4 }}
-          >
-            <div className="flex items-center gap-3 bg-gradient-to-r from-black/60 via-black/70 to-black/60 backdrop-blur-xl rounded-full px-4 py-3 shadow-lg border border-white/20">
-              {/* Previous Arrow */}
-              <motion.button
-                onClick={prevAchievement}
-                className="text-white/80 active:text-white p-2 touch-manipulation"
-                whileTap={{ scale: 0.85 }}
-                aria-label="Previous"
-              >
-                <ChevronLeft className="w-5 h-5" strokeWidth={2.5} />
-              </motion.button>
-
-              {/* Dots - Compact spacing */}
-              <div className="flex gap-1.5 px-2">
-                {achievements.map((_, index) => (
-                  <motion.button
-                    key={index}
-                    onClick={() => goToAchievement(index)}
-                    className={`transition-all duration-300 touch-manipulation ${
-                      index === currentAchievement
-                        ? 'w-6 h-2 bg-terracotta-red rounded-full'
-                        : 'w-2 h-2 bg-white/40 rounded-full active:bg-white/60'
-                    }`}
-                    whileTap={{ scale: 0.8 }}
-                    aria-label={`Slide ${index + 1}`}
-                  />
-                ))}
-              </div>
-
-              {/* Next Arrow */}
-              <motion.button
-                onClick={nextAchievement}
-                className="text-white/80 active:text-white p-2 touch-manipulation"
-                whileTap={{ scale: 0.85 }}
-                aria-label="Next"
-              >
-                <ChevronRight className="w-5 h-5" strokeWidth={2.5} />
-              </motion.button>
-            </div>
-          </motion.div>
-        )}
       </div>
     </section>
   )
