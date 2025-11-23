@@ -548,23 +548,46 @@ function BlockEditor({
             />
           )}
 
-          {/* Layout Controls */}
+          {/* Layout Controls - Collapsible */}
           <div className="mt-6 pt-6 border-t border-gray-200">
-            <SimplifiedLayoutControls
-              containerWidth={containerWidth}
-              padding={padding}
-              paddingHorizontal={paddingHorizontal}
-              marginTop={marginTop}
-              marginBottom={marginBottom}
-              marginHorizontal={marginHorizontal}
-              backgroundColor={backgroundColor}
-              customClass={customClass}
-              displayStyle={displayStyle}
-              cardBorderRadius={cardBorderRadius}
-              cardShadow={cardShadow}
-              cardHoverEffect={cardHoverEffect}
-              onChange={handleLayoutChange}
-            />
+            <details className="group">
+              <summary className="cursor-pointer list-none">
+                <div className="flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors border border-gray-200">
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl">🎨</span>
+                    <div>
+                      <h3 className="font-semibold text-gray-800">Layout & Styling</h3>
+                      <p className="text-xs text-gray-500 mt-0.5">Customize appearance, spacing, and colors (optional)</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs px-2 py-1 bg-white rounded border border-gray-300 text-gray-600">
+                      Click to expand
+                    </span>
+                    <svg className="w-5 h-5 text-gray-600 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </div>
+              </summary>
+              <div className="mt-4">
+                <SimplifiedLayoutControls
+                  containerWidth={containerWidth}
+                  padding={padding}
+                  paddingHorizontal={paddingHorizontal}
+                  marginTop={marginTop}
+                  marginBottom={marginBottom}
+                  marginHorizontal={marginHorizontal}
+                  backgroundColor={backgroundColor}
+                  customClass={customClass}
+                  displayStyle={displayStyle}
+                  cardBorderRadius={cardBorderRadius}
+                  cardShadow={cardShadow}
+                  cardHoverEffect={cardHoverEffect}
+                  onChange={handleLayoutChange}
+                />
+              </div>
+            </details>
           </div>
 
           <div className="flex items-center gap-2 mt-4">
