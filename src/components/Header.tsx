@@ -192,16 +192,16 @@ export default function Header() {
             ) : navError ? (
               // Error fallback - basic navigation
               <nav className="flex items-center space-x-8">
-                <Link href="/" className="text-deep-teal hover:text-terracotta-red transition-colors text-lg font-semibold">
+                <Link href="/" className="text-deep-teal hover:text-terracotta-red transition-colors text-sm font-semibold">
                   Home
                 </Link>
-                <Link href="/about-us" className="text-deep-teal hover:text-terracotta-red transition-colors text-lg font-semibold">
+                <Link href="/about-us" className="text-deep-teal hover:text-terracotta-red transition-colors text-sm font-semibold">
                   About Us
                 </Link>
-                <Link href="/admissions" className="text-deep-teal hover:text-terracotta-red transition-colors text-lg font-semibold">
+                <Link href="/admissions" className="text-deep-teal hover:text-terracotta-red transition-colors text-sm font-semibold">
                   Admissions
                 </Link>
-                <Link href="/contact" className="text-deep-teal hover:text-terracotta-red transition-colors text-lg font-semibold">
+                <Link href="/contact" className="text-deep-teal hover:text-terracotta-red transition-colors text-sm font-semibold">
                   Contact
                 </Link>
               </nav>
@@ -214,7 +214,7 @@ export default function Header() {
                       // Item with dropdown
                       <>
                         <button
-                          className="relative flex items-center gap-2 text-deep-teal hover:text-terracotta-red transition-all duration-300 text-lg font-semibold group/btn"
+                          className="relative flex items-center gap-2 text-deep-teal hover:text-terracotta-red transition-all duration-300 text-sm font-semibold group/btn"
                           style={{ animationDelay: `${index * 50}ms` }}
                           aria-haspopup="true"
                           aria-expanded="false"
@@ -259,7 +259,7 @@ export default function Header() {
                       // Simple link (no children)
                       <Link
                         href={item.href}
-                        className="relative flex items-center gap-2 text-deep-teal hover:text-terracotta-red transition-all duration-300 text-lg font-semibold group/link"
+                        className="relative flex items-center gap-2 text-deep-teal hover:text-terracotta-red transition-all duration-300 text-sm font-semibold group/link"
                         style={{ animationDelay: `${index * 50}ms` }}
                       >
                         <span className="relative z-10">{item.label_en}</span>
@@ -274,7 +274,7 @@ export default function Header() {
             {/* Donate Button - Keep separate with special styling */}
             <Link
               href="/donate"
-              className="ml-8 relative bg-gradient-to-r from-terracotta-red to-terracotta-red-dark hover:from-terracotta-red-dark hover:to-terracotta-red text-warm-white px-6 py-2 rounded-lg text-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 group overflow-hidden"
+              className="ml-8 relative bg-gradient-to-r from-terracotta-red to-terracotta-red-dark hover:from-terracotta-red-dark hover:to-terracotta-red text-warm-white px-6 py-2 rounded-lg text-sm font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 group overflow-hidden"
             >
               <span className="relative z-10">Donate</span>
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-warm-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
@@ -297,13 +297,13 @@ export default function Header() {
             ) : navError ? (
               // Error fallback for mobile
               <>
-                <Link href="/" className="block px-3 py-3 text-deep-teal hover:text-terracotta-red rounded-lg text-lg font-semibold" onClick={handleMobileNavClick}>
+                <Link href="/" className="block px-3 py-3 text-deep-teal hover:text-terracotta-red rounded-lg text-sm font-semibold" onClick={handleMobileNavClick}>
                   Home
                 </Link>
-                <Link href="/about-us" className="block px-3 py-3 text-deep-teal hover:text-terracotta-red rounded-lg text-lg font-semibold" onClick={handleMobileNavClick}>
+                <Link href="/about-us" className="block px-3 py-3 text-deep-teal hover:text-terracotta-red rounded-lg text-sm font-semibold" onClick={handleMobileNavClick}>
                   About Us
                 </Link>
-                <Link href="/admissions" className="block px-3 py-3 text-deep-teal hover:text-terracotta-red rounded-lg text-lg font-semibold" onClick={handleMobileNavClick}>
+                <Link href="/admissions" className="block px-3 py-3 text-deep-teal hover:text-terracotta-red rounded-lg text-sm font-semibold" onClick={handleMobileNavClick}>
                   Admissions
                 </Link>
               </>
@@ -318,7 +318,7 @@ export default function Header() {
                     <div className="rounded-lg overflow-hidden">
                       <button
                         onClick={() => toggleAccordion(item.id)}
-                        className="w-full flex items-center justify-between px-3 py-3 text-deep-teal hover:text-terracotta-red hover:bg-gradient-to-r hover:from-terracotta-red/5 hover:to-transparent rounded-lg text-lg font-semibold transition-all duration-300"
+                        className="w-full flex items-center justify-between px-3 py-3 text-deep-teal hover:text-terracotta-red hover:bg-gradient-to-r hover:from-terracotta-red/5 hover:to-transparent rounded-lg text-sm font-semibold transition-all duration-300"
                         aria-expanded={openAccordions.has(item.id)}
                         aria-label={`${item.label_en} menu`}
                       >
@@ -360,7 +360,7 @@ export default function Header() {
                     // Simple link (no children)
                     <Link
                       href={item.href}
-                      className="block px-3 py-3 text-deep-teal hover:text-terracotta-red hover:bg-gradient-to-r hover:from-terracotta-red/5 hover:to-transparent rounded-lg text-lg font-semibold transition-all duration-300"
+                      className="block px-3 py-3 text-deep-teal hover:text-terracotta-red hover:bg-gradient-to-r hover:from-terracotta-red/5 hover:to-transparent rounded-lg text-sm font-semibold transition-all duration-300"
                       onClick={handleMobileNavClick}
                     >
                       <span className="flex items-center gap-2">
@@ -378,7 +378,7 @@ export default function Header() {
             }`} style={{ transitionDelay: isMobileMenuOpen ? `${(navigationData.length || 6) * 50 + 200}ms` : '0ms' }}>
               <Link
                 href="/donate"
-                className="block w-full text-center bg-gradient-to-r from-terracotta-red to-terracotta-red-dark hover:from-terracotta-red-dark hover:to-terracotta-red text-warm-white px-6 py-3 rounded-lg text-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+                className="block w-full text-center bg-gradient-to-r from-terracotta-red to-terracotta-red-dark hover:from-terracotta-red-dark hover:to-terracotta-red text-warm-white px-6 py-3 rounded-lg text-sm font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
                 onClick={handleMobileNavClick}
               >
                 Donate Now

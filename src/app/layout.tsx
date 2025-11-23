@@ -18,7 +18,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Header />
-        <div className="pt-16">
+        <div className="pt-32">
           {children}
         </div>
         <ToastProvider />
