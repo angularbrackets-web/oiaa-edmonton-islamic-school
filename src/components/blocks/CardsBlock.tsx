@@ -25,6 +25,16 @@ export default function CardsBlock({ content }: CardsBlockProps) {
     flat: 'bg-gray-50 hover:bg-gray-100 transition-colors'
   }[cardStyle]
 
+  // Helper function to detect if media is a video
+  const isVideo = (url: string) => {
+    return url && (
+      url.includes('.mp4') ||
+      url.includes('.webm') ||
+      url.includes('.mov') ||
+      url.includes('video')
+    )
+  }
+
   return (
     <div className="py-8">
       <div className="container mx-auto px-4">
@@ -34,14 +44,23 @@ export default function CardsBlock({ content }: CardsBlockProps) {
               key={index}
               className={`rounded-lg overflow-hidden ${cardStyleClasses}`}
             >
-              {/* Card Image */}
+              {/* Card Media (Image or Video) */}
               {card.image && (
-                <div className="relative w-full h-48 overflow-hidden">
-                  <img
-                    src={card.image}
-                    alt={card.title}
-                    className="w-full h-full object-cover"
-                  />
+                <div className="relative w-full h-48 overflow-hidden bg-gray-100">
+                  {isVideo(card.image) ? (
+                    <video
+                      src={card.image}
+                      className="w-full h-full object-cover"
+                      controls
+                      playsInline
+                    />
+                  ) : (
+                    <img
+                      src={card.image}
+                      alt={card.title}
+                      className="w-full h-full object-cover"
+                    />
+                  )}
                 </div>
               )}
 
