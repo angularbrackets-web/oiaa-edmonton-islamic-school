@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import Header from '@/components/Header'
+import ConditionalHeader from '@/components/ConditionalHeader'
 import ToastProvider from '@/components/providers/ToastProvider'
 
 export const metadata: Metadata = {
@@ -17,10 +17,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Header />
-        <div className="pt-32">
-          {children}
-        </div>
+        <ConditionalHeader />
+        {children}
         <ToastProvider />
       </body>
     </html>
