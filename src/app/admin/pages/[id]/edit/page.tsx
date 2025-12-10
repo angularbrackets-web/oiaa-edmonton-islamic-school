@@ -310,7 +310,7 @@ export default function EditPagePage() {
             <div className="bg-white rounded-xl shadow-lg p-4 border-2 border-terracotta-red">
               <h3 className="font-semibold text-gray-900 mb-3">Choose Block Type</h3>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                {(['text', 'image', 'video', 'cards', 'component', 'page_embed', 'cta'] as BlockType[]).map(type => (
+                {(['text', 'heading', 'image', 'video', 'cards', 'component', 'page_embed', 'cta'] as BlockType[]).map(type => (
                   <button
                     key={type}
                     onClick={() => handleAddBlock(type)}
