@@ -18,6 +18,7 @@ import {
 } from '@heroicons/react/24/outline'
 import { Page, ContentBlock, BlockType, BLOCK_TYPE_LABELS, BLOCK_TYPE_ICONS, getDefaultBlockContent, ContainerWidth, PaddingSize, SpacingSize } from '@/types/cms'
 import TipTapEditor from '@/components/admin/TipTapEditor'
+import HeadingBlockEditor from '@/components/admin/blocks/HeadingBlockEditor'
 import ImageBlockEditor from '@/components/admin/blocks/ImageBlockEditor'
 import VideoBlockEditor from '@/components/admin/blocks/VideoBlockEditor'
 import CardsBlockEditor from '@/components/admin/blocks/CardsBlockEditor'
@@ -26,7 +27,7 @@ import ComponentBlockEditor from '@/components/admin/blocks/ComponentBlockEditor
 import SectionBlockEditor from '@/components/admin/blocks/SectionBlockEditor'
 import ColumnsBlockEditor from '@/components/admin/blocks/ColumnsBlockEditor'
 import SimplifiedLayoutControls from '@/components/admin/blocks/SimplifiedLayoutControls'
-import { TextBlockContent, ImageBlockContent, CTABlockContent, VideoBlockContent, CardsBlockContent, PageEmbedBlockContent, ComponentBlockContent, SectionBlockContent, ColumnsBlockContent } from '@/types/cms'
+import { TextBlockContent, HeadingBlockContent, ImageBlockContent, CTABlockContent, VideoBlockContent, CardsBlockContent, PageEmbedBlockContent, ComponentBlockContent, SectionBlockContent, ColumnsBlockContent } from '@/types/cms'
 
 export default function EditPagePage() {
   const params = useParams()
@@ -495,6 +496,12 @@ function BlockEditor({
           {block.block_type === 'text' && (
             <TextBlockEditor
               content={editedContent as TextBlockContent}
+              onChange={setEditedContent}
+            />
+          )}
+          {block.block_type === 'heading' && (
+            <HeadingBlockEditor
+              content={editedContent as HeadingBlockContent}
               onChange={setEditedContent}
             />
           )}

@@ -4,7 +4,7 @@
  * Renders different block types on the frontend with layout control
  */
 
-import { ContentBlock, TextBlockContent, ImageBlockContent, CTABlockContent, VideoBlockContent, CardsBlockContent, PageEmbedBlockContent, ComponentBlockContent, SectionBlockContent, ColumnsBlockContent } from '@/types/cms'
+import { ContentBlock, TextBlockContent, HeadingBlockContent, ImageBlockContent, CTABlockContent, VideoBlockContent, CardsBlockContent, PageEmbedBlockContent, ComponentBlockContent, SectionBlockContent, ColumnsBlockContent } from '@/types/cms'
 import Link from 'next/link'
 import VideoBlock from './VideoBlock'
 import CardsBlock from './CardsBlock'
@@ -12,6 +12,7 @@ import PageEmbedBlock from './PageEmbedBlock'
 import ComponentBlock from './ComponentBlock'
 import SectionBlock from './SectionBlock'
 import ColumnsBlock from './ColumnsBlock'
+import HeadingBlock from './HeadingBlock'
 import BlockLayoutWrapper from './BlockLayoutWrapper'
 
 interface BlockRendererProps {
@@ -39,6 +40,7 @@ export default function BlockRenderer({ block }: BlockRendererProps) {
       cardHoverEffect={block.card_hover_effect}
     >
       {block.block_type === 'text' && <TextBlock content={block.content as TextBlockContent} />}
+      {block.block_type === 'heading' && <HeadingBlock content={block.content as HeadingBlockContent} />}
       {block.block_type === 'image' && <ImageBlock content={block.content as ImageBlockContent} />}
       {block.block_type === 'video' && <VideoBlock content={block.content as VideoBlockContent} />}
       {block.block_type === 'cards' && <CardsBlock content={block.content as CardsBlockContent} />}
