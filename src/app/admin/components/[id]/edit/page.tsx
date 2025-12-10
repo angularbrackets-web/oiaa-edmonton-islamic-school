@@ -15,10 +15,11 @@ import {
 } from '@heroicons/react/24/outline'
 import { ReusableComponent, BlockConfiguration, BlockType, BLOCK_TYPE_LABELS, BLOCK_TYPE_ICONS, getDefaultBlockContent } from '@/types/cms'
 import TipTapEditor from '@/components/admin/TipTapEditor'
+import HeadingBlockEditor from '@/components/admin/blocks/HeadingBlockEditor'
 import ImageBlockEditor from '@/components/admin/blocks/ImageBlockEditor'
 import VideoBlockEditor from '@/components/admin/blocks/VideoBlockEditor'
 import CardsBlockEditor from '@/components/admin/blocks/CardsBlockEditor'
-import { TextBlockContent, ImageBlockContent, VideoBlockContent, CardsBlockContent } from '@/types/cms'
+import { TextBlockContent, HeadingBlockContent, ImageBlockContent, VideoBlockContent, CardsBlockContent } from '@/types/cms'
 
 export default function EditComponentBlocksPage() {
   const params = useParams()
@@ -263,6 +264,13 @@ export default function EditComponentBlocksPage() {
                         content: { ...editingBlock.content, html }
                       })
                     }
+                  />
+                )}
+
+                {editingBlock.block_type === 'heading' && (
+                  <HeadingBlockEditor
+                    content={editingBlock.content as HeadingBlockContent}
+                    onChange={(content) => handleUpdateBlock(editingIndex, { content })}
                   />
                 )}
 

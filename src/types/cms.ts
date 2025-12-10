@@ -56,6 +56,7 @@ export interface PageWithBlocks extends Page {
 
 export type BlockType =
   | 'text'
+  | 'heading'
   | 'image'
   | 'image_gallery'
   | 'video'
@@ -142,6 +143,16 @@ export interface TextBlockContent extends BlockContent {
   html: string
   alignment?: 'left' | 'center' | 'right' | 'justify'
   columns?: 1 | 2 | 3
+}
+
+// Heading Block
+export interface HeadingBlockContent extends BlockContent {
+  text: string
+  level: 1 | 2 | 3 | 4 | 5 | 6
+  alignment?: 'left' | 'center' | 'right'
+  subtitle?: string
+  show_divider?: boolean
+  divider_color?: string
 }
 
 // Image Block
@@ -367,6 +378,7 @@ export interface ValidationError {
 
 export const BLOCK_TYPE_LABELS: Record<BlockType, string> = {
   text: 'Text Block',
+  heading: 'Heading',
   image: 'Image',
   image_gallery: 'Image Gallery',
   video: 'Video',
@@ -386,6 +398,7 @@ export const BLOCK_TYPE_LABELS: Record<BlockType, string> = {
 
 export const BLOCK_TYPE_ICONS: Record<BlockType, string> = {
   text: '📝',
+  heading: '📌',
   image: '🖼️',
   image_gallery: '🎨',
   video: '🎥',
@@ -440,6 +453,8 @@ export function getDefaultBlockContent(blockType: BlockType): BlockContent {
   switch (blockType) {
     case 'text':
       return { html: '<p>Enter your text here...</p>', alignment: 'left' }
+    case 'heading':
+      return { text: 'Enter heading text', level: 2, alignment: 'left', show_divider: false }
     case 'image':
       return { url: '', alt: '', alignment: 'center' }
     case 'image_gallery':
