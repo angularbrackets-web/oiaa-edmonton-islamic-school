@@ -26,7 +26,7 @@ export const pagesService = {
            display_order, is_visible, background_color, padding, padding_horizontal, custom_css_class,
            container_width, margin_top, margin_bottom, margin_horizontal,
            display_style, card_border_color, card_border_radius, card_shadow, card_hover_effect,
-           created_at, updated_at
+           column_index, created_at, updated_at
          )`
       : '*'
 
@@ -82,7 +82,7 @@ export const pagesService = {
            display_order, is_visible, background_color, padding, padding_horizontal, custom_css_class,
            container_width, margin_top, margin_bottom, margin_horizontal,
            display_style, card_border_color, card_border_radius, card_shadow, card_hover_effect,
-           created_at, updated_at
+           column_index, created_at, updated_at
          )`
       : '*'
 
@@ -120,7 +120,7 @@ export const pagesService = {
            display_order, is_visible, background_color, padding, padding_horizontal, custom_css_class,
            container_width, margin_top, margin_bottom, margin_horizontal,
            display_style, card_border_color, card_border_radius, card_shadow, card_hover_effect,
-           created_at, updated_at
+           column_index, created_at, updated_at
          )`
       : '*'
 
@@ -204,6 +204,7 @@ export const pagesService = {
           card_border_radius,
           card_shadow,
           card_hover_effect,
+          column_index,
           created_at,
           updated_at
         )

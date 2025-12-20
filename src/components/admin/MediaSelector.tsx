@@ -27,6 +27,7 @@ export default function MediaSelector({
 }: MediaSelectorProps) {
   const [activeTab, setActiveTab] = useState<'upload' | 'existing'>('upload')
   const [showMediaPicker, setShowMediaPicker] = useState(false)
+  const [showSelectionUI, setShowSelectionUI] = useState(false)
 
   const handleUploadSuccess = (result: {
     secure_url: string
@@ -36,6 +37,7 @@ export default function MediaSelector({
     format?: string
   }) => {
     onChange(result.secure_url)
+    setShowSelectionUI(false)
   }
 
   const handleUploadError = (error: any) => {
@@ -45,6 +47,7 @@ export default function MediaSelector({
   const handleMediaSelect = (media: any) => {
     onChange(media.url)
     setShowMediaPicker(false)
+    setShowSelectionUI(false)
   }
 
   const handleRemove = () => {
@@ -70,8 +73,8 @@ export default function MediaSelector({
         </label>
       )}
 
-      {/* Tabs - Show when no media selected */}
-      {!value && (
+      {/* Tabs - Show when selecting or no media */}
+      {(!value || showSelectionUI) && (
         <div className={`flex gap-2 ${compact ? 'mb-2' : 'mb-3'}`}>
           <button
             type="button"
@@ -95,12 +98,21 @@ export default function MediaSelector({
           >
             Choose Existing
           </button>
+          {value && showSelectionUI && (
+            <button
+              type="button"
+              onClick={() => setShowSelectionUI(false)}
+              className={`${compact ? 'px-3 py-1.5 text-xs' : 'px-4 py-2 text-sm'} rounded-lg font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200 ml-auto`}
+            >
+              Cancel
+            </button>
+          )}
         </div>
       )}
 
       {/* Preview or Upload Area */}
-      {value && showPreview ? (
-        // Show Preview
+      {value && showPreview && !showSelectionUI ? (
+        // Show Preview Only
         <div className="space-y-2">
           <div className={`relative group ${compact ? 'w-full h-32' : 'w-full max-w-md h-48'} bg-gray-100 rounded-lg overflow-hidden`}>
             {isVideo ? (
@@ -128,28 +140,16 @@ export default function MediaSelector({
           </div>
 
           {!compact && (
-            <div className="flex gap-2">
-              <button
-                type="button"
-                onClick={() => {
-                  setActiveTab('upload')
-                  handleRemove()
-                }}
-                className="px-3 py-1.5 text-sm bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
-              >
-                Replace (Upload)
-              </button>
-              <button
-                type="button"
-                onClick={() => setShowMediaPicker(true)}
-                className="px-3 py-1.5 text-sm bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
-              >
-                Replace (Existing)
-              </button>
-            </div>
+            <button
+              type="button"
+              onClick={() => setShowSelectionUI(true)}
+              className="w-full px-3 py-2 text-sm bg-deep-teal text-white rounded-lg hover:bg-deep-teal-dark transition-colors"
+            >
+              Change Image
+            </button>
           )}
         </div>
-      ) : activeTab === 'upload' ? (
+      ) : (!value || showSelectionUI) && activeTab === 'upload' ? (
         // Upload UI
         <CloudinaryUploadWidget
           onSuccess={handleUploadSuccess}
@@ -176,24 +176,15 @@ export default function MediaSelector({
         </div>
       )}
 
-      {/* Compact mode upload button when media exists */}
-      {value && compact && (
-        <div className="flex gap-2">
-          <button
-            type="button"
-            onClick={() => setShowMediaPicker(true)}
-            className="flex-1 px-2 py-1 text-xs bg-gray-600 text-white rounded hover:bg-gray-700"
-          >
-            Choose Different
-          </button>
-          <button
-            type="button"
-            onClick={handleRemove}
-            className="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700"
-          >
-            Remove
-          </button>
-        </div>
+      {/* Compact mode - Change button when media exists */}
+      {value && compact && !showSelectionUI && (
+        <button
+          type="button"
+          onClick={() => setShowSelectionUI(true)}
+          className="w-full px-2 py-1.5 text-xs bg-deep-teal text-white rounded hover:bg-deep-teal-dark transition-colors"
+        >
+          Change
+        </button>
       )}
 
       {/* Media Picker Modal */}

@@ -26,8 +26,52 @@ import PageEmbedBlockEditor from '@/components/admin/blocks/PageEmbedBlockEditor
 import ComponentBlockEditor from '@/components/admin/blocks/ComponentBlockEditor'
 import SectionBlockEditor from '@/components/admin/blocks/SectionBlockEditor'
 import ColumnsBlockEditor from '@/components/admin/blocks/ColumnsBlockEditor'
+import FormBlockEditor from '@/components/admin/blocks/FormBlockEditor'
+import MapBlockEditor from '@/components/admin/blocks/MapBlockEditor'
+import DocumentsBlockEditor from '@/components/admin/blocks/DocumentsBlockEditor'
+import SpacerBlockEditor from '@/components/admin/blocks/SpacerBlockEditor'
+import DividerBlockEditor from '@/components/admin/blocks/DividerBlockEditor'
 import SimplifiedLayoutControls from '@/components/admin/blocks/SimplifiedLayoutControls'
-import { TextBlockContent, HeadingBlockContent, ImageBlockContent, CTABlockContent, VideoBlockContent, CardsBlockContent, PageEmbedBlockContent, ComponentBlockContent, SectionBlockContent, ColumnsBlockContent } from '@/types/cms'
+import NestedBlocksEditor from '@/components/admin/blocks/NestedBlocksEditor'
+import { TextBlockContent, HeadingBlockContent, ImageBlockContent, CTABlockContent, VideoBlockContent, CardsBlockContent, PageEmbedBlockContent, ComponentBlockContent, SectionBlockContent, ColumnsBlockContent, FormBlockContent, MapBlockContent, DocumentsBlockContent, SpacerBlockContent, DividerBlockContent } from '@/types/cms'
+
+// Helper to build block tree structure
+function buildBlockTree(blocks: ContentBlock[]): ContentBlock[] {
+  const blockMap = new Map<string, ContentBlock>()
+  const topLevelBlocks: ContentBlock[] = []
+
+  // First pass: create map and identify top-level blocks
+  blocks.forEach(block => {
+    blockMap.set(block.id, { ...block, blocks: [] })
+  })
+
+  // Second pass: attach children to parents
+  blocks.forEach(block => {
+    const blockWithChildren = blockMap.get(block.id)!
+    if (block.parent_block_id) {
+      const parent = blockMap.get(block.parent_block_id)
+      if (parent) {
+        parent.blocks = parent.blocks || []
+        parent.blocks.push(blockWithChildren)
+      }
+    } else {
+      topLevelBlocks.push(blockWithChildren)
+    }
+  })
+
+  // Sort blocks by display_order
+  const sortBlocks = (blockList: ContentBlock[]) => {
+    blockList.sort((a, b) => a.display_order - b.display_order)
+    blockList.forEach(block => {
+      if (block.blocks && block.blocks.length > 0) {
+        sortBlocks(block.blocks)
+      }
+    })
+  }
+  sortBlocks(topLevelBlocks)
+
+  return topLevelBlocks
+}
 
 export default function EditPagePage() {
   const params = useParams()
@@ -35,7 +79,8 @@ export default function EditPagePage() {
   const pageId = params.id as string
 
   const [page, setPage] = useState<Page | null>(null)
-  const [blocks, setBlocks] = useState<ContentBlock[]>([])
+  const [allBlocks, setAllBlocks] = useState<ContentBlock[]>([])  // Flat list of all blocks
+  const [blocks, setBlocks] = useState<ContentBlock[]>([])        // Tree structure (top-level with nested)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [editingBlockId, setEditingBlockId] = useState<string | null>(null)
@@ -64,7 +109,11 @@ export default function EditPagePage() {
       const response = await fetch(`/api/blocks?page_id=${pageId}&admin=true`)
       const data = await response.json()
       if (data.success) {
-        setBlocks(data.data || [])
+        const flatBlocks = data.data || []
+        setAllBlocks(flatBlocks)
+        // Build tree structure for display
+        const treeBlocks = buildBlockTree(flatBlocks)
+        setBlocks(treeBlocks)
       }
     } catch (error) {
       console.error('Error loading blocks:', error)
@@ -114,7 +163,7 @@ export default function EditPagePage() {
     }
   }
 
-  const handleUpdateBlock = async (blockId: string, updates: Partial<ContentBlock>) => {
+  const handleUpdateBlock = async (blockId: string, updates: Partial<ContentBlock>, closeAfterSave: boolean = false): Promise<void> => {
     try {
       const response = await fetch(`/api/blocks/${blockId}`, {
         method: 'PUT',
@@ -122,11 +171,21 @@ export default function EditPagePage() {
         body: JSON.stringify(updates)
       })
       if (response.ok) {
+        // Preserve scroll position during reload
+        const scrollY = window.scrollY
         await loadBlocks()
-        setEditingBlockId(null)
+        // Only close editor if explicitly requested
+        if (closeAfterSave) {
+          setEditingBlockId(null)
+        }
+        // Restore scroll position after a brief delay to allow render
+        requestAnimationFrame(() => {
+          window.scrollTo(0, scrollY)
+        })
       }
     } catch (error) {
       console.error('Error updating block:', error)
+      throw error  // Re-throw so the caller knows something went wrong
     }
   }
 
@@ -185,6 +244,134 @@ export default function EditPagePage() {
       }
     } catch (error) {
       console.error('Error reordering blocks:', error)
+    }
+  }
+
+  // ============================================================================
+  // NESTED BLOCK HANDLERS (for columns/section containers)
+  // ============================================================================
+
+  /**
+   * Helper to reload blocks while preserving scroll position
+   * Uses multiple restoration attempts to handle React re-renders
+   */
+  const reloadBlocksPreservingScroll = async () => {
+    const scrollY = window.scrollY
+    await loadBlocks()
+
+    // Restore scroll position multiple times to handle React re-renders
+    // First attempt: immediate
+    window.scrollTo(0, scrollY)
+
+    // Second attempt: next animation frame
+    requestAnimationFrame(() => {
+      window.scrollTo(0, scrollY)
+    })
+
+    // Third attempt: after a short delay
+    setTimeout(() => {
+      window.scrollTo(0, scrollY)
+    }, 10)
+
+    // Fourth attempt: after React has definitely re-rendered
+    setTimeout(() => {
+      window.scrollTo(0, scrollY)
+    }, 50)
+  }
+
+  /**
+   * Add a block inside a container (columns or section)
+   */
+  const handleAddNestedBlock = async (
+    parentBlockId: string,
+    blockType: BlockType,
+    columnIndex: number
+  ) => {
+    try {
+      // Get existing nested blocks to determine display_order
+      const nestedBlocks = allBlocks.filter(b => b.parent_block_id === parentBlockId)
+      const columnBlocks = nestedBlocks.filter(b => b.column_index === columnIndex)
+      const maxOrder = columnBlocks.length > 0
+        ? Math.max(...columnBlocks.map(b => b.display_order))
+        : -1
+
+      const response = await fetch('/api/blocks', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          page_id: pageId,
+          parent_block_id: parentBlockId,
+          block_type: blockType,
+          content: getDefaultBlockContent(blockType),
+          display_order: maxOrder + 1,
+          column_index: columnIndex,
+          is_visible: true
+        })
+      })
+      if (response.ok) {
+        await reloadBlocksPreservingScroll()
+      }
+    } catch (error) {
+      console.error('Error adding nested block:', error)
+    }
+  }
+
+  /**
+   * Update a nested block
+   */
+  const handleUpdateNestedBlock = async (blockId: string, updates: Partial<ContentBlock>) => {
+    try {
+      const response = await fetch(`/api/blocks/${blockId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updates)
+      })
+      if (response.ok) {
+        await reloadBlocksPreservingScroll()
+      }
+    } catch (error) {
+      console.error('Error updating nested block:', error)
+    }
+  }
+
+  /**
+   * Delete a nested block
+   */
+  const handleDeleteNestedBlock = async (blockId: string) => {
+    try {
+      const response = await fetch(`/api/blocks/${blockId}`, {
+        method: 'DELETE'
+      })
+      if (response.ok) {
+        await reloadBlocksPreservingScroll()
+      }
+    } catch (error) {
+      console.error('Error deleting nested block:', error)
+    }
+  }
+
+  /**
+   * Move a block to a different column or position
+   */
+  const handleMoveNestedBlock = async (
+    blockId: string,
+    newColumnIndex: number,
+    newOrder: number
+  ) => {
+    try {
+      const response = await fetch(`/api/blocks/${blockId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          column_index: newColumnIndex,
+          display_order: newOrder
+        })
+      })
+      if (response.ok) {
+        await reloadBlocksPreservingScroll()
+      }
+    } catch (error) {
+      console.error('Error moving nested block:', error)
     }
   }
 
@@ -310,7 +497,7 @@ export default function EditPagePage() {
             <div className="bg-white rounded-xl shadow-lg p-4 border-2 border-terracotta-red">
               <h3 className="font-semibold text-gray-900 mb-3">Choose Block Type</h3>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                {(['text', 'heading', 'image', 'video', 'cards', 'component', 'page_embed', 'cta'] as BlockType[]).map(type => (
+                {(['text', 'heading', 'image', 'video', 'cards', 'form', 'map', 'documents', 'spacer', 'divider', 'columns', 'section', 'component', 'page_embed', 'cta'] as BlockType[]).map(type => (
                   <button
                     key={type}
                     onClick={() => handleAddBlock(type)}
@@ -349,13 +536,19 @@ export default function EditPagePage() {
                   block={block}
                   isEditing={editingBlockId === block.id}
                   onEdit={() => setEditingBlockId(block.id)}
-                  onSave={(updates) => handleUpdateBlock(block.id, updates)}
+                  onSave={(updates, closeAfterSave) => handleUpdateBlock(block.id, updates, closeAfterSave)}
                   onCancel={() => setEditingBlockId(null)}
                   onDelete={() => handleDeleteBlock(block.id)}
                   onToggleVisibility={() => handleToggleBlockVisibility(block.id)}
                   onMoveUp={index > 0 ? () => handleMoveBlock(block.id, 'up') : undefined}
                   onMoveDown={index < blocks.length - 1 ? () => handleMoveBlock(block.id, 'down') : undefined}
                   currentPageId={pageId}
+                  // Nested block handlers for columns/section containers
+                  onAddNestedBlock={handleAddNestedBlock}
+                  onUpdateNestedBlock={handleUpdateNestedBlock}
+                  onDeleteNestedBlock={handleDeleteNestedBlock}
+                  onMoveNestedBlock={handleMoveNestedBlock}
+                  onEditNestedBlock={(nestedBlockId) => setEditingBlockId(nestedBlockId)}
                 />
               ))}
             </div>
@@ -371,13 +564,19 @@ interface BlockEditorProps {
   block: ContentBlock
   isEditing: boolean
   onEdit: () => void
-  onSave: (updates: Partial<ContentBlock>) => void
+  onSave: (updates: Partial<ContentBlock>, closeAfterSave?: boolean) => void
   onCancel: () => void
   onDelete: () => void
   onToggleVisibility: () => void
   onMoveUp?: () => void
   onMoveDown?: () => void
   currentPageId?: string
+  // Nested block handlers for containers (columns/section)
+  onAddNestedBlock?: (parentBlockId: string, blockType: BlockType, columnIndex: number) => Promise<void>
+  onUpdateNestedBlock?: (blockId: string, updates: Partial<ContentBlock>) => Promise<void>
+  onDeleteNestedBlock?: (blockId: string) => Promise<void>
+  onMoveNestedBlock?: (blockId: string, newColumnIndex: number, newOrder: number) => Promise<void>
+  onEditNestedBlock?: (blockId: string) => void
 }
 
 function BlockEditor({
@@ -390,9 +589,16 @@ function BlockEditor({
   onToggleVisibility,
   onMoveUp,
   onMoveDown,
-  currentPageId
+  currentPageId,
+  onAddNestedBlock,
+  onUpdateNestedBlock,
+  onDeleteNestedBlock,
+  onMoveNestedBlock,
+  onEditNestedBlock
 }: BlockEditorProps) {
   const [editedContent, setEditedContent] = useState(block.content)
+  const [isSaving, setIsSaving] = useState(false)
+  const [saveSuccess, setSaveSuccess] = useState(false)
 
   // Layout state
   const [containerWidth, setContainerWidth] = useState<ContainerWidth | null>(block.container_width || 'contained')
@@ -408,22 +614,31 @@ function BlockEditor({
   const [cardShadow, setCardShadow] = useState(block.card_shadow || 'subtle')
   const [cardHoverEffect, setCardHoverEffect] = useState(block.card_hover_effect || false)
 
-  const handleSave = () => {
-    onSave({
-      content: editedContent,
-      container_width: containerWidth,
-      padding: padding,
-      padding_horizontal: paddingHorizontal,
-      margin_top: marginTop,
-      margin_bottom: marginBottom,
-      margin_horizontal: marginHorizontal,
-      background_color: backgroundColor,
-      custom_css_class: customClass,
-      display_style: displayStyle,
-      card_border_radius: cardBorderRadius,
-      card_shadow: cardShadow,
-      card_hover_effect: cardHoverEffect
-    })
+  const handleSave = async (closeAfterSave: boolean = false) => {
+    setIsSaving(true)
+    setSaveSuccess(false)
+    try {
+      await onSave({
+        content: editedContent,
+        container_width: containerWidth,
+        padding: padding,
+        padding_horizontal: paddingHorizontal,
+        margin_top: marginTop,
+        margin_bottom: marginBottom,
+        margin_horizontal: marginHorizontal,
+        background_color: backgroundColor,
+        custom_css_class: customClass,
+        display_style: displayStyle,
+        card_border_radius: cardBorderRadius,
+        card_shadow: cardShadow,
+        card_hover_effect: cardHoverEffect
+      }, closeAfterSave)
+      setSaveSuccess(true)
+      // Clear success indicator after 2 seconds
+      setTimeout(() => setSaveSuccess(false), 2000)
+    } finally {
+      setIsSaving(false)
+    }
   }
 
   const handleLayoutChange = (updates: {
@@ -523,6 +738,36 @@ function BlockEditor({
               onChange={setEditedContent}
             />
           )}
+          {block.block_type === 'form' && (
+            <FormBlockEditor
+              content={editedContent as FormBlockContent}
+              onChange={setEditedContent}
+            />
+          )}
+          {block.block_type === 'map' && (
+            <MapBlockEditor
+              content={editedContent as MapBlockContent}
+              onChange={setEditedContent}
+            />
+          )}
+          {block.block_type === 'documents' && (
+            <DocumentsBlockEditor
+              content={editedContent as DocumentsBlockContent}
+              onChange={setEditedContent}
+            />
+          )}
+          {block.block_type === 'spacer' && (
+            <SpacerBlockEditor
+              content={editedContent as SpacerBlockContent}
+              onChange={setEditedContent}
+            />
+          )}
+          {block.block_type === 'divider' && (
+            <DividerBlockEditor
+              content={editedContent as DividerBlockContent}
+              onChange={setEditedContent}
+            />
+          )}
           {block.block_type === 'page_embed' && (
             <PageEmbedBlockEditor
               content={editedContent as PageEmbedBlockContent}
@@ -549,10 +794,36 @@ function BlockEditor({
             />
           )}
           {block.block_type === 'columns' && (
-            <ColumnsBlockEditor
-              content={editedContent as ColumnsBlockContent}
-              onChange={setEditedContent}
-            />
+            <>
+              <ColumnsBlockEditor
+                content={editedContent as ColumnsBlockContent}
+                onChange={setEditedContent}
+              />
+
+              {/* Nested Blocks Editor for managing blocks inside columns */}
+              {onAddNestedBlock && onUpdateNestedBlock && onDeleteNestedBlock && onMoveNestedBlock && onEditNestedBlock && (
+                <div className="mt-6 pt-6 border-t border-gray-200">
+                  <h4 className="font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                    <span className="text-xl">📦</span>
+                    Column Content
+                  </h4>
+                  <NestedBlocksEditor
+                    parentBlockId={block.id}
+                    pageId={currentPageId || block.page_id}
+                    content={editedContent as ColumnsBlockContent}
+                    nestedBlocks={block.blocks || []}
+                    onContentChange={setEditedContent}
+                    onAddBlock={(blockType, columnIndex) =>
+                      onAddNestedBlock(block.id, blockType, columnIndex)
+                    }
+                    onUpdateBlock={onUpdateNestedBlock}
+                    onDeleteBlock={onDeleteNestedBlock}
+                    onMoveBlock={onMoveNestedBlock}
+                    onEditBlock={onEditNestedBlock}
+                  />
+                </div>
+              )}
+            </>
           )}
 
           {/* Layout Controls - Collapsible */}
@@ -602,11 +873,44 @@ function BlockEditor({
           </div>
 
           <div className="flex items-center gap-2 mt-4">
-            <button onClick={handleSave} className="px-4 py-2 bg-terracotta-red text-white rounded-lg hover:bg-terracotta-red-dark flex items-center gap-2">
-              <CheckIcon className="w-4 h-4" />
-              Save
+            {/* Save button - keeps editor open */}
+            <button
+              onClick={() => handleSave(false)}
+              disabled={isSaving}
+              className="px-4 py-2 bg-terracotta-red text-white rounded-lg hover:bg-terracotta-red-dark flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isSaving ? (
+                <>
+                  <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  Saving...
+                </>
+              ) : saveSuccess ? (
+                <>
+                  <CheckIcon className="w-4 h-4" />
+                  Saved!
+                </>
+              ) : (
+                <>
+                  <CheckIcon className="w-4 h-4" />
+                  Save
+                </>
+              )}
             </button>
-            <button onClick={onCancel} className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 flex items-center gap-2">
+            {/* Save & Close button */}
+            <button
+              onClick={() => handleSave(true)}
+              disabled={isSaving}
+              className="px-4 py-2 bg-deep-teal text-white rounded-lg hover:bg-deep-teal-dark flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <CheckIcon className="w-4 h-4" />
+              Save & Close
+            </button>
+            {/* Cancel button */}
+            <button
+              onClick={onCancel}
+              disabled={isSaving}
+              className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 flex items-center gap-2 disabled:opacity-50"
+            >
               <XMarkIcon className="w-4 h-4" />
               Cancel
             </button>

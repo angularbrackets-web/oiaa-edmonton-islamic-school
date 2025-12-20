@@ -105,34 +105,34 @@ const shadowClasses: Record<CardShadow, string> = {
 
 export default function BlockLayoutWrapper({
   children,
-  containerWidth = 'contained',
-  padding = 'medium',
-  paddingHorizontal = 'medium',
+  containerWidth = 'full',  // Changed: Default to full width (stretch-fit)
+  padding = 'none',  // Changed: Default to no padding (let blocks stretch-fit)
+  paddingHorizontal = 'none',  // Changed: Default to no horizontal padding
   marginTop = 'none',
   marginBottom = 'none',
   marginHorizontal = 'none',
   backgroundColor,
   customClass,
-  displayStyle = 'card',  // Default to card display
+  displayStyle = 'flat',  // Changed: Default to flat (no borders/shadows)
   cardBorderColor,
   cardBorderRadius,
   cardShadow,
   cardHoverEffect = false
 }: BlockLayoutWrapperProps) {
   // Container width class
-  const widthClass = containerWidth ? containerWidthClasses[containerWidth] : containerWidthClasses.contained
+  const widthClass = containerWidth ? containerWidthClasses[containerWidth] : containerWidthClasses.full
 
-  // Padding classes
-  const paddingClass = padding ? paddingSizeClasses[padding] : paddingSizeClasses.medium
-  const paddingHorizontalClass = paddingHorizontal ? horizontalPaddingSizeClasses[paddingHorizontal] : horizontalPaddingSizeClasses.medium
+  // Padding classes - use none as default if not specified
+  const paddingClass = padding ? paddingSizeClasses[padding] : ''
+  const paddingHorizontalClass = paddingHorizontal ? horizontalPaddingSizeClasses[paddingHorizontal] : ''
 
   // Margin classes
   const marginTopClass = marginTop ? marginTopClasses[marginTop] : ''
   const marginBottomClass = marginBottom ? marginBottomClasses[marginBottom] : ''
   const marginHorizontalClass = marginHorizontal ? marginHorizontalClasses[marginHorizontal] : ''
 
-  // Card display style
-  const cardStyle = displayStyle ? displayStyleClasses[displayStyle] : displayStyleClasses.card
+  // Card display style - use flat as default if not specified
+  const cardStyle = displayStyle ? displayStyleClasses[displayStyle] : ''
 
   // Custom card border radius (overrides default from displayStyle)
   const customBorderRadius = cardBorderRadius ? borderRadiusClasses[cardBorderRadius] : ''
@@ -168,11 +168,26 @@ export default function BlockLayoutWrapper({
     ${customClass || ''}
   `.trim().replace(/\s+/g, ' ')
 
+  // For full-width blocks, skip the inner container div to allow stretch-fit
+  const shouldUseContainer = containerWidth && containerWidth !== 'full'
+
+  // Check if we need the wrapper at all (no styling, no background, no custom class)
+  const hasAnyStyles = wrapperClasses.length > 0 || Object.keys(backgroundStyle).length > 0
+
+  // If no styling needed and full-width, return children directly (no wrapper elements)
+  if (!hasAnyStyles && !shouldUseContainer) {
+    return <>{children}</>
+  }
+
   return (
     <section className={wrapperClasses} style={Object.keys(backgroundStyle).length > 0 ? backgroundStyle : undefined}>
-      <div className={widthClass}>
-        {children}
-      </div>
+      {shouldUseContainer ? (
+        <div className={widthClass}>
+          {children}
+        </div>
+      ) : (
+        children
+      )}
     </section>
   )
 }

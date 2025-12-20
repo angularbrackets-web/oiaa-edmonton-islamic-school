@@ -4,7 +4,7 @@
  * Renders different block types on the frontend with layout control
  */
 
-import { ContentBlock, TextBlockContent, HeadingBlockContent, ImageBlockContent, CTABlockContent, VideoBlockContent, CardsBlockContent, PageEmbedBlockContent, ComponentBlockContent, SectionBlockContent, ColumnsBlockContent } from '@/types/cms'
+import { ContentBlock, TextBlockContent, HeadingBlockContent, ImageBlockContent, CTABlockContent, VideoBlockContent, CardsBlockContent, PageEmbedBlockContent, ComponentBlockContent, SectionBlockContent, ColumnsBlockContent, FormBlockContent, MapBlockContent, DocumentsBlockContent, SpacerBlockContent, DividerBlockContent } from '@/types/cms'
 import Link from 'next/link'
 import VideoBlock from './VideoBlock'
 import CardsBlock from './CardsBlock'
@@ -13,6 +13,11 @@ import ComponentBlock from './ComponentBlock'
 import SectionBlock from './SectionBlock'
 import ColumnsBlock from './ColumnsBlock'
 import HeadingBlock from './HeadingBlock'
+import FormBlock from './FormBlock'
+import MapBlock from './MapBlock'
+import DocumentsBlock from './DocumentsBlock'
+import SpacerBlock from './SpacerBlock'
+import DividerBlock from './DividerBlock'
 import BlockLayoutWrapper from './BlockLayoutWrapper'
 
 interface BlockRendererProps {
@@ -49,6 +54,11 @@ export default function BlockRenderer({ block }: BlockRendererProps) {
       {block.block_type === 'cta' && <CTABlock content={block.content as CTABlockContent} />}
       {block.block_type === 'section' && <SectionBlock block={block} />}
       {block.block_type === 'columns' && <ColumnsBlock content={block.content as ColumnsBlockContent} block={block} />}
+      {block.block_type === 'form' && <FormBlock content={block.content as FormBlockContent} />}
+      {block.block_type === 'map' && <MapBlock content={block.content as MapBlockContent} />}
+      {block.block_type === 'documents' && <DocumentsBlock content={block.content as DocumentsBlockContent} />}
+      {block.block_type === 'spacer' && <SpacerBlock content={block.content as SpacerBlockContent} />}
+      {block.block_type === 'divider' && <DividerBlock content={block.content as DividerBlockContent} />}
     </BlockLayoutWrapper>
   )
 }
@@ -66,12 +76,10 @@ function TextBlock({ content }: { content: TextBlockContent }) {
   const columnClass = columns === 2 ? 'md:columns-2' : columns === 3 ? 'md:columns-3' : ''
 
   return (
-    <div className={`${alignmentClass} ${columnClass}`}>
-      <div
-        className="prose prose-lg max-w-none prose-headings:text-deep-teal prose-a:text-terracotta-red prose-a:no-underline hover:prose-a:underline"
-        dangerouslySetInnerHTML={{ __html: content.html || '' }}
-      />
-    </div>
+    <div
+      className={`prose prose-lg max-w-none ${alignmentClass} ${columnClass} prose-headings:text-deep-teal prose-a:text-terracotta-red prose-a:no-underline hover:prose-a:underline`}
+      dangerouslySetInnerHTML={{ __html: content.html || '' }}
+    />
   )
 }
 
@@ -84,16 +92,16 @@ function ImageBlock({ content }: { content: ImageBlockContent }) {
     center: 'mx-auto',
     right: 'ml-auto',
     full: 'w-full'
-  }[content.alignment || 'center']
+  }[content.alignment || 'full']  // Changed default to 'full'
 
   return (
-    <figure className={alignmentClass}>
+    <figure className={`${alignmentClass} m-0`}>
       <img
         src={content.url}
         alt={content.alt || ''}
         width={content.width}
         height={content.height}
-        className="rounded-lg shadow-lg"
+        className="w-full h-auto block"
       />
       {content.caption && (
         <figcaption className="mt-2 text-sm text-gray-600 text-center">

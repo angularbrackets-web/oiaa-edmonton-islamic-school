@@ -72,6 +72,11 @@ export type BlockType =
   | 'table'
   | 'staff_grid'
   | 'news_feed'
+  | 'form'         // Form: Customizable contact/inquiry forms
+  | 'map'          // Map: Google Maps embed
+  | 'documents'    // Documents: PDF/Word file viewer
+  | 'spacer'       // Spacer: Vertical spacing between blocks
+  | 'divider'      // Divider: Visual separator line
 
 export type PaddingSize = 'none' | 'small' | 'medium' | 'large'
 export type ContainerWidth = 'narrow' | 'contained' | 'wide' | 'full'
@@ -79,6 +84,25 @@ export type SpacingSize = 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
 export type DisplayStyle = 'flat' | 'card' | 'featured'
 export type CardBorderRadius = 'none' | 'small' | 'medium' | 'large'
 export type CardShadow = 'none' | 'subtle' | 'medium' | 'strong'
+export type ColumnRatio = '1:1' | '1:2' | '2:1' | '1:3' | '3:1' | '1:1:1' | '1:2:1' | '2:1:1' | '1:1:2' | '1:1:1:1'
+export type VerticalAlign = 'top' | 'center' | 'bottom' | 'stretch'
+export type DividerStyle = 'solid' | 'dashed' | 'dotted' | 'double' | 'islamic-pattern'
+export type BorderWidth = 'none' | 'thin' | 'medium' | 'thick'
+
+// Per-column configuration for Columns layout
+export interface ColumnConfig {
+  id: string                          // Unique identifier for the column (e.g., 'col-0', 'col-1')
+  padding?: PaddingSize               // Vertical padding within column
+  padding_horizontal?: PaddingSize    // Horizontal padding within column
+  margin?: PaddingSize                // Vertical margin outside column
+  margin_horizontal?: PaddingSize     // Horizontal margin outside column
+  background_color?: string           // Column background color
+  border_color?: string               // Column border color
+  border_width?: BorderWidth          // Column border thickness
+  border_radius?: CardBorderRadius    // Column corner radius
+  vertical_align?: VerticalAlign      // Override container-level alignment for this column
+  custom_class?: string               // Custom CSS class for column
+}
 
 export interface ContentBlock {
   id: string
@@ -106,6 +130,8 @@ export interface ContentBlock {
   card_hover_effect?: boolean | null
   created_at: string
   updated_at: string
+  // Column assignment for blocks inside a columns container
+  column_index?: number | null  // 0-based index (null = auto-distribute)
   // Nested blocks (populated when queried with children)
   blocks?: ContentBlock[]
 }
@@ -127,6 +153,8 @@ export interface ContentBlockInput {
   margin_top?: SpacingSize | null
   margin_bottom?: SpacingSize | null
   margin_horizontal?: SpacingSize | null
+  // Column assignment for blocks inside a columns container
+  column_index?: number | null  // 0-based index (null = auto-distribute)
 }
 
 // ============================================================================
@@ -207,8 +235,13 @@ export interface CardsBlockContent extends BlockContent {
     image?: string
     button_text?: string
     button_url?: string
+    image_width?: string // e.g., '100%', '50%', 'auto', '200px'
+    image_height?: string // e.g., 'auto', '200px', '300px'
+    image_background_color?: string
+    body_background_color?: string
+    full_width?: boolean // Span full container width
   }>
-  columns?: 2 | 3 | 4
+  columns?: 1 | 2 | 3 | 4 // 1 = full-width single column
   card_style?: 'elevated' | 'outlined' | 'flat'
 }
 
@@ -235,11 +268,14 @@ export interface SectionBlockContent extends BlockContent {
 // Columns Block - Multi-column layout container
 export interface ColumnsBlockContent extends BlockContent {
   column_count: 2 | 3 | 4  // Number of columns
-  column_ratio?: string  // e.g., '1:1', '2:1', '1:2:1', etc.
+  column_ratio?: ColumnRatio  // e.g., '1:1', '2:1', '1:2:1', etc.
   gap?: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'  // Gap between columns
   stack_on_mobile?: boolean  // Stack vertically on mobile (default: true)
+  vertical_align?: VerticalAlign  // Vertical alignment within columns
+  // Per-column configuration (padding, background, borders, etc.)
+  columns?: ColumnConfig[]
   // Each column contains nested blocks (via parent_block_id relationship)
-  // Columns are identified by display_order of child blocks
+  // Blocks are assigned to columns via column_index field
 }
 
 // Hero Block
@@ -303,6 +339,83 @@ export interface NewsFeedBlockContent extends BlockContent {
   limit?: number
   category?: string
   layout?: 'grid' | 'list'
+}
+
+// Form Block - Customizable contact/inquiry forms
+export type FormFieldType = 'text' | 'email' | 'phone' | 'textarea' | 'select' | 'checkbox' | 'radio' | 'date' | 'number'
+
+export interface FormField {
+  id: string
+  type: FormFieldType
+  label: string
+  placeholder?: string
+  required?: boolean
+  options?: string[]  // For select, checkbox, radio
+  validation?: string // Regex pattern for custom validation
+  width?: 'full' | 'half'  // Field width
+}
+
+export interface FormBlockContent extends BlockContent {
+  form_name: string  // Unique name for the form (for tracking submissions)
+  title?: string
+  description?: string
+  fields: FormField[]
+  submit_button_text?: string
+  success_message?: string
+  error_message?: string
+  // Email notification settings
+  notify_email?: string  // Admin email to receive notifications
+  email_subject?: string
+  // Styling
+  layout?: 'stacked' | 'inline'
+  button_style?: 'primary' | 'secondary'
+}
+
+// Map Block - Google Maps embed
+export interface MapBlockContent extends BlockContent {
+  embed_url?: string  // Google Maps embed URL
+  address?: string  // Address to display
+  latitude?: number
+  longitude?: number
+  zoom?: number
+  height?: string  // e.g., '400px', '50vh'
+  show_marker?: boolean
+  marker_title?: string
+}
+
+// Documents Block - PDF/Word file viewer
+export interface DocumentItem {
+  id: string
+  title: string
+  url: string
+  type: 'pdf' | 'word' | 'excel' | 'other'
+  size?: string
+  description?: string
+}
+
+export interface DocumentsBlockContent extends BlockContent {
+  title?: string
+  description?: string
+  documents: DocumentItem[]
+  display_style?: 'list' | 'grid' | 'cards'
+  show_download?: boolean
+  show_preview?: boolean  // For PDFs
+}
+
+// Spacer Block - Vertical spacing between blocks
+export interface SpacerBlockContent extends BlockContent {
+  height: SpacingSize | 'custom'  // Preset sizes or custom
+  custom_height?: string  // e.g., '100px', '5rem', '10vh'
+}
+
+// Divider Block - Visual separator line
+export interface DividerBlockContent extends BlockContent {
+  style: DividerStyle  // Line style (solid, dashed, dotted, double, islamic-pattern)
+  color?: string  // Line color (default: gray-300)
+  thickness: 'thin' | 'medium' | 'thick'  // Line thickness
+  width: 'full' | '80' | '60' | '40'  // Percentage width
+  alignment: 'left' | 'center' | 'right'  // Alignment when width < 100%
+  pattern_color?: string  // Secondary color for islamic-pattern style
 }
 
 // ============================================================================
@@ -393,7 +506,12 @@ export const BLOCK_TYPE_LABELS: Record<BlockType, string> = {
   accordion: 'Accordion / FAQ',
   table: 'Table',
   staff_grid: 'Staff Grid',
-  news_feed: 'News Feed'
+  news_feed: 'News Feed',
+  form: 'Form',
+  map: 'Map',
+  documents: 'Documents',
+  spacer: 'Spacer',
+  divider: 'Divider'
 }
 
 export const BLOCK_TYPE_ICONS: Record<BlockType, string> = {
@@ -413,7 +531,12 @@ export const BLOCK_TYPE_ICONS: Record<BlockType, string> = {
   accordion: '📋',
   table: '📑',
   staff_grid: '👥',
-  news_feed: '📰'
+  news_feed: '📰',
+  form: '📧',
+  map: '📍',
+  documents: '📄',
+  spacer: '↕️',
+  divider: '➖'
 }
 
 // Validation helpers
@@ -472,7 +595,16 @@ export function getDefaultBlockContent(blockType: BlockType): BlockContent {
     case 'section':
       return {}  // Section blocks contain nested blocks
     case 'columns':
-      return { column_count: 2, gap: 'md', stack_on_mobile: true }
+      return {
+        column_count: 2,
+        gap: 'md',
+        stack_on_mobile: true,
+        vertical_align: 'stretch',
+        columns: [
+          { id: 'col-0' },
+          { id: 'col-1' }
+        ]
+      }
     case 'hero':
       return { title: 'Hero Title', alignment: 'center', height: 'medium' }
     case 'stats_grid':
@@ -485,6 +617,48 @@ export function getDefaultBlockContent(blockType: BlockType): BlockContent {
       return { columns: 3 }
     case 'news_feed':
       return { limit: 6, layout: 'grid' }
+    case 'form':
+      return {
+        form_name: 'contact_form',
+        title: 'Contact Us',
+        description: '',
+        fields: [],
+        submit_button_text: 'Submit',
+        success_message: 'Thank you for your submission! We will get back to you soon.',
+        error_message: 'There was an error submitting the form. Please try again.',
+        layout: 'stacked',
+        button_style: 'primary'
+      }
+    case 'map':
+      return {
+        address: '',
+        height: '400px',
+        zoom: 15,
+        show_marker: true
+      }
+    case 'documents':
+      return {
+        title: 'Documents',
+        description: '',
+        documents: [],
+        display_style: 'list',
+        show_download: true,
+        show_preview: true
+      }
+    case 'spacer':
+      return {
+        height: 'md',
+        custom_height: ''
+      }
+    case 'divider':
+      return {
+        style: 'solid',
+        color: '#d1d5db',
+        thickness: 'thin',
+        width: 'full',
+        alignment: 'center',
+        pattern_color: '#145B55'
+      }
     default:
       return {}
   }
@@ -686,4 +860,104 @@ export function validateComponentInput(input: ReusableComponentInput): Validatio
   }
 
   return errors
+}
+
+// ============================================================================
+// HOME PAGE SECTIONS TYPES
+// ============================================================================
+
+/**
+ * Home Section
+ * Manages homepage section order and visibility
+ */
+export interface HomeSection {
+  id: string
+  section_id: string | null // Legacy: 'hero', 'news', 'about', 'contact'
+  section_name: string
+  section_type: string // Component name
+  component_id: string | null // Reference to reusable component
+  display_order: number
+  is_visible: boolean
+  config: Record<string, any>
+  created_at: string
+  updated_at: string
+}
+
+/**
+ * Input for creating/updating home sections
+ */
+export interface HomeSectionInput {
+  section_id?: string | null
+  section_name: string
+  section_type: string
+  component_id?: string | null
+  display_order?: number
+  is_visible?: boolean
+  config?: Record<string, any>
+}
+
+/**
+ * Home section update (for reordering)
+ */
+export interface HomeSectionUpdate {
+  id: string
+  display_order: number
+}
+
+// ============================================================================
+// HERO SLIDES TYPES
+// ============================================================================
+
+/**
+ * Hero Slide
+ * Content-centric slideshow slides for the hero section
+ */
+export interface HeroSlide {
+  id: string
+  title: string | null
+  subtitle: string | null
+  description: string | null
+  slide_type: 'image' | 'text' | 'image_text'
+  background_image: string | null
+  background_color: string
+  background_overlay: boolean
+  overlay_opacity: number
+  text_color: string
+  text_alignment: 'left' | 'center' | 'right'
+  cta_text: string | null
+  cta_link: string | null
+  cta_style: 'primary' | 'secondary' | 'outline'
+  cta2_text: string | null
+  cta2_link: string | null
+  cta2_style: 'primary' | 'secondary' | 'outline'
+  display_order: number
+  duration: number
+  is_active: boolean
+  created_at: string
+  updated_at: string
+}
+
+/**
+ * Input for creating/updating hero slides
+ */
+export interface HeroSlideInput {
+  title?: string
+  subtitle?: string
+  description?: string
+  slide_type?: 'image' | 'text' | 'image_text'
+  background_image?: string
+  background_color?: string
+  background_overlay?: boolean
+  overlay_opacity?: number
+  text_color?: string
+  text_alignment?: 'left' | 'center' | 'right'
+  cta_text?: string
+  cta_link?: string
+  cta_style?: 'primary' | 'secondary' | 'outline'
+  cta2_text?: string
+  cta2_link?: string
+  cta2_style?: 'primary' | 'secondary' | 'outline'
+  display_order?: number
+  duration?: number
+  is_active?: boolean
 }

@@ -1,0 +1,9 @@
+Issues/Enhancements (December 19, 2025)
+Documents should automatically download or open in a new tab when I click Download. Currently it’s opening in the same window.
+Form on submitted doesn’t send email. Can we use any open source or options having generous free tier to send emails?
+Success (and failure) messages should auto hide after like 10 seconds.
+We should have a page in the admin panel to view different forms and the corresponding data submitted by users.
+Unable to view the maps properly in the page. Getting this message on the console - Refused to display 'https://maps.app.goo.gl/' in a frame because it set 'X-Frame-Options' to 'sameorigin'.
+Home Page Management in Admin section: Changing order doesn’t reflect in the home page. There’s no option to add/delete components.
+Hero section not working and need improvements. We have to move away from achievements centric and focus towards content centric in the Hero section. Hero section should be a beautiful, smooth, auto slideshow of content (image/text/image & text) with option for users to manually navigate the slides by moving forward or backward.
+Need options to update the content in the header and footer like phone number, email, address etc.

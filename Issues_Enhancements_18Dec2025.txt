@@ -1,0 +1,24 @@
+Issues/Enhancements (December 18, 2025):
+1. Admin Panel:
+    1. Hero Section (/admin/achievements):
+        1. Unable to delete items ❌
+        2. Unable to add items ❌
+    2. Navigation Menu (/admin/navigation):
+        1. Unable to navigate to main menu item ❌
+        2. Delete sub menu from navigation menu ✅
+    3. Content Blocks:
+        1. Cards:
+            1. Currently no option to add a full width card (single column?) : Partial. Card doesnt span full width of page.
+            2. Card image should be resizable ✅
+            3. Background for card image and body ✅
+        2. Add new type of content blocks:
+            1. Forms - I see it in the add block section, but nothing happens when I click on it.
+            2. Map - I see it in the add block section, but nothing happens when I click on it.
+            3. Documents (PDF,Word) - I see it in the add block section, but nothing happens when I click on it.
+    4. Home Page:
+        1. Home page should be a stack of components - When i click on the edit option in home menu in navigation menu, it says 'Failed to create page: Missing required fields: slug, title'
+        2. Option to add new or reuse existing components to make up for the home page - Not sure if this is implemented. can test only when the above works.
+2. Home Page:
+    1. Changes made in the admin panel for the Home page should reflect in the actual home page. - Can test only when the option to edit the home page content in admin panel changes are done.
+3. Hero Section:
+    1. Remove this part - Book School Tour area ✅

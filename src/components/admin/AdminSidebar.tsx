@@ -7,13 +7,15 @@ import {
   HomeIcon,
   BuildingOfficeIcon,
   UserGroupIcon,
-  TrophyIcon,
+  PhotoIcon,
   NewspaperIcon,
   Bars3Icon,
   DocumentTextIcon,
   ChevronDoubleLeftIcon,
   ChevronDoubleRightIcon,
-  CubeIcon
+  CubeIcon,
+  EnvelopeIcon,
+  Cog6ToothIcon
 } from '@heroicons/react/24/outline'
 
 interface SidebarProps {
@@ -50,6 +52,12 @@ export default function AdminSidebar({ isCollapsed, onToggleCollapse }: SidebarP
       exact: false
     },
     {
+      name: 'Hero Slides',
+      href: '/admin/hero-slides',
+      icon: PhotoIcon,
+      exact: false
+    },
+    {
       name: 'School Information',
       href: '/admin/school',
       icon: BuildingOfficeIcon,
@@ -68,9 +76,15 @@ export default function AdminSidebar({ isCollapsed, onToggleCollapse }: SidebarP
       exact: false
     },
     {
-      name: 'Hero Achievements',
-      href: '/admin/achievements',
-      icon: TrophyIcon,
+      name: 'Form Submissions',
+      href: '/admin/form-submissions',
+      icon: EnvelopeIcon,
+      exact: false
+    },
+    {
+      name: 'Site Settings',
+      href: '/admin/settings',
+      icon: Cog6ToothIcon,
       exact: false
     }
   ]

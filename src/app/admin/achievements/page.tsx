@@ -23,6 +23,9 @@ interface Achievement {
   featured: boolean
   order: number
   backgroundImage: string
+  ctaText?: string
+  ctaUrl?: string
+  ctaStyle?: 'primary' | 'secondary'
 }
 
 export default function AchievementsManagementPage() {
@@ -47,6 +50,36 @@ export default function AchievementsManagementPage() {
     }
   }
 
+  // Save individual achievement (create or update)
+  const saveIndividualAchievement = async (achievement: Achievement, isNew: boolean) => {
+    setIsLoading(true)
+    try {
+      const url = isNew ? '/api/achievements' : `/api/achievements/${achievement.id}`
+      const method = isNew ? 'POST' : 'PATCH'
+
+      const response = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(isNew ? { achievement } : achievement)
+      })
+
+      if (response.ok) {
+        await loadAchievements() // Reload from server for consistency
+        setMessage(isNew ? 'Achievement added successfully!' : 'Achievement updated successfully!')
+        setTimeout(() => setMessage(''), 3000)
+        setShowForm(false)
+        setEditingAchievement(null)
+      } else {
+        const errorData = await response.json()
+        setMessage(errorData.error || 'Failed to save achievement')
+      }
+    } catch (error) {
+      setMessage('Error saving achievement')
+    }
+    setIsLoading(false)
+  }
+
+  // Bulk save for reordering (still uses bulk update for efficiency)
   const saveAchievements = async (updatedAchievements: Achievement[]) => {
     setIsLoading(true)
     try {
@@ -55,7 +88,7 @@ export default function AchievementsManagementPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ achievements: updatedAchievements })
       })
-      
+
       if (response.ok) {
         setAchievements({ achievements: updatedAchievements })
         setMessage('Achievements updated successfully!')
@@ -72,7 +105,7 @@ export default function AchievementsManagementPage() {
   }
 
   const addNewAchievement = () => {
-    const newAchievement = {
+    const newAchievement: Achievement = {
       id: `achievement-${Date.now()}`,
       title: '',
       description: '',
@@ -81,7 +114,10 @@ export default function AchievementsManagementPage() {
       icon: 'Award',
       featured: true,
       order: (achievements?.achievements?.length || 0) + 1,
-      backgroundImage: '/images/hero-1.jpg'
+      backgroundImage: '/images/hero-1.jpg',
+      ctaText: '',
+      ctaUrl: '',
+      ctaStyle: 'primary'
     }
     setEditingAchievement(newAchievement)
     setShowForm(true)
@@ -102,23 +138,32 @@ export default function AchievementsManagementPage() {
       setTimeout(() => setMessage(''), 3000)
       return
     }
-    
-    const updatedList = achievements?.achievements || []
-    const existingIndex = updatedList.findIndex(a => a.id === editingAchievement.id)
-    
-    if (existingIndex >= 0) {
-      updatedList[existingIndex] = editingAchievement
-    } else {
-      updatedList.push(editingAchievement)
-    }
-    
-    saveAchievements(updatedList)
+
+    // Check if this is a new achievement (id starts with 'achievement-') or existing (UUID)
+    const isNew = editingAchievement.id.startsWith('achievement-')
+    saveIndividualAchievement(editingAchievement, isNew)
   }
 
-  const deleteAchievement = (id: string, title: string) => {
+  const deleteAchievement = async (id: string, title: string) => {
     if (confirm(`Are you sure you want to delete "${title}"?`)) {
-      const updatedList = achievements?.achievements?.filter(a => a.id !== id) || []
-      saveAchievements(updatedList)
+      setIsLoading(true)
+      try {
+        const response = await fetch(`/api/achievements/${id}`, {
+          method: 'DELETE'
+        })
+
+        if (response.ok) {
+          await loadAchievements() // Reload from server
+          setMessage('Achievement deleted successfully!')
+          setTimeout(() => setMessage(''), 3000)
+        } else {
+          const errorData = await response.json()
+          setMessage(errorData.error || 'Failed to delete achievement')
+        }
+      } catch (error) {
+        setMessage('Error deleting achievement')
+      }
+      setIsLoading(false)
     }
   }
 
@@ -501,6 +546,63 @@ export default function AchievementsManagementPage() {
                     />
                     <span className="text-deep-teal font-semibold">Featured Achievement</span>
                   </label>
+                </div>
+
+                {/* CTA Button Configuration */}
+                <div className="bg-soft-beige-lightest rounded-lg p-4 mb-6">
+                  <h4 className="text-deep-teal font-semibold mb-3">Call to Action Button (Optional)</h4>
+                  <p className="text-sm text-deep-teal/60 mb-4">Add a button to this slide that links to a page or action</p>
+
+                  <div className="grid md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                      <label className="block text-deep-teal font-medium mb-2">Button Text</label>
+                      <input
+                        type="text"
+                        value={editingAchievement.ctaText || ''}
+                        onChange={(e) => updateAchievement('ctaText', e.target.value)}
+                        className="w-full p-3 border border-soft-beige rounded-lg focus:ring-2 focus:ring-deep-teal"
+                        placeholder="e.g., Learn More, Book Tour"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-deep-teal font-medium mb-2">Button Link</label>
+                      <input
+                        type="text"
+                        value={editingAchievement.ctaUrl || ''}
+                        onChange={(e) => updateAchievement('ctaUrl', e.target.value)}
+                        className="w-full p-3 border border-soft-beige rounded-lg focus:ring-2 focus:ring-deep-teal"
+                        placeholder="e.g., /tours, /admissions"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-deep-teal font-medium mb-2">Button Style</label>
+                    <div className="flex gap-4">
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="radio"
+                          name="ctaStyle"
+                          value="primary"
+                          checked={editingAchievement.ctaStyle === 'primary' || !editingAchievement.ctaStyle}
+                          onChange={(e) => updateAchievement('ctaStyle', e.target.value)}
+                          className="w-4 h-4 text-deep-teal"
+                        />
+                        <span className="bg-terracotta-red text-white px-3 py-1 rounded text-sm">Primary (Filled)</span>
+                      </label>
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="radio"
+                          name="ctaStyle"
+                          value="secondary"
+                          checked={editingAchievement.ctaStyle === 'secondary'}
+                          onChange={(e) => updateAchievement('ctaStyle', e.target.value)}
+                          className="w-4 h-4 text-deep-teal"
+                        />
+                        <span className="border-2 border-deep-teal text-deep-teal px-3 py-1 rounded text-sm">Secondary (Outlined)</span>
+                      </label>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="flex gap-4">

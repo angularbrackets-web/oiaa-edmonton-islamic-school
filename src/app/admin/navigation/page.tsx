@@ -31,6 +31,18 @@ export default function NavigationAdminPage() {
   const [reusablePages, setReusablePages] = useState<Page[]>([])
   const [loading, setLoading] = useState(true)
   const [showHidden, setShowHidden] = useState(true)
+  const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set())
+  const [showAddForm, setShowAddForm] = useState(false)
+  const [addFormData, setAddFormData] = useState({
+    label_en: '',
+    label_ar: '',
+    href: '',
+    description_en: '',
+    parent_id: '',
+    is_visible: true,
+    is_featured: false
+  })
+  const [savingItem, setSavingItem] = useState(false)
 
   useEffect(() => {
     loadNavigation()
@@ -65,6 +77,12 @@ export default function NavigationAdminPage() {
   }
 
   const handleEditPage = async (navigationItem: NavigationItem) => {
+    // Special case: Home page should go to Home CMS
+    if (navigationItem.href === '/' || navigationItem.href === '') {
+      router.push('/admin/home')
+      return
+    }
+
     // Find page linked to this navigation item
     try {
       const response = await fetch(`/api/pages`)
@@ -81,13 +99,19 @@ export default function NavigationAdminPage() {
           )
 
           if (shouldCreate) {
+            // Generate proper slug from href
+            let slug = navigationItem.href.replace(/^\//, '') // Remove leading slash
+            if (!slug) {
+              slug = navigationItem.label_en.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '')
+            }
+
             // Create new page linked to this navigation item
             const createResponse = await fetch('/api/pages', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
                 title: navigationItem.label_en,
-                slug: navigationItem.href.replace(/^\//, ''), // Remove leading slash
+                slug: slug,
                 navigation_id: navigationItem.id,
                 is_published: false,
                 meta_description: navigationItem.description_en || `${navigationItem.label_en} page`
@@ -138,14 +162,15 @@ export default function NavigationAdminPage() {
     }
 
     try {
-      const response = await fetch(`/api/navigation?id=${id}`, {
+      const response = await fetch(`/api/navigation/${id}`, {
         method: 'DELETE',
       })
 
       if (response.ok) {
         loadNavigation()
       } else {
-        alert('Failed to delete navigation item')
+        const data = await response.json()
+        alert(`Failed to delete navigation item: ${data.error || 'Unknown error'}`)
       }
     } catch (error) {
       console.error('Error deleting item:', error)
@@ -153,9 +178,88 @@ export default function NavigationAdminPage() {
     }
   }
 
+  const toggleExpanded = (id: string) => {
+    setExpandedItems(prev => {
+      const newSet = new Set(prev)
+      if (newSet.has(id)) {
+        newSet.delete(id)
+      } else {
+        newSet.add(id)
+      }
+      return newSet
+    })
+  }
+
+  const handleAddMenuItem = async () => {
+    if (!addFormData.label_en.trim()) {
+      alert('Label (English) is required')
+      return
+    }
+    if (!addFormData.href.trim()) {
+      alert('URL path is required')
+      return
+    }
+
+    setSavingItem(true)
+    try {
+      // Determine level based on parent selection
+      const level = addFormData.parent_id ? 2 : 1
+
+      // Get max display order for this level/parent
+      let maxOrder = 0
+      if (addFormData.parent_id) {
+        const parent = navigationData.find(item => item.id === addFormData.parent_id)
+        maxOrder = parent?.children?.length || 0
+      } else {
+        maxOrder = navigationData.length
+      }
+
+      const response = await fetch('/api/navigation', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          label_en: addFormData.label_en,
+          label_ar: addFormData.label_ar || null,
+          href: addFormData.href.startsWith('/') ? addFormData.href : `/${addFormData.href}`,
+          description_en: addFormData.description_en || null,
+          parent_id: addFormData.parent_id || null,
+          level,
+          display_order: maxOrder + 1,
+          is_visible: addFormData.is_visible,
+          is_featured: addFormData.is_featured
+        })
+      })
+
+      if (response.ok) {
+        setShowAddForm(false)
+        setAddFormData({
+          label_en: '',
+          label_ar: '',
+          href: '',
+          description_en: '',
+          parent_id: '',
+          is_visible: true,
+          is_featured: false
+        })
+        loadNavigation()
+      } else {
+        const data = await response.json()
+        alert(`Failed to add menu item: ${data.error || 'Unknown error'}`)
+      }
+    } catch (error) {
+      console.error('Error adding menu item:', error)
+      alert('Error adding menu item')
+    } finally {
+      setSavingItem(false)
+    }
+  }
+
   const renderNavigationItem = (item: NavigationItem, level = 0) => {
     const shouldShow = showHidden || item.is_visible
     if (!shouldShow) return null
+
+    const hasChildren = item.children && item.children.length > 0
+    const isExpanded = expandedItems.has(item.id)
 
     return (
       <div key={item.id} className={`${level > 0 ? 'ml-8' : ''}`}>
@@ -167,6 +271,23 @@ export default function NavigationAdminPage() {
           <div className="flex items-center justify-between">
             <div className="flex-1">
               <div className="flex items-center gap-3">
+                {/* Expand/Collapse button for items with children */}
+                {hasChildren && (
+                  <button
+                    onClick={() => toggleExpanded(item.id)}
+                    className="p-1 hover:bg-gray-100 rounded transition-colors"
+                    title={isExpanded ? 'Collapse' : 'Expand'}
+                  >
+                    <svg
+                      className={`w-5 h-5 text-gray-500 transition-transform ${isExpanded ? 'rotate-90' : ''}`}
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
+                )}
                 <h3 className="text-lg font-semibold text-deep-teal">
                   {item.label_en}
                 </h3>
@@ -187,10 +308,13 @@ export default function NavigationAdminPage() {
                   <span className="ml-2">{item.description_en}</span>
                 )}
               </div>
-              {item.children && item.children.length > 0 && (
-                <div className="mt-2 text-sm text-gray-500">
-                  {item.children.length} sub-item{item.children.length !== 1 ? 's' : ''}
-                </div>
+              {hasChildren && (
+                <button
+                  onClick={() => toggleExpanded(item.id)}
+                  className="mt-2 text-sm text-terracotta-red hover:text-terracotta-red-dark cursor-pointer"
+                >
+                  {isExpanded ? '▼' : '▶'} {item.children!.length} sub-item{item.children!.length !== 1 ? 's' : ''}
+                </button>
               )}
             </div>
 
@@ -232,9 +356,9 @@ export default function NavigationAdminPage() {
           </div>
         </div>
 
-        {item.children && item.children.length > 0 && (
+        {hasChildren && isExpanded && (
           <div className="mt-2">
-            {item.children.map(child => renderNavigationItem(child, level + 1))}
+            {item.children!.map(child => renderNavigationItem(child, level + 1))}
           </div>
         )}
       </div>
@@ -302,7 +426,10 @@ export default function NavigationAdminPage() {
                   {navigationData.length} top-level items
                 </span>
                 <div className="ml-auto">
-                  <button className="px-4 py-2 bg-terracotta-red text-white rounded-lg hover:bg-terracotta-red-dark transition-colors flex items-center gap-2">
+                  <button
+                    onClick={() => setShowAddForm(true)}
+                    className="px-4 py-2 bg-terracotta-red text-white rounded-lg hover:bg-terracotta-red-dark transition-colors flex items-center gap-2"
+                  >
                     <PlusIcon className="w-5 h-5" />
                     Add Menu Item
                   </button>
@@ -455,6 +582,148 @@ export default function NavigationAdminPage() {
                   <span><strong>Updates:</strong> Changes to a reusable section automatically appear everywhere it's embedded</span>
                 </li>
               </ul>
+            </div>
+          </div>
+        )}
+
+        {/* Add Menu Item Modal */}
+        {showAddForm && (
+          <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+            <div className="bg-white rounded-xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
+              <div className="p-6 border-b border-gray-200">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-xl font-bold text-deep-teal">Add Menu Item</h2>
+                  <button
+                    onClick={() => setShowAddForm(false)}
+                    className="text-gray-500 hover:text-gray-700"
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <div className="p-6 space-y-4">
+                {/* Label (English) */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Label (English) *
+                  </label>
+                  <input
+                    type="text"
+                    value={addFormData.label_en}
+                    onChange={(e) => setAddFormData(prev => ({ ...prev, label_en: e.target.value }))}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-terracotta-red focus:border-transparent"
+                    placeholder="e.g., About Us"
+                  />
+                </div>
+
+                {/* Label (Arabic) */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Label (Arabic)
+                  </label>
+                  <input
+                    type="text"
+                    value={addFormData.label_ar}
+                    onChange={(e) => setAddFormData(prev => ({ ...prev, label_ar: e.target.value }))}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-terracotta-red focus:border-transparent"
+                    placeholder="e.g., من نحن"
+                    dir="rtl"
+                  />
+                </div>
+
+                {/* URL Path */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    URL Path *
+                  </label>
+                  <div className="flex items-center">
+                    <span className="px-3 py-2 bg-gray-100 border border-r-0 border-gray-300 rounded-l-lg text-gray-500">
+                      /
+                    </span>
+                    <input
+                      type="text"
+                      value={addFormData.href.replace(/^\//, '')}
+                      onChange={(e) => setAddFormData(prev => ({ ...prev, href: e.target.value }))}
+                      className="flex-1 px-4 py-2 border border-gray-300 rounded-r-lg focus:ring-2 focus:ring-terracotta-red focus:border-transparent"
+                      placeholder="e.g., about-us"
+                    />
+                  </div>
+                </div>
+
+                {/* Parent Menu (for submenus) */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Parent Menu (leave empty for main menu)
+                  </label>
+                  <select
+                    value={addFormData.parent_id}
+                    onChange={(e) => setAddFormData(prev => ({ ...prev, parent_id: e.target.value }))}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-terracotta-red focus:border-transparent"
+                  >
+                    <option value="">-- Main Menu Item --</option>
+                    {navigationData.map(item => (
+                      <option key={item.id} value={item.id}>
+                        {item.label_en}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Description */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Description
+                  </label>
+                  <input
+                    type="text"
+                    value={addFormData.description_en}
+                    onChange={(e) => setAddFormData(prev => ({ ...prev, description_en: e.target.value }))}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-terracotta-red focus:border-transparent"
+                    placeholder="Brief description for tooltips"
+                  />
+                </div>
+
+                {/* Visibility & Featured */}
+                <div className="flex items-center gap-6">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={addFormData.is_visible}
+                      onChange={(e) => setAddFormData(prev => ({ ...prev, is_visible: e.target.checked }))}
+                      className="w-4 h-4 text-terracotta-red rounded"
+                    />
+                    <span className="text-sm text-gray-700">Visible in navigation</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={addFormData.is_featured}
+                      onChange={(e) => setAddFormData(prev => ({ ...prev, is_featured: e.target.checked }))}
+                      className="w-4 h-4 text-terracotta-red rounded"
+                    />
+                    <span className="text-sm text-gray-700">Featured</span>
+                  </label>
+                </div>
+              </div>
+
+              <div className="p-6 border-t border-gray-200 flex gap-3">
+                <button
+                  onClick={() => setShowAddForm(false)}
+                  className="flex-1 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleAddMenuItem}
+                  disabled={savingItem}
+                  className="flex-1 px-4 py-2 bg-terracotta-red text-white rounded-lg hover:bg-terracotta-red-dark transition-colors disabled:opacity-50"
+                >
+                  {savingItem ? 'Adding...' : 'Add Menu Item'}
+                </button>
+              </div>
             </div>
           </div>
         )}

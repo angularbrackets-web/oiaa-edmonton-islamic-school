@@ -213,16 +213,15 @@ export default function Header() {
                     {item.children && item.children.length > 0 ? (
                       // Item with dropdown
                       <>
-                        <button
+                        <Link
+                          href={item.href}
                           className="relative flex items-center gap-2 text-deep-teal hover:text-terracotta-red transition-all duration-300 text-sm font-semibold group/btn"
                           style={{ animationDelay: `${index * 50}ms` }}
-                          aria-haspopup="true"
-                          aria-expanded="false"
                         >
                           <span className="relative z-10">{item.label_en}</span>
                           <ChevronDown className="w-4 h-4 group-hover:rotate-180 transition-transform duration-300" />
                           <div className="absolute inset-x-0 -bottom-1 h-0.5 bg-gradient-to-r from-terracotta-red to-terracotta-red-dark scale-x-0 group-hover/btn:scale-x-100 transition-transform duration-300 origin-left"></div>
-                        </button>
+                        </Link>
 
                         {/* Mega-menu dropdown */}
                         <div className="absolute top-full left-0 mt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-[9999]">
@@ -233,6 +232,27 @@ export default function Header() {
                             className="bg-white/95 backdrop-blur-xl border border-soft-beige rounded-lg shadow-2xl min-w-[320px] p-6"
                           >
                             <div className="grid grid-cols-1 gap-2">
+                              {/* Parent link at top of dropdown */}
+                              <Link
+                                href={item.href}
+                                className="flex items-start gap-3 p-3 rounded-lg bg-terracotta-red/10 hover:bg-terracotta-red/20 border-b border-soft-beige mb-2 transition-colors duration-200 group/parent"
+                              >
+                                <div className="flex-1 min-w-0">
+                                  <div className="font-bold text-terracotta-red group-hover/parent:text-terracotta-red-dark transition-colors flex items-center gap-2">
+                                    {item.label_en} Overview
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                    </svg>
+                                  </div>
+                                  {item.description_en && (
+                                    <div className="text-sm text-gray-700 mt-1">
+                                      {item.description_en}
+                                    </div>
+                                  )}
+                                </div>
+                              </Link>
+
+                              {/* Child links */}
                               {item.children.map((child) => (
                                 <Link
                                   key={child.id}
@@ -316,19 +336,25 @@ export default function Header() {
                   {item.children && item.children.length > 0 ? (
                     // Accordion item
                     <div className="rounded-lg overflow-hidden">
-                      <button
-                        onClick={() => toggleAccordion(item.id)}
-                        className="w-full flex items-center justify-between px-3 py-3 text-deep-teal hover:text-terracotta-red hover:bg-gradient-to-r hover:from-terracotta-red/5 hover:to-transparent rounded-lg text-sm font-semibold transition-all duration-300"
-                        aria-expanded={openAccordions.has(item.id)}
-                        aria-label={`${item.label_en} menu`}
-                      >
-                        <span className="flex items-center gap-2">
+                      <div className="flex items-center gap-1">
+                        <Link
+                          href={item.href}
+                          onClick={handleMobileNavClick}
+                          className="flex-1 px-3 py-3 text-deep-teal hover:text-terracotta-red hover:bg-gradient-to-r hover:from-terracotta-red/5 hover:to-transparent rounded-l-lg text-sm font-semibold transition-all duration-300"
+                        >
                           <span>{item.label_en}</span>
-                        </span>
-                        <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${
-                          openAccordions.has(item.id) ? 'rotate-180' : ''
-                        }`} />
-                      </button>
+                        </Link>
+                        <button
+                          onClick={() => toggleAccordion(item.id)}
+                          className="px-3 py-3 text-deep-teal hover:text-terracotta-red hover:bg-gradient-to-r hover:from-terracotta-red/5 hover:to-transparent rounded-r-lg transition-all duration-300"
+                          aria-expanded={openAccordions.has(item.id)}
+                          aria-label={`Toggle ${item.label_en} submenu`}
+                        >
+                          <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${
+                            openAccordions.has(item.id) ? 'rotate-180' : ''
+                          }`} />
+                        </button>
+                      </div>
 
                       {/* Accordion content */}
                       <AnimatePresence>

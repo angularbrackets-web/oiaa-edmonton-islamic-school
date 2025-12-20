@@ -51,8 +51,8 @@ export default function CardsBlockEditor({ content, onChange }: CardsBlockEditor
         <label className="block text-sm font-medium text-gray-700 mb-2">
           Columns
         </label>
-        <div className="flex gap-2">
-          {([2, 3, 4] as const).map((cols) => (
+        <div className="flex flex-wrap gap-2">
+          {([1, 2, 3, 4] as const).map((cols) => (
             <button
               key={cols}
               type="button"
@@ -63,7 +63,7 @@ export default function CardsBlockEditor({ content, onChange }: CardsBlockEditor
                   : 'border-gray-300 hover:border-terracotta-red'
               }`}
             >
-              {cols} Columns
+              {cols === 1 ? '1 Column (Full Width)' : `${cols} Columns`}
             </button>
           ))}
         </div>
@@ -218,6 +218,117 @@ export default function CardsBlockEditor({ content, onChange }: CardsBlockEditor
                           placeholder="/page"
                           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-terracotta-red focus:border-transparent"
                         />
+                      </div>
+                    </div>
+
+                    {/* Full Width Option */}
+                    <div className="pt-4 border-t border-gray-200">
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={card.full_width || false}
+                          onChange={(e) => updateCard(index, 'full_width', e.target.checked)}
+                          className="w-4 h-4 text-terracotta-red border-gray-300 rounded focus:ring-terracotta-red"
+                        />
+                        <span className="text-sm font-medium text-gray-700">
+                          Full Width Card
+                        </span>
+                      </label>
+                      <p className="text-xs text-gray-500 ml-6 mt-1">
+                        Make this card span the full width of the container (useful for featured/hero cards)
+                      </p>
+                    </div>
+
+                    {/* Advanced: Image Sizing */}
+                    <div className="pt-4 border-t border-gray-200">
+                      <label className="block text-sm font-medium text-gray-700 mb-3">
+                        Image Settings
+                      </label>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-xs text-gray-500 mb-1">
+                            Image Width
+                          </label>
+                          <select
+                            value={card.image_width || 'auto'}
+                            onChange={(e) => updateCard(index, 'image_width', e.target.value)}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-terracotta-red focus:border-transparent text-sm"
+                          >
+                            <option value="auto">Auto</option>
+                            <option value="100%">Full Width (100%)</option>
+                            <option value="75%">75%</option>
+                            <option value="50%">Half (50%)</option>
+                            <option value="200px">200px</option>
+                            <option value="150px">150px</option>
+                            <option value="100px">100px</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-xs text-gray-500 mb-1">
+                            Image Height
+                          </label>
+                          <select
+                            value={card.image_height || 'auto'}
+                            onChange={(e) => updateCard(index, 'image_height', e.target.value)}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-terracotta-red focus:border-transparent text-sm"
+                          >
+                            <option value="auto">Auto</option>
+                            <option value="300px">300px</option>
+                            <option value="250px">250px</option>
+                            <option value="200px">200px</option>
+                            <option value="150px">150px</option>
+                            <option value="100px">100px</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Advanced: Background Colors */}
+                    <div className="pt-4 border-t border-gray-200">
+                      <label className="block text-sm font-medium text-gray-700 mb-3">
+                        Background Colors
+                      </label>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-xs text-gray-500 mb-1">
+                            Image Area Background
+                          </label>
+                          <div className="flex gap-2">
+                            <input
+                              type="color"
+                              value={card.image_background_color || '#f3f4f6'}
+                              onChange={(e) => updateCard(index, 'image_background_color', e.target.value)}
+                              className="w-10 h-10 rounded border border-gray-300 cursor-pointer"
+                            />
+                            <input
+                              type="text"
+                              value={card.image_background_color || ''}
+                              onChange={(e) => updateCard(index, 'image_background_color', e.target.value)}
+                              placeholder="#f3f4f6"
+                              className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-terracotta-red focus:border-transparent text-sm"
+                            />
+                          </div>
+                        </div>
+                        <div>
+                          <label className="block text-xs text-gray-500 mb-1">
+                            Body Background
+                          </label>
+                          <div className="flex gap-2">
+                            <input
+                              type="color"
+                              value={card.body_background_color || '#ffffff'}
+                              onChange={(e) => updateCard(index, 'body_background_color', e.target.value)}
+                              className="w-10 h-10 rounded border border-gray-300 cursor-pointer"
+                            />
+                            <input
+                              type="text"
+                              value={card.body_background_color || ''}
+                              onChange={(e) => updateCard(index, 'body_background_color', e.target.value)}
+                              placeholder="#ffffff"
+                              className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-terracotta-red focus:border-transparent text-sm"
+                            />
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
