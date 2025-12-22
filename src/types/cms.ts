@@ -84,7 +84,7 @@ export type SpacingSize = 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
 export type DisplayStyle = 'flat' | 'card' | 'featured'
 export type CardBorderRadius = 'none' | 'small' | 'medium' | 'large'
 export type CardShadow = 'none' | 'subtle' | 'medium' | 'strong'
-export type ColumnRatio = '1:1' | '1:2' | '2:1' | '1:3' | '3:1' | '1:1:1' | '1:2:1' | '2:1:1' | '1:1:2' | '1:1:1:1'
+export type ColumnRatio = '1' | '1:1' | '1:2' | '2:1' | '1:3' | '3:1' | '1:1:1' | '1:2:1' | '2:1:1' | '1:1:2' | '1:1:1:1'
 export type VerticalAlign = 'top' | 'center' | 'bottom' | 'stretch'
 export type DividerStyle = 'solid' | 'dashed' | 'dotted' | 'double' | 'islamic-pattern'
 export type BorderWidth = 'none' | 'thin' | 'medium' | 'thick'
@@ -153,6 +153,12 @@ export interface ContentBlockInput {
   margin_top?: SpacingSize | null
   margin_bottom?: SpacingSize | null
   margin_horizontal?: SpacingSize | null
+  // Card display settings
+  display_style?: DisplayStyle | null
+  card_border_color?: string | null
+  card_border_radius?: CardBorderRadius | null
+  card_shadow?: CardShadow | null
+  card_hover_effect?: boolean | null
   // Column assignment for blocks inside a columns container
   column_index?: number | null  // 0-based index (null = auto-distribute)
 }
@@ -267,7 +273,7 @@ export interface SectionBlockContent extends BlockContent {
 
 // Columns Block - Multi-column layout container
 export interface ColumnsBlockContent extends BlockContent {
-  column_count: 2 | 3 | 4  // Number of columns
+  column_count: 1 | 2 | 3 | 4  // Number of columns (1 = full-width container)
   column_ratio?: ColumnRatio  // e.g., '1:1', '2:1', '1:2:1', etc.
   gap?: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'  // Gap between columns
   stack_on_mobile?: boolean  // Stack vertically on mobile (default: true)

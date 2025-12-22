@@ -38,7 +38,7 @@ export default function HeadingBlock({ content }: HeadingBlockProps) {
       {React.createElement(
         HeadingTag,
         {
-          className: `${sizeClasses[level]} text-gray-900 dark:text-gray-100 mb-0`
+          className: `${sizeClasses[level]} text-gray-900 mb-0`
         },
         text
       )}

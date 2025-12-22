@@ -30,19 +30,19 @@ export default function BlockRenderer({ block }: BlockRendererProps) {
   // Wrap block content with layout wrapper
   return (
     <BlockLayoutWrapper
-      containerWidth={block.container_width}
-      padding={block.padding}
-      paddingHorizontal={block.padding_horizontal}
-      marginTop={block.margin_top}
-      marginBottom={block.margin_bottom}
-      marginHorizontal={block.margin_horizontal}
-      backgroundColor={block.background_color}
-      customClass={block.custom_css_class}
-      displayStyle={block.display_style}
-      cardBorderColor={block.card_border_color}
-      cardBorderRadius={block.card_border_radius}
-      cardShadow={block.card_shadow}
-      cardHoverEffect={block.card_hover_effect}
+      containerWidth={block.container_width || undefined}
+      padding={block.padding || undefined}
+      paddingHorizontal={block.padding_horizontal || undefined}
+      marginTop={block.margin_top || undefined}
+      marginBottom={block.margin_bottom || undefined}
+      marginHorizontal={block.margin_horizontal || undefined}
+      backgroundColor={block.background_color || undefined}
+      customClass={block.custom_css_class || undefined}
+      displayStyle={block.display_style || undefined}
+      cardBorderColor={block.card_border_color || undefined}
+      cardBorderRadius={block.card_border_radius || undefined}
+      cardShadow={block.card_shadow || undefined}
+      cardHoverEffect={block.card_hover_effect || undefined}
     >
       {block.block_type === 'text' && <TextBlock content={block.content as TextBlockContent} />}
       {block.block_type === 'heading' && <HeadingBlock content={block.content as HeadingBlockContent} />}

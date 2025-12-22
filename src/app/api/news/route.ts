@@ -73,8 +73,13 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    
-    // Generate slug from title if not provided
+
+    // Validate required fields
+    if (!body.title || !body.content) {
+      return NextResponse.json({ error: 'Title and content are required' }, { status: 400 })
+    }
+
+    // Generate slug from title
     const generateSlug = (title: string) => {
       return title
         .toLowerCase()
@@ -82,31 +87,80 @@ export async function POST(request: NextRequest) {
         .replace(/(^-|-$)/g, '')
     }
 
-    // Create new article with only basic fields
-    const insertData: any = {
-      title: body.title,
-      content: body.content
+    // Generate unique slug by checking for duplicates
+    const getUniqueSlug = async (baseSlug: string): Promise<string> => {
+      let slug = baseSlug
+      let counter = 2
+
+      while (true) {
+        // Check if slug exists
+        const { data, error } = await supabase
+          .from('news')
+          .select('id')
+          .eq('slug', slug)
+          .maybeSingle()
+
+        if (error) {
+          console.error('Error checking slug:', error)
+          throw error
+        }
+
+        // If slug doesn't exist, we can use it
+        if (!data) {
+          return slug
+        }
+
+        // If slug exists, try with counter
+        slug = `${baseSlug}-${counter}`
+        counter++
+      }
     }
 
-    // Add optional basic fields one by one
+    // Get unique slug
+    const baseSlug = body.slug || generateSlug(body.title)
+    const uniqueSlug = await getUniqueSlug(baseSlug)
+
+    // Create new article with all fields
+    const insertData: any = {
+      title: body.title,
+      content: body.content,
+      slug: uniqueSlug
+    }
+
+    // Add optional fields
+    if (body.arabic_title) insertData.arabic_title = body.arabic_title
+    if (body.excerpt) insertData.excerpt = body.excerpt
+    if (body.featured_image) insertData.featured_image = body.featured_image
     if (body.category) insertData.category = body.category
+    if (body.tags && Array.isArray(body.tags)) insertData.tags = body.tags
     if (body.author) insertData.author = body.author
+    if (body.publish_date) insertData.publish_date = body.publish_date
     if (typeof body.featured === 'boolean') insertData.featured = body.featured
     if (typeof body.published === 'boolean') insertData.published = body.published
 
-    const { error } = await supabase
+    console.log('Attempting to insert news article:', { ...insertData, content: '...' })
+
+    const { data, error } = await supabase
       .from('news')
       .insert(insertData)
+      .select()
 
     if (error) {
-      console.error('Supabase error:', error)
-      return NextResponse.json({ error: 'Failed to create news article' }, { status: 500 })
+      console.error('Supabase insert error:', error)
+      return NextResponse.json({
+        error: 'Failed to create news article',
+        details: error.message
+      }, { status: 500 })
     }
 
-    return NextResponse.json({ success: true })
-  } catch (error) {
+    console.log('Successfully created news article:', data)
+    return NextResponse.json({ success: true, data })
+  } catch (error: any) {
     console.error('API error:', error)
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+    return NextResponse.json({
+      error: 'Internal server error',
+      details: error?.message || 'Unknown error'
+    }, { status: 500 })
   }
 }
 
@@ -119,14 +173,20 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: 'Article ID is required' }, { status: 400 })
     }
 
-    // Build update object with only basic fields
+    // Build update object with all supported fields
     const updateObject: any = {}
 
-    // Add fields that should exist
+    // Add fields if provided
     if (updateData.title !== undefined) updateObject.title = updateData.title
+    if (updateData.arabic_title !== undefined) updateObject.arabic_title = updateData.arabic_title
+    if (updateData.slug !== undefined) updateObject.slug = updateData.slug
+    if (updateData.excerpt !== undefined) updateObject.excerpt = updateData.excerpt
     if (updateData.content !== undefined) updateObject.content = updateData.content
+    if (updateData.featured_image !== undefined) updateObject.featured_image = updateData.featured_image
     if (updateData.category !== undefined) updateObject.category = updateData.category
-    if (updateData.author !== undefined) updateObject.author = updateData.author || null
+    if (updateData.tags !== undefined && Array.isArray(updateData.tags)) updateObject.tags = updateData.tags
+    if (updateData.author !== undefined) updateObject.author = updateData.author
+    if (updateData.publish_date !== undefined) updateObject.publish_date = updateData.publish_date
     if (typeof updateData.featured === 'boolean') updateObject.featured = updateData.featured
     if (typeof updateData.published === 'boolean') updateObject.published = updateData.published
 

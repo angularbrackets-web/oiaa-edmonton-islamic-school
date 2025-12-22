@@ -14,7 +14,10 @@ interface ColumnsBlockEditorProps {
 }
 
 // Column ratio options per column count
-const RATIO_OPTIONS: Record<2 | 3 | 4, { value: ColumnRatio; label: string; visual: string }[]> = {
+const RATIO_OPTIONS: Record<1 | 2 | 3 | 4, { value: ColumnRatio; label: string; visual: string }[]> = {
+  1: [
+    { value: '1', label: 'Full Width Container', visual: '▇▇▇▇' }
+  ],
   2: [
     { value: '1:1', label: 'Equal (50/50)', visual: '▌▐' },
     { value: '1:2', label: 'Left Sidebar (33/66)', visual: '▍▐▐' },
@@ -50,7 +53,7 @@ export default function ColumnsBlockEditor({ content, onChange }: ColumnsBlockEd
     vertical_align = 'stretch'
   } = content
 
-  const handleColumnCountChange = (count: 2 | 3 | 4) => {
+  const handleColumnCountChange = (count: 1 | 2 | 3 | 4) => {
     // Reset ratio when column count changes
     const newRatio = RATIO_OPTIONS[count][0].value
     onChange({ ...content, column_count: count, column_ratio: newRatio })
@@ -90,21 +93,21 @@ export default function ColumnsBlockEditor({ content, onChange }: ColumnsBlockEd
         <label className="block text-sm font-medium text-gray-700 mb-2">
           Number of Columns
         </label>
-        <div className="flex gap-2">
-          {([2, 3, 4] as const).map((count) => (
+        <div className="grid grid-cols-4 gap-2">
+          {([1, 2, 3, 4] as const).map((count) => (
             <button
               key={count}
               type="button"
               onClick={() => handleColumnCountChange(count)}
               className={`
-                flex-1 px-4 py-3 rounded-lg border-2 font-medium transition-colors text-center
+                px-4 py-3 rounded-lg border-2 font-medium transition-colors text-center
                 ${column_count === count
                   ? 'bg-terracotta-red text-white border-terracotta-red'
                   : 'bg-white text-gray-700 border-gray-300 hover:border-terracotta-red'
                 }
               `}
             >
-              {count} Columns
+              {count} {count === 1 ? 'Column' : 'Columns'}
             </button>
           ))}
         </div>

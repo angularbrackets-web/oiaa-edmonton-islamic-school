@@ -18,7 +18,7 @@ interface ColumnsBlockProps {
 
 // Parse column ratio to get individual column spans
 // Uses a 12-column grid base for flexibility
-function parseColumnRatio(ratio: ColumnRatio | undefined, columnCount: 2 | 3 | 4): number[] {
+function parseColumnRatio(ratio: ColumnRatio | undefined, columnCount: 1 | 2 | 3 | 4): number[] {
   if (!ratio) {
     // Default to equal columns
     const span = 12 / columnCount
@@ -251,7 +251,7 @@ export default function ColumnsBlock({ content, block }: ColumnsBlockProps) {
             className={columnClasses}
             style={getColumnStyles(config)}
           >
-            <div className="h-full">
+            <div className="h-full space-y-6">
               {column.blocks.map((nestedBlock) => (
                 <BlockRenderer key={nestedBlock.id} block={nestedBlock} />
               ))}

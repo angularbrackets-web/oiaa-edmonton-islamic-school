@@ -151,11 +151,14 @@ export default function EditPagePage() {
           block_type: blockType,
           content: getDefaultBlockContent(blockType),
           display_order: maxOrder + 1,
-          is_visible: true
+          is_visible: true,
+          display_style: 'flat',
+          padding: 'none',
+          padding_horizontal: 'none'
         })
       })
       if (response.ok) {
-        await loadBlocks()
+        await reloadBlocksPreservingScroll()
         setShowAddBlockMenu(false)
       }
     } catch (error) {
@@ -171,17 +174,11 @@ export default function EditPagePage() {
         body: JSON.stringify(updates)
       })
       if (response.ok) {
-        // Preserve scroll position during reload
-        const scrollY = window.scrollY
-        await loadBlocks()
+        await reloadBlocksPreservingScroll()
         // Only close editor if explicitly requested
         if (closeAfterSave) {
           setEditingBlockId(null)
         }
-        // Restore scroll position after a brief delay to allow render
-        requestAnimationFrame(() => {
-          window.scrollTo(0, scrollY)
-        })
       }
     } catch (error) {
       console.error('Error updating block:', error)
@@ -197,7 +194,7 @@ export default function EditPagePage() {
         method: 'DELETE'
       })
       if (response.ok) {
-        await loadBlocks()
+        await reloadBlocksPreservingScroll()
       }
     } catch (error) {
       console.error('Error deleting block:', error)
@@ -210,7 +207,7 @@ export default function EditPagePage() {
         method: 'PATCH'
       })
       if (response.ok) {
-        await loadBlocks()
+        await reloadBlocksPreservingScroll()
       }
     } catch (error) {
       console.error('Error toggling visibility:', error)
@@ -240,7 +237,7 @@ export default function EditPagePage() {
         body: JSON.stringify({ block_ids: blockIds, new_orders: newOrders })
       })
       if (response.ok) {
-        await loadBlocks()
+        await reloadBlocksPreservingScroll()
       }
     } catch (error) {
       console.error('Error reordering blocks:', error)
@@ -305,7 +302,10 @@ export default function EditPagePage() {
           content: getDefaultBlockContent(blockType),
           display_order: maxOrder + 1,
           column_index: columnIndex,
-          is_visible: true
+          is_visible: true,
+          display_style: 'flat',
+          padding: 'none',
+          padding_horizontal: 'none'
         })
       })
       if (response.ok) {
@@ -602,16 +602,16 @@ function BlockEditor({
 
   // Layout state
   const [containerWidth, setContainerWidth] = useState<ContainerWidth | null>(block.container_width || 'contained')
-  const [padding, setPadding] = useState<PaddingSize | null>(block.padding || 'medium')
-  const [paddingHorizontal, setPaddingHorizontal] = useState<PaddingSize | null>(block.padding_horizontal || 'medium')
+  const [padding, setPadding] = useState<PaddingSize | null>(block.padding || 'none')
+  const [paddingHorizontal, setPaddingHorizontal] = useState<PaddingSize | null>(block.padding_horizontal || 'none')
   const [marginTop, setMarginTop] = useState<SpacingSize | null>(block.margin_top || 'none')
   const [marginBottom, setMarginBottom] = useState<SpacingSize | null>(block.margin_bottom || 'none')
   const [marginHorizontal, setMarginHorizontal] = useState<SpacingSize | null>(block.margin_horizontal || 'none')
   const [backgroundColor, setBackgroundColor] = useState<string | null>(block.background_color || null)
   const [customClass, setCustomClass] = useState<string | null>(block.custom_css_class || null)
-  const [displayStyle, setDisplayStyle] = useState(block.display_style || 'card')
-  const [cardBorderRadius, setCardBorderRadius] = useState(block.card_border_radius || 'medium')
-  const [cardShadow, setCardShadow] = useState(block.card_shadow || 'subtle')
+  const [displayStyle, setDisplayStyle] = useState(block.display_style || 'flat')
+  const [cardBorderRadius, setCardBorderRadius] = useState(block.card_border_radius || 'none')
+  const [cardShadow, setCardShadow] = useState(block.card_shadow || 'none')
   const [cardHoverEffect, setCardHoverEffect] = useState(block.card_hover_effect || false)
 
   const handleSave = async (closeAfterSave: boolean = false) => {
@@ -813,9 +813,12 @@ function BlockEditor({
                     content={editedContent as ColumnsBlockContent}
                     nestedBlocks={block.blocks || []}
                     onContentChange={setEditedContent}
-                    onAddBlock={(blockType, columnIndex) =>
-                      onAddNestedBlock(block.id, blockType, columnIndex)
-                    }
+                    onAddBlock={async (blockType, columnIndex) => {
+                      // Save parent block content first to preserve column_count changes
+                      await onSave({ content: editedContent }, false)
+                      // Then add the nested block
+                      await onAddNestedBlock(block.id, blockType, columnIndex)
+                    }}
                     onUpdateBlock={onUpdateNestedBlock}
                     onDeleteBlock={onDeleteNestedBlock}
                     onMoveBlock={onMoveNestedBlock}
