@@ -438,6 +438,43 @@ export const blocksService = {
   },
 
   /**
+   * Get all blocks for a component
+   */
+  async getByComponentId(componentId: string): Promise<ContentBlock[]> {
+    const { data, error } = await supabase
+      .from('content_blocks')
+      .select('*')
+      .eq('component_id', componentId)
+      .eq('is_visible', true)
+      .order('display_order', { ascending: true })
+
+    if (error) {
+      console.error(`Error fetching blocks for component ${componentId}:`, error)
+      throw new Error(`Failed to fetch blocks: ${error.message}`)
+    }
+
+    return data || []
+  },
+
+  /**
+   * Get all blocks for a component (admin - includes hidden)
+   */
+  async getByComponentIdAdmin(componentId: string): Promise<ContentBlock[]> {
+    const { data, error } = await supabaseAdmin
+      .from('content_blocks')
+      .select('*')
+      .eq('component_id', componentId)
+      .order('display_order', { ascending: true })
+
+    if (error) {
+      console.error(`Error fetching blocks for component ${componentId}:`, error)
+      throw new Error(`Failed to fetch blocks: ${error.message}`)
+    }
+
+    return data || []
+  },
+
+  /**
    * Get block by ID
    */
   async getById(id: string): Promise<ContentBlock | null> {
@@ -554,12 +591,21 @@ export const blocksService = {
       throw new Error(`Block not found: ${id}`)
     }
 
-    // Get max display_order for this page
-    const blocks = await this.getByPageIdAdmin(original.page_id)
+    // Get max display_order for this page or component
+    let blocks: ContentBlock[]
+    if (original.page_id) {
+      blocks = await this.getByPageIdAdmin(original.page_id)
+    } else if (original.component_id) {
+      blocks = await this.getByComponentIdAdmin(original.component_id)
+    } else {
+      throw new Error('Block has neither page_id nor component_id')
+    }
+
     const maxOrder = Math.max(...blocks.map(b => b.display_order), -1)
 
     return this.create({
-      page_id: original.page_id,
+      page_id: original.page_id || undefined,
+      component_id: original.component_id || undefined,
       block_type: original.block_type,
       content: original.content,
       content_ar: original.content_ar,

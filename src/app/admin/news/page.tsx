@@ -304,7 +304,7 @@ export default function NewsAdminPage() {
                               Edit
                             </Link>
                             <Link
-                              href={`/news/${article.slug}`}
+                              href={`/news-events/${article.slug}`}
                               target="_blank"
                               className="text-sage-green hover:text-sage-green-dark text-sm font-medium transition-colors"
                             >

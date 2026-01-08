@@ -15,7 +15,8 @@ import {
   ChevronDoubleRightIcon,
   CubeIcon,
   EnvelopeIcon,
-  Cog6ToothIcon
+  Cog6ToothIcon,
+  LinkIcon
 } from '@heroicons/react/24/outline'
 
 interface SidebarProps {
@@ -37,6 +38,12 @@ export default function AdminSidebar({ isCollapsed, onToggleCollapse }: SidebarP
       name: 'Navigation Menu',
       href: '/admin/navigation',
       icon: Bars3Icon,
+      exact: false
+    },
+    {
+      name: 'Footer Links',
+      href: '/admin/footer-links',
+      icon: LinkIcon,
       exact: false
     },
     {

@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Icon from '@/components/ui/Icon'
 import SocialLinks from '@/components/ui/SocialLinks'
@@ -7,6 +8,62 @@ import { CONTACT_INFO, QUICK_LINKS } from '@/lib/constants'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
+
+  // Site settings state
+  const [siteSettings, setSiteSettings] = useState<Record<string, string>>({})
+
+  // Footer links state
+  const [footerLinks, setFooterLinks] = useState<any>({
+    main: [],
+    admissions: [],
+    resources: [],
+    support: [],
+    legal: []
+  })
+
+  // Fetch site settings from API
+  useEffect(() => {
+    fetch('/api/site-settings')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.settings) {
+          setSiteSettings(data.settings)
+        }
+      })
+      .catch(err => {
+        console.error('Site settings fetch error:', err)
+      })
+  }, [])
+
+  // Fetch footer links from API
+  useEffect(() => {
+    fetch('/api/footer-links')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.grouped) {
+          setFooterLinks(data.grouped)
+        }
+      })
+      .catch(err => {
+        console.error('Footer links fetch error:', err)
+      })
+  }, [])
+
+  // Contact info from site settings with fallbacks to constants
+  const schoolName = siteSettings.school_name || CONTACT_INFO.school.name
+  const schoolTagline = siteSettings.school_tagline || CONTACT_INFO.school.tagline
+  const phone = siteSettings.contact_phone || CONTACT_INFO.phone.display
+  const phoneLink = phone.replace(/\D/g, '')
+  const emailGeneral = siteSettings.contact_email || CONTACT_INFO.emails.general
+  const emailAdmissions = siteSettings.contact_admissions_email || CONTACT_INFO.emails.admissions
+  const addressStreet = siteSettings.address_street || CONTACT_INFO.school.address.street
+  const addressCity = siteSettings.address_city || CONTACT_INFO.school.address.city
+  const addressProvince = siteSettings.address_province || CONTACT_INFO.school.address.province
+  const addressPostal = siteSettings.address_postal || CONTACT_INFO.school.address.postalCode
+  const addressCountry = siteSettings.address_country || CONTACT_INFO.school.address.country
+  const hoursWeekday = siteSettings.hours_weekday || CONTACT_INFO.hours.school
+  const hoursSaturday = siteSettings.hours_saturday || CONTACT_INFO.hours.saturday
+  const hoursOffice = siteSettings.hours_office || CONTACT_INFO.hours.office
 
   return (
     <footer className="bg-deep-charcoal text-warm-white">
@@ -28,8 +85,8 @@ export default function Footer() {
                   />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-terracotta-red">{CONTACT_INFO.school.name}</h3>
-                  <p className="text-soft-beige-lightest text-sm">{CONTACT_INFO.school.tagline}</p>
+                  <h3 className="text-xl font-bold text-terracotta-red">{schoolName}</h3>
+                  <p className="text-soft-beige-lightest text-sm">{schoolTagline}</p>
                 </div>
               </div>
               <p className="text-soft-beige-lightest leading-relaxed mb-6">
@@ -46,11 +103,13 @@ export default function Footer() {
           <div>
             <h4 className="text-lg font-bold text-terracotta-red mb-4">Quick Links</h4>
             <ul className="space-y-2">
-              {QUICK_LINKS.main.map((link) => (
-                <li key={link.href}>
-                  <a 
-                    href={link.href} 
+              {(footerLinks.main && footerLinks.main.length > 0 ? footerLinks.main : QUICK_LINKS.main).map((link: any) => (
+                <li key={link.href || link.id}>
+                  <a
+                    href={link.href}
                     className="text-soft-beige-lightest hover:text-terracotta-red transition-colors duration-300 flex items-center group"
+                    target={link.open_in_new_tab ? '_blank' : undefined}
+                    rel={link.open_in_new_tab ? 'noopener noreferrer' : undefined}
                   >
                     <span className="w-1 h-1 bg-terracotta-red rounded-full mr-2 opacity-0 group-hover:opacity-100 transition-opacity"></span>
                     {link.label}
@@ -67,36 +126,36 @@ export default function Footer() {
               <div className="flex items-start">
                 <Icon name="location" size={20} className="text-terracotta-red mr-2 mt-1 flex-shrink-0" aria-hidden={true} />
                 <div className="text-soft-beige-lightest text-sm">
-                  <p>{CONTACT_INFO.school.address.street}</p>
-                  <p>{CONTACT_INFO.school.address.city}, {CONTACT_INFO.school.address.province} {CONTACT_INFO.school.address.postalCode}</p>
-                  <p>{CONTACT_INFO.school.address.country}</p>
+                  <p>{addressStreet}</p>
+                  <p>{addressCity}, {addressProvince} {addressPostal}</p>
+                  <p>{addressCountry}</p>
                 </div>
               </div>
               <div className="flex items-center">
                 <Icon name="phone" size={18} className="text-terracotta-red mr-2 flex-shrink-0" aria-hidden={true} />
-                <a 
-                  href={`tel:${CONTACT_INFO.phone.link}`} 
+                <a
+                  href={`tel:${phoneLink}`}
                   className="text-soft-beige-lightest hover:text-terracotta-red transition-colors duration-300 text-sm"
                 >
-                  {CONTACT_INFO.phone.display}
+                  {phone}
                 </a>
               </div>
               <div className="flex items-center">
                 <Icon name="email" size={18} className="text-terracotta-red mr-2 flex-shrink-0" aria-hidden={true} />
-                <a 
-                  href={`mailto:${CONTACT_INFO.emails.general}`} 
+                <a
+                  href={`mailto:${emailGeneral}`}
                   className="text-soft-beige-lightest hover:text-terracotta-red transition-colors duration-300 text-sm"
                 >
-                  {CONTACT_INFO.emails.general}
+                  {emailGeneral}
                 </a>
               </div>
               <div className="flex items-center">
                 <Icon name="graduation" size={18} className="text-terracotta-red mr-2 flex-shrink-0" aria-hidden={true} />
-                <a 
-                  href={`mailto:${CONTACT_INFO.emails.admissions}`} 
+                <a
+                  href={`mailto:${emailAdmissions}`}
                   className="text-soft-beige-lightest hover:text-terracotta-red transition-colors duration-300 text-sm"
                 >
-                  {CONTACT_INFO.emails.admissions}
+                  {emailAdmissions}
                 </a>
               </div>
             </div>
@@ -105,9 +164,9 @@ export default function Footer() {
             <div className="mt-6">
               <h5 className="text-md font-semibold text-terracotta-red mb-2">School Hours</h5>
               <div className="text-soft-beige-lightest text-sm space-y-1">
-                <p>{CONTACT_INFO.hours.school}</p>
-                <p>{CONTACT_INFO.hours.saturday}</p>
-                <p>{CONTACT_INFO.hours.office}</p>
+                <p>{hoursWeekday}</p>
+                <p>{hoursSaturday}</p>
+                <p>{hoursOffice}</p>
               </div>
             </div>
           </div>
@@ -121,11 +180,13 @@ export default function Footer() {
             <div>
               <h4 className="text-md font-bold text-terracotta-red mb-3">Admissions</h4>
               <ul className="space-y-2 text-sm">
-                {QUICK_LINKS.admissions.map((link) => (
-                  <li key={link.href}>
-                    <a 
-                      href={link.href} 
+                {(footerLinks.admissions && footerLinks.admissions.length > 0 ? footerLinks.admissions : QUICK_LINKS.admissions).map((link: any) => (
+                  <li key={link.href || link.id}>
+                    <a
+                      href={link.href}
                       className="text-soft-beige-lightest hover:text-terracotta-red transition-colors duration-300"
+                      target={link.open_in_new_tab ? '_blank' : undefined}
+                      rel={link.open_in_new_tab ? 'noopener noreferrer' : undefined}
                     >
                       {link.label}
                     </a>
@@ -138,11 +199,13 @@ export default function Footer() {
             <div>
               <h4 className="text-md font-bold text-terracotta-red mb-3">Resources</h4>
               <ul className="space-y-2 text-sm">
-                {QUICK_LINKS.resources.map((link) => (
-                  <li key={link.href}>
-                    <a 
-                      href={link.href} 
+                {(footerLinks.resources && footerLinks.resources.length > 0 ? footerLinks.resources : QUICK_LINKS.resources).map((link: any) => (
+                  <li key={link.href || link.id}>
+                    <a
+                      href={link.href}
                       className="text-soft-beige-lightest hover:text-terracotta-red transition-colors duration-300"
+                      target={link.open_in_new_tab ? '_blank' : undefined}
+                      rel={link.open_in_new_tab ? 'noopener noreferrer' : undefined}
                     >
                       {link.label}
                     </a>
@@ -155,11 +218,13 @@ export default function Footer() {
             <div>
               <h4 className="text-md font-bold text-terracotta-red mb-3">Support</h4>
               <ul className="space-y-2 text-sm">
-                {QUICK_LINKS.support.map((link) => (
-                  <li key={link.href}>
-                    <a 
-                      href={link.href} 
+                {(footerLinks.support && footerLinks.support.length > 0 ? footerLinks.support : QUICK_LINKS.support).map((link: any) => (
+                  <li key={link.href || link.id}>
+                    <a
+                      href={link.href}
                       className="text-soft-beige-lightest hover:text-terracotta-red transition-colors duration-300"
+                      target={link.open_in_new_tab ? '_blank' : undefined}
+                      rel={link.open_in_new_tab ? 'noopener noreferrer' : undefined}
                     >
                       {link.label}
                     </a>
@@ -206,36 +271,28 @@ export default function Footer() {
             {/* Copyright */}
             <div className="mb-4 md:mb-0">
               <p className="text-soft-beige-lightest">
-                © {currentYear} {CONTACT_INFO.school.name}. All rights reserved.
+                © {currentYear} {schoolName}. All rights reserved.
               </p>
             </div>
 
             {/* Legal Links */}
             <div className="flex space-x-6">
-              <a 
-                href="/privacy" 
-                className="text-soft-beige-lightest hover:text-terracotta-red transition-colors duration-300"
-              >
-                Privacy Policy
-              </a>
-              <a 
-                href="/terms" 
-                className="text-soft-beige-lightest hover:text-terracotta-red transition-colors duration-300"
-              >
-                Terms of Use
-              </a>
-              <a 
-                href="/accessibility" 
-                className="text-soft-beige-lightest hover:text-terracotta-red transition-colors duration-300"
-              >
-                Accessibility
-              </a>
-              <a 
-                href="/sitemap" 
-                className="text-soft-beige-lightest hover:text-terracotta-red transition-colors duration-300"
-              >
-                Sitemap
-              </a>
+              {(footerLinks.legal && footerLinks.legal.length > 0 ? footerLinks.legal : [
+                { href: '/privacy', label: 'Privacy Policy' },
+                { href: '/terms', label: 'Terms of Use' },
+                { href: '/accessibility', label: 'Accessibility' },
+                { href: '/sitemap', label: 'Sitemap' }
+              ]).map((link: any) => (
+                <a
+                  key={link.href || link.id}
+                  href={link.href}
+                  className="text-soft-beige-lightest hover:text-terracotta-red transition-colors duration-300"
+                  target={link.open_in_new_tab ? '_blank' : undefined}
+                  rel={link.open_in_new_tab ? 'noopener noreferrer' : undefined}
+                >
+                  {link.label}
+                </a>
+              ))}
             </div>
 
             {/* Accreditation/Status */}

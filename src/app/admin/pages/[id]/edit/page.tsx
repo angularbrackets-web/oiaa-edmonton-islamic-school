@@ -154,7 +154,10 @@ export default function EditPagePage() {
           is_visible: true,
           display_style: 'flat',
           padding: 'none',
-          padding_horizontal: 'none'
+          padding_horizontal: 'none',
+          card_border_radius: 'none',
+          card_shadow: 'none',
+          card_hover_effect: false
         })
       })
       if (response.ok) {
@@ -305,7 +308,10 @@ export default function EditPagePage() {
           is_visible: true,
           display_style: 'flat',
           padding: 'none',
-          padding_horizontal: 'none'
+          padding_horizontal: 'none',
+          card_border_radius: 'none',
+          card_shadow: 'none',
+          card_hover_effect: false
         })
       })
       if (response.ok) {

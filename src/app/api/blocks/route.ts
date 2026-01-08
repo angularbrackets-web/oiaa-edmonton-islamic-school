@@ -14,28 +14,51 @@ import { ContentBlockInput } from '@/types/cms'
  * GET /api/blocks
  *
  * Query Parameters:
- * - page_id: string (required) - Get blocks for specific page
+ * - page_id: string - Get blocks for specific page
+ * - component_id: string - Get blocks for specific component
  * - admin: boolean - Include hidden blocks
+ *
+ * Note: Either page_id OR component_id must be provided (not both)
  */
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
     const pageId = searchParams.get('page_id')
+    const componentId = searchParams.get('component_id')
     const admin = searchParams.get('admin') === 'true'
 
-    if (!pageId) {
+    // Validate that exactly one parent is provided
+    if (!pageId && !componentId) {
       return NextResponse.json(
         {
           success: false,
-          error: 'page_id query parameter is required'
+          error: 'Either page_id or component_id query parameter is required'
         },
         { status: 400 }
       )
     }
 
-    const blocks = admin
-      ? await blocksService.getByPageIdAdmin(pageId)
-      : await blocksService.getByPageId(pageId)
+    if (pageId && componentId) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Cannot specify both page_id and component_id'
+        },
+        { status: 400 }
+      )
+    }
+
+    // Fetch blocks based on parent type
+    let blocks: any[]
+    if (pageId) {
+      blocks = admin
+        ? await blocksService.getByPageIdAdmin(pageId)
+        : await blocksService.getByPageId(pageId)
+    } else {
+      blocks = admin
+        ? await blocksService.getByComponentIdAdmin(componentId!)
+        : await blocksService.getByComponentId(componentId!)
+    }
 
     return NextResponse.json({
       success: true,
@@ -59,18 +82,42 @@ export async function GET(request: NextRequest) {
  *
  * Create new block
  *
- * Request Body: ContentBlockInput
+ * Request Body: ContentBlockInput (with either page_id OR component_id)
  */
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json() as ContentBlockInput
 
     // Validate required fields
-    if (!body.page_id || !body.block_type || !body.content) {
+    if (!body.block_type || !body.content) {
       return NextResponse.json(
         {
           success: false,
-          error: 'Missing required fields: page_id, block_type, content'
+          error: 'Missing required fields: block_type, content'
+        },
+        { status: 400 }
+      )
+    }
+
+    // Validate that exactly one parent is provided
+    const hasPageId = !!body.page_id
+    const hasComponentId = !!(body as any).component_id
+
+    if (!hasPageId && !hasComponentId) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Either page_id or component_id is required'
+        },
+        { status: 400 }
+      )
+    }
+
+    if (hasPageId && hasComponentId) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Cannot specify both page_id and component_id'
         },
         { status: 400 }
       )

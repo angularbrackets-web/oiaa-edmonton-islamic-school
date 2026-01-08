@@ -1,11 +1,11 @@
 /**
  * Dynamic Component Section
  *
- * Renders a reusable component on the home page by fetching its blocks and displaying them.
+ * Renders a reusable component on the home page by fetching its blocks from the database.
  * This is used when a component_id is present in a home section.
  */
 
-import { ReusableComponent, BlockConfiguration, ContentBlock, HomeSection } from '@/types/cms'
+import { HomeSection } from '@/types/cms'
 import { componentsService } from '@/lib/supabase/components'
 import BlockRenderer from './blocks/BlockRenderer'
 
@@ -18,30 +18,20 @@ export default async function DynamicComponentSection({ section }: DynamicCompon
     return null
   }
 
-  // Fetch the component
-  const component: ReusableComponent | null = await componentsService.getById(section.component_id)
+  // Fetch the component with blocks from database
+  const componentWithBlocks = await componentsService.getByIdWithBlocks(section.component_id)
 
-  if (!component) {
+  if (!componentWithBlocks) {
     console.warn(`Component not found for home section: ${section.section_name}`)
     return null
   }
 
-  if (!component.is_active) {
+  if (!componentWithBlocks.is_active) {
     return null // Don't render inactive components
   }
 
-  // Convert BlockConfiguration to ContentBlock format for rendering
-  const blocksToRender: ContentBlock[] = component.blocks_config.map((blockConfig: BlockConfiguration, index: number) => ({
-    id: `${component.id}-block-${index}`,
-    page_id: '', // Not associated with a specific page
-    parent_block_id: null,
-    block_type: blockConfig.block_type,
-    content: blockConfig.content,
-    content_ar: blockConfig.content_ar || null,
-    display_order: index,
-    is_visible: true,
-    ...blockConfig.styling // Spread styling properties (container_width, padding, etc.)
-  } as ContentBlock))
+  // Blocks are already in the correct format from the database
+  const blocksToRender = componentWithBlocks.blocks || []
 
   // Get section config for styling
   const config = section.config || {}

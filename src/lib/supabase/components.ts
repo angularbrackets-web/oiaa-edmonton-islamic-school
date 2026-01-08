@@ -153,6 +153,44 @@ export const componentsService = {
   },
 
   /**
+   * Get component by ID with blocks from database
+   * Fetches blocks from content_blocks table (unified system)
+   */
+  async getByIdWithBlocks(id: string): Promise<(ReusableComponent & { blocks: any[] }) | null> {
+    // First get the component
+    const component = await this.getById(id)
+    if (!component) {
+      return null
+    }
+
+    // Fetch blocks from content_blocks table
+    const blocks = await blocksService.getByComponentId(id)
+
+    // Build nested structure for container blocks (columns, sections)
+    const topLevelBlocks = blocks.filter(b => !b.parent_block_id)
+    const nestedBlocks = blocks.filter(b => b.parent_block_id)
+
+    const blocksWithChildren = topLevelBlocks.map(block => {
+      if (block.block_type === 'section' || block.block_type === 'columns') {
+        return {
+          ...block,
+          blocks: nestedBlocks
+            .filter(nb => nb.parent_block_id === block.id)
+            .sort((a, b) => a.display_order - b.display_order)
+        }
+      }
+      return block
+    })
+
+    blocksWithChildren.sort((a, b) => a.display_order - b.display_order)
+
+    return {
+      ...component,
+      blocks: blocksWithChildren
+    }
+  },
+
+  /**
    * Create new component
    */
   async create(input: ReusableComponentInput): Promise<ReusableComponent> {

@@ -181,7 +181,7 @@ export default function News() {
                     ))}
                   </div>
                   <Link
-                    href={`/news/${featuredArticle.slug || featuredArticle.id}`}
+                    href={`/news-events/${featuredArticle.slug || featuredArticle.id}`}
                     className="inline-flex items-center text-terracotta-red hover:text-terracotta-red-dark font-semibold transition-colors duration-200"
                   >
                     Read More →
@@ -229,7 +229,7 @@ export default function News() {
                       {article.excerpt || article.content.substring(0, 120) + '...'}
                     </p>
                     <Link
-                      href={`/news/${article.slug || article.id}`}
+                      href={`/news-events/${article.slug || article.id}`}
                       className="text-terracotta-red hover:text-terracotta-red-dark font-semibold text-sm transition-colors duration-200"
                     >
                       Read More →
@@ -244,7 +244,7 @@ export default function News() {
         {/* View All News Button */}
         <div className="text-center">
           <Link
-            href="/news"
+            href="/news-events"
             className="inline-flex items-center bg-terracotta-red hover:bg-terracotta-red-dark text-warm-white px-8 py-4 rounded-lg font-semibold text-lg transition-colors duration-300 shadow-lg hover:shadow-xl"
           >
             <span className="mr-2">📰</span>

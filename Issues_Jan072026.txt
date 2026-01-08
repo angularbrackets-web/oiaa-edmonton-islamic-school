@@ -1,0 +1,25 @@
+Jan 7, 2025
+#Issues:
+1. Changes made to site settings are not reflecting in the header and footer
+2. Page links in the footer are not working, we need a page similar to navigation admin, we need the same features and experience.
+3. When creating a component, I’m getting this message - Validation failed: Component must have at least one block.
+4. News and Articles, when ‘Learn more’ is clicked, there is no page, this should be dynamic as new items are added?
+5. Home page editing is working
+
+#TEST UPDATE 1:
+1. We need a link for the footer links navigation in the admin sidebar
+2. In the navigation menu, when you click on edit, it will detect if a page is not available and then prompt, there is no page, do you want to create one. we want the same expereience for the footer page links as well.
+3. When i click Read More in the News and Articles section, it does take me to a new page, but getting errors. Event handlers cannot be passed to Client Component props.
+  <button onClick={function onClick} className=... children=...>
+                  ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+4. When i click on Add Blocks in the component, i'm not getting the same features, options as the Add block feature available in the pages. we basically need to reuse the same Add block component everywhere used.
+
+#TEST UPDATE 2:
+1. The purple document icon for editing Footer links works, but we need to remove the edit pencil icon.
+2. The footer links navigation should not include main level navigation pages like Home, About us, Programs etc. it should include only the secondary level pages. let me know if this is not clear.
+3. When i click Read More in the News and Articles section, it does take me to a new page, but the new page has a link back to news but it is taking me to the wrong page /news whereas the correct page is /news-events
+
+JAN 08, 2026
+#ISSUES 2:
+1. I added a Columns Layout block in a component, but i'm unable to edit it. again, i'm saying, how we add/edit content blocks should work uniformly across pages and components. we should be reusing one thing rather than creating separate versions for pages and components.

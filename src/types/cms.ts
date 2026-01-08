@@ -106,7 +106,8 @@ export interface ColumnConfig {
 
 export interface ContentBlock {
   id: string
-  page_id: string
+  page_id: string | null  // NULL if block belongs to a component
+  component_id?: string | null  // NULL if block belongs to a page
   parent_block_id: string | null  // For nested blocks (null = top-level)
   block_type: BlockType
   content: BlockContent
@@ -137,7 +138,8 @@ export interface ContentBlock {
 }
 
 export interface ContentBlockInput {
-  page_id: string
+  page_id?: string  // Optional: provide if block belongs to a page
+  component_id?: string  // Optional: provide if block belongs to a component
   parent_block_id?: string | null  // For nested blocks
   block_type: BlockType
   content: BlockContent
@@ -837,13 +839,8 @@ export function validateComponentInput(input: ReusableComponentInput): Validatio
     })
   }
 
-  if (!input.blocks_config || input.blocks_config.length === 0) {
-    errors.push({
-      field: 'blocks_config',
-      message: 'Component must have at least one block',
-      code: 'REQUIRED_FIELD'
-    })
-  }
+  // Note: Components can be created without blocks and have blocks added later
+  // No validation error for empty blocks_config
 
   // Validate each block configuration
   if (input.blocks_config && input.blocks_config.length > 0) {

@@ -19,8 +19,25 @@ export default function Header() {
   const [isLoadingNav, setIsLoadingNav] = useState(true)
   const [navError, setNavError] = useState<string | null>(null)
 
+  // Site settings state
+  const [siteSettings, setSiteSettings] = useState<Record<string, string>>({})
+
   // Mobile accordion state
   const [openAccordions, setOpenAccordions] = useState<Set<string>>(new Set())
+
+  // Fetch site settings from API
+  useEffect(() => {
+    fetch('/api/site-settings')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.settings) {
+          setSiteSettings(data.settings)
+        }
+      })
+      .catch(err => {
+        console.error('Site settings fetch error:', err)
+      })
+  }, [])
 
   // Fetch navigation data from API
   useEffect(() => {
@@ -86,10 +103,11 @@ export default function Header() {
     setOpenAccordions(new Set()) // Reset accordions
   }
 
+  // Contact info from site settings with fallbacks
   const contactInfo = {
-    phone: '(780) 123-4567',
-    email: 'academy@oiacedmonton.ca',
-    address: '123 Islamic Center Drive, Edmonton, AB'
+    phone: siteSettings.contact_phone || '(780) 123-4567',
+    email: siteSettings.contact_email || 'academy@oiacedmonton.ca',
+    address: `${siteSettings.address_street || '123 Islamic Center Drive'}, ${siteSettings.address_city || 'Edmonton'}, ${siteSettings.address_province || 'AB'}`
   }
 
   return (
