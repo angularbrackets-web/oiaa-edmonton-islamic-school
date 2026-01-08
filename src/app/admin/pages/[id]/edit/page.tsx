@@ -815,7 +815,7 @@ function BlockEditor({
                   </h4>
                   <NestedBlocksEditor
                     parentBlockId={block.id}
-                    pageId={currentPageId || block.page_id}
+                    pageId={currentPageId || block.page_id || ''}
                     content={editedContent as ColumnsBlockContent}
                     nestedBlocks={block.blocks || []}
                     onContentChange={setEditedContent}
