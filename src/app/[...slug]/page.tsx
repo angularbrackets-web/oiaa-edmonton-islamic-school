@@ -24,6 +24,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params
   const fullSlug = slug.join('/')
 
+  // Skip metadata generation for dedicated routes
+  const firstSegment = slug[0]
+  if (firstSegment === 'news-events' || firstSegment === 'admin' || firstSegment === 'api') {
+    return { title: 'Page Not Found' }
+  }
+
   try {
     const page = await pagesService.getBySlug(fullSlug, true)
 
@@ -46,6 +52,13 @@ export default async function UniversalPage({ params, searchParams }: PageProps)
   const { slug } = await params
   const { preview } = await searchParams
   const fullSlug = slug.join('/')
+
+  // Skip this catch-all for routes that have dedicated handlers
+  // This prevents conflicts with specific routes like /news-events/[slug]
+  const firstSegment = slug[0]
+  if (firstSegment === 'news-events' || firstSegment === 'admin' || firstSegment === 'api') {
+    notFound()
+  }
 
   // Check if we're in preview mode
   const isDraftPreview = preview === 'draft'

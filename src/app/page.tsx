@@ -4,7 +4,7 @@ import News from '@/components/News'
 import Contact from '@/components/Contact'
 import Footer from '@/components/Footer'
 import DynamicComponentSection from '@/components/DynamicComponentSection'
-import { supabase } from '@/lib/supabase'
+import { supabase, supabaseAdmin } from '@/lib/supabase'
 import { HomeSection } from '@/types/cms'
 
 // Force dynamic rendering to always fetch fresh section ordering
@@ -14,20 +14,23 @@ export const revalidate = 0
 // Fetch home sections server-side
 async function getHomeSections(): Promise<HomeSection[]> {
   try {
-    const { data, error } = await supabase
+    // Use admin client on server-side to bypass RLS for reading public data
+    const client = supabaseAdmin || supabase
+    const { data, error } = await client
       .from('home_sections')
       .select('*')
       .eq('is_visible', true)
       .order('display_order', { ascending: true })
 
     if (error) {
-      console.error('Error fetching home sections:', error)
+      console.error('[Home Page] Error fetching home sections:', error)
       return []
     }
 
+    console.log('[Home Page] Fetched sections:', data?.length || 0, 'sections')
     return data || []
   } catch (error) {
-    console.error('Error:', error)
+    console.error('[Home Page] Unexpected error:', error)
     return []
   }
 }

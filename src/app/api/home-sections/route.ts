@@ -11,7 +11,9 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const visibleOnly = searchParams.get('visible_only') === 'true'
 
-    let query = supabase
+    // Use admin client to bypass RLS for reading public data
+    const client = supabaseAdmin || supabase
+    let query = client
       .from('home_sections')
       .select('*')
       .order('display_order', { ascending: true })
