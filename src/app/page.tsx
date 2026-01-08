@@ -7,8 +7,9 @@ import DynamicComponentSection from '@/components/DynamicComponentSection'
 import { supabase } from '@/lib/supabase'
 import { HomeSection } from '@/types/cms'
 
-// Revalidate this page every 60 seconds to pick up ordering changes
-export const revalidate = 60
+// Force dynamic rendering to always fetch fresh section ordering
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 // Fetch home sections server-side
 async function getHomeSections(): Promise<HomeSection[]> {

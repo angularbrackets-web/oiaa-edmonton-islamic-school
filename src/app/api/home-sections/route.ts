@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase, supabaseAdmin } from '@/lib/supabase'
 
+// Disable caching for this API route
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 // GET - Fetch all home sections
 export async function GET(request: NextRequest) {
   try {
