@@ -137,7 +137,7 @@ export default function NewsPage() {
             {articles.map(article => (
               <Link
                 key={article.id}
-                href={`/news/${article.slug}`}
+                href={`/news-events/${article.slug}`}
                 className="group bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
               >
                 {/* Featured Image */}

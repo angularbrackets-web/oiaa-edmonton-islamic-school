@@ -4,7 +4,7 @@
  * Renders different block types on the frontend with layout control
  */
 
-import { ContentBlock, TextBlockContent, HeadingBlockContent, ImageBlockContent, CTABlockContent, VideoBlockContent, CardsBlockContent, PageEmbedBlockContent, ComponentBlockContent, SectionBlockContent, ColumnsBlockContent, FormBlockContent, MapBlockContent, DocumentsBlockContent, SpacerBlockContent, DividerBlockContent } from '@/types/cms'
+import { ContentBlock, TextBlockContent, HeadingBlockContent, ImageBlockContent, CTABlockContent, VideoBlockContent, CardsBlockContent, PageEmbedBlockContent, ComponentBlockContent, SectionBlockContent, ColumnsBlockContent, FormBlockContent, MapBlockContent, DocumentsBlockContent, SpacerBlockContent, DividerBlockContent, WidgetBlockContent } from '@/types/cms'
 import Link from 'next/link'
 import VideoBlock from './VideoBlock'
 import CardsBlock from './CardsBlock'
@@ -18,6 +18,7 @@ import MapBlock from './MapBlock'
 import DocumentsBlock from './DocumentsBlock'
 import SpacerBlock from './SpacerBlock'
 import DividerBlock from './DividerBlock'
+import WidgetBlock from './WidgetBlock'
 import BlockLayoutWrapper from './BlockLayoutWrapper'
 
 interface BlockRendererProps {
@@ -59,6 +60,7 @@ export default function BlockRenderer({ block }: BlockRendererProps) {
       {block.block_type === 'documents' && <DocumentsBlock content={block.content as DocumentsBlockContent} />}
       {block.block_type === 'spacer' && <SpacerBlock content={block.content as SpacerBlockContent} />}
       {block.block_type === 'divider' && <DividerBlock content={block.content as DividerBlockContent} />}
+      {block.block_type === 'widget' && <WidgetBlock content={block.content as WidgetBlockContent} />}
     </BlockLayoutWrapper>
   )
 }

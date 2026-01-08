@@ -77,6 +77,7 @@ export type BlockType =
   | 'documents'    // Documents: PDF/Word file viewer
   | 'spacer'       // Spacer: Vertical spacing between blocks
   | 'divider'      // Divider: Visual separator line
+  | 'widget'       // Widget: External widget embed (scripts, stylesheets, HTML)
 
 export type PaddingSize = 'none' | 'small' | 'medium' | 'large'
 export type ContainerWidth = 'narrow' | 'contained' | 'wide' | 'full'
@@ -426,6 +427,35 @@ export interface DividerBlockContent extends BlockContent {
   pattern_color?: string  // Secondary color for islamic-pattern style
 }
 
+// Widget Block - External widget embed
+export type WidgetScriptLoading = 'beforeInteractive' | 'afterInteractive' | 'lazyOnload'
+
+export interface WidgetBlockContent extends BlockContent {
+  provider_name: string              // e.g., "Keela", "Eventbrite"
+  widget_name?: string               // e.g., "Donation Form", "Event Calendar"
+  description?: string               // Admin notes about the widget
+
+  // Scripts
+  script_urls: string[]              // Array of script URLs
+  script_loading?: WidgetScriptLoading  // Script loading strategy (default: afterInteractive)
+
+  // Stylesheets
+  stylesheet_urls: string[]          // Array of CSS URLs
+
+  // HTML Container
+  container_html?: string            // Optional raw HTML markup
+  container_id?: string              // ID for the container div
+  container_class?: string           // CSS classes for the container
+
+  // Widget Configuration
+  custom_attributes?: Record<string, string>  // data-* attributes, etc.
+  inline_config?: string             // Inline config/initialization code
+
+  // Display Options
+  min_height?: string                // Minimum height (e.g., "400px")
+  loading_text?: string              // Text shown while loading
+}
+
 // ============================================================================
 // MEDIA LIBRARY TYPES
 // ============================================================================
@@ -519,7 +549,8 @@ export const BLOCK_TYPE_LABELS: Record<BlockType, string> = {
   map: 'Map',
   documents: 'Documents',
   spacer: 'Spacer',
-  divider: 'Divider'
+  divider: 'Divider',
+  widget: 'Widget Embed'
 }
 
 export const BLOCK_TYPE_ICONS: Record<BlockType, string> = {
@@ -544,7 +575,8 @@ export const BLOCK_TYPE_ICONS: Record<BlockType, string> = {
   map: '📍',
   documents: '📄',
   spacer: '↕️',
-  divider: '➖'
+  divider: '➖',
+  widget: '🔌'
 }
 
 // Validation helpers
@@ -666,6 +698,22 @@ export function getDefaultBlockContent(blockType: BlockType): BlockContent {
         width: 'full',
         alignment: 'center',
         pattern_color: '#145B55'
+      }
+    case 'widget':
+      return {
+        provider_name: '',
+        widget_name: '',
+        description: '',
+        script_urls: [],
+        script_loading: 'afterInteractive',
+        stylesheet_urls: [],
+        container_html: '',
+        container_id: '',
+        container_class: '',
+        custom_attributes: {},
+        inline_config: '',
+        min_height: '400px',
+        loading_text: 'Loading widget...'
       }
     default:
       return {}

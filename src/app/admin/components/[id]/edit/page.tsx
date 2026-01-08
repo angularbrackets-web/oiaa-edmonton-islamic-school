@@ -31,9 +31,10 @@ import MapBlockEditor from '@/components/admin/blocks/MapBlockEditor'
 import DocumentsBlockEditor from '@/components/admin/blocks/DocumentsBlockEditor'
 import SpacerBlockEditor from '@/components/admin/blocks/SpacerBlockEditor'
 import DividerBlockEditor from '@/components/admin/blocks/DividerBlockEditor'
+import WidgetBlockEditor from '@/components/admin/blocks/WidgetBlockEditor'
 import SimplifiedLayoutControls from '@/components/admin/blocks/SimplifiedLayoutControls'
 import NestedBlocksEditor from '@/components/admin/blocks/NestedBlocksEditor'
-import { TextBlockContent, HeadingBlockContent, ImageBlockContent, CTABlockContent, VideoBlockContent, CardsBlockContent, PageEmbedBlockContent, ComponentBlockContent, SectionBlockContent, ColumnsBlockContent, FormBlockContent, MapBlockContent, DocumentsBlockContent, SpacerBlockContent, DividerBlockContent } from '@/types/cms'
+import { TextBlockContent, HeadingBlockContent, ImageBlockContent, CTABlockContent, VideoBlockContent, CardsBlockContent, PageEmbedBlockContent, ComponentBlockContent, SectionBlockContent, ColumnsBlockContent, FormBlockContent, MapBlockContent, DocumentsBlockContent, SpacerBlockContent, DividerBlockContent, WidgetBlockContent } from '@/types/cms'
 
 // Helper to build block tree structure
 function buildBlockTree(blocks: ContentBlock[]): ContentBlock[] {
@@ -647,6 +648,12 @@ function BlockEditor({
           {block.block_type === 'divider' && (
             <DividerBlockEditor
               content={editedContent as DividerBlockContent}
+              onChange={setEditedContent}
+            />
+          )}
+          {block.block_type === 'widget' && (
+            <WidgetBlockEditor
+              content={editedContent as WidgetBlockContent}
               onChange={setEditedContent}
             />
           )}

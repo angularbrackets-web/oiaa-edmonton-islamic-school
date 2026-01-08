@@ -230,7 +230,7 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ sl
               {relatedArticles.map(relatedArticle => (
                 <Link
                   key={relatedArticle.id}
-                  href={`/news/${relatedArticle.slug}`}
+                  href={`/news-events/${relatedArticle.slug}`}
                   className="group bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
                 >
                   {relatedArticle.featured_image && (

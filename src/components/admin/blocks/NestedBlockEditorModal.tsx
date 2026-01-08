@@ -25,6 +25,7 @@ import {
   DocumentsBlockContent,
   SpacerBlockContent,
   DividerBlockContent,
+  WidgetBlockContent,
   ColumnsBlockContent
 } from '@/types/cms'
 
@@ -40,6 +41,7 @@ import MapBlockEditor from '@/components/admin/blocks/MapBlockEditor'
 import DocumentsBlockEditor from '@/components/admin/blocks/DocumentsBlockEditor'
 import SpacerBlockEditor from '@/components/admin/blocks/SpacerBlockEditor'
 import DividerBlockEditor from '@/components/admin/blocks/DividerBlockEditor'
+import WidgetBlockEditor from '@/components/admin/blocks/WidgetBlockEditor'
 import ColumnsBlockEditor from '@/components/admin/blocks/ColumnsBlockEditor'
 
 interface NestedBlockEditorModalProps {
@@ -170,6 +172,14 @@ export default function NestedBlockEditorModal({
         return (
           <DividerBlockEditor
             content={editedContent as DividerBlockContent}
+            onChange={setEditedContent}
+          />
+        )
+
+      case 'widget':
+        return (
+          <WidgetBlockEditor
+            content={editedContent as WidgetBlockContent}
             onChange={setEditedContent}
           />
         )
