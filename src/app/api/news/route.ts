@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase'
+import { supabase, supabaseAdmin } from '@/lib/supabase'
 
 export async function GET(request: NextRequest) {
   try {
@@ -9,7 +9,10 @@ export async function GET(request: NextRequest) {
     const featured = searchParams.get('featured')
     const admin = searchParams.get('admin')
 
-    let query = supabase
+    // Use admin client to bypass RLS for reading public news
+    const client = supabaseAdmin || supabase
+
+    let query = client
       .from('news')
       .select('*')
       .order('created_at', { ascending: false })
@@ -34,13 +37,16 @@ export async function GET(request: NextRequest) {
     const { data, error } = await query
 
     if (error) {
-      console.error('Supabase error:', error)
+      console.error('[News API] Supabase error:', error)
       return NextResponse.json({ error: 'Failed to fetch news from database' }, { status: 500 })
     }
 
     if (!data) {
+      console.log('[News API] No news data returned from database')
       return NextResponse.json({ news: [] })
     }
+
+    console.log('[News API] Fetched', data.length, 'articles')
 
     // Transform data to match the expected format
     const transformedData = {

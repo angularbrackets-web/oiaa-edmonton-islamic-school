@@ -23,19 +23,29 @@ interface NewsArticle {
 
 async function getArticle(slug: string): Promise<NewsArticle | null> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
-    const response = await fetch(`${baseUrl}/api/news/${slug}`, {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000')
+    const apiUrl = `${baseUrl}/api/news/${slug}`
+
+    console.log('[News Detail] Fetching article with slug:', slug)
+    console.log('[News Detail] API URL:', apiUrl)
+
+    const response = await fetch(apiUrl, {
       cache: 'no-store'
     })
 
+    console.log('[News Detail] Response status:', response.status)
+
     if (!response.ok) {
+      console.error('[News Detail] Response not OK:', response.status, response.statusText)
       return null
     }
 
     const data = await response.json()
+    console.log('[News Detail] Response data:', data)
+
     return data.success ? data.data : null
   } catch (error) {
-    console.error('Error fetching article:', error)
+    console.error('[News Detail] Error fetching article:', error)
     return null
   }
 }
