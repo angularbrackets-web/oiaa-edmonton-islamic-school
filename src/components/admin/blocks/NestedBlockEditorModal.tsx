@@ -26,7 +26,13 @@ import {
   SpacerBlockContent,
   DividerBlockContent,
   WidgetBlockContent,
-  ColumnsBlockContent
+  ColumnsBlockContent,
+  ContainerWidth,
+  PaddingSize,
+  SpacingSize,
+  DisplayStyle,
+  CardBorderRadius,
+  CardShadow
 } from '@/types/cms'
 
 // Import block editors
@@ -43,6 +49,7 @@ import SpacerBlockEditor from '@/components/admin/blocks/SpacerBlockEditor'
 import DividerBlockEditor from '@/components/admin/blocks/DividerBlockEditor'
 import WidgetBlockEditor from '@/components/admin/blocks/WidgetBlockEditor'
 import ColumnsBlockEditor from '@/components/admin/blocks/ColumnsBlockEditor'
+import SimplifiedLayoutControls from '@/components/admin/blocks/SimplifiedLayoutControls'
 
 interface NestedBlockEditorModalProps {
   block: ContentBlock
@@ -59,6 +66,20 @@ export default function NestedBlockEditorModal({
 }: NestedBlockEditorModalProps) {
   const [editedContent, setEditedContent] = useState<BlockContent>(block.content)
   const [mounted, setMounted] = useState(false)
+
+  // Layout and styling state
+  const [containerWidth, setContainerWidth] = useState<ContainerWidth | null>(block.container_width || null)
+  const [padding, setPadding] = useState<PaddingSize | null>(block.padding || null)
+  const [paddingHorizontal, setPaddingHorizontal] = useState<PaddingSize | null>(block.padding_horizontal || null)
+  const [marginTop, setMarginTop] = useState<SpacingSize | null>(block.margin_top || null)
+  const [marginBottom, setMarginBottom] = useState<SpacingSize | null>(block.margin_bottom || null)
+  const [marginHorizontal, setMarginHorizontal] = useState<SpacingSize | null>(block.margin_horizontal || null)
+  const [backgroundColor, setBackgroundColor] = useState<string | null>(block.background_color || null)
+  const [customClass, setCustomClass] = useState<string | null>(block.custom_css_class || null)
+  const [displayStyle, setDisplayStyle] = useState<DisplayStyle | null>(block.display_style || null)
+  const [cardBorderRadius, setCardBorderRadius] = useState<CardBorderRadius | null>(block.card_border_radius || null)
+  const [cardShadow, setCardShadow] = useState<CardShadow | null>(block.card_shadow || null)
+  const [cardHoverEffect, setCardHoverEffect] = useState<boolean | null>(block.card_hover_effect || null)
 
   // Handle mounting for portal
   useEffect(() => {
@@ -81,8 +102,50 @@ export default function NestedBlockEditorModal({
     return () => window.removeEventListener('keydown', handleEscape)
   }, [onClose, isSaving])
 
+  const handleLayoutChange = (updates: {
+    container_width?: ContainerWidth | null
+    padding?: PaddingSize | null
+    padding_horizontal?: PaddingSize | null
+    margin_top?: SpacingSize | null
+    margin_bottom?: SpacingSize | null
+    margin_horizontal?: SpacingSize | null
+    background_color?: string | null
+    custom_css_class?: string | null
+    display_style?: DisplayStyle | null
+    card_border_radius?: CardBorderRadius | null
+    card_shadow?: CardShadow | null
+    card_hover_effect?: boolean | null
+  }) => {
+    if (updates.container_width !== undefined) setContainerWidth(updates.container_width)
+    if (updates.padding !== undefined) setPadding(updates.padding)
+    if (updates.padding_horizontal !== undefined) setPaddingHorizontal(updates.padding_horizontal)
+    if (updates.margin_top !== undefined) setMarginTop(updates.margin_top)
+    if (updates.margin_bottom !== undefined) setMarginBottom(updates.margin_bottom)
+    if (updates.margin_horizontal !== undefined) setMarginHorizontal(updates.margin_horizontal)
+    if (updates.background_color !== undefined) setBackgroundColor(updates.background_color)
+    if (updates.custom_css_class !== undefined) setCustomClass(updates.custom_css_class)
+    if (updates.display_style !== undefined) setDisplayStyle(updates.display_style)
+    if (updates.card_border_radius !== undefined) setCardBorderRadius(updates.card_border_radius)
+    if (updates.card_shadow !== undefined) setCardShadow(updates.card_shadow)
+    if (updates.card_hover_effect !== undefined) setCardHoverEffect(updates.card_hover_effect)
+  }
+
   const handleSave = async () => {
-    await onSave({ content: editedContent })
+    await onSave({
+      content: editedContent,
+      container_width: containerWidth,
+      padding: padding,
+      padding_horizontal: paddingHorizontal,
+      margin_top: marginTop,
+      margin_bottom: marginBottom,
+      margin_horizontal: marginHorizontal,
+      background_color: backgroundColor,
+      custom_css_class: customClass,
+      display_style: displayStyle,
+      card_border_radius: cardBorderRadius,
+      card_shadow: cardShadow,
+      card_hover_effect: cardHoverEffect
+    })
   }
 
   // Render the appropriate editor based on block type
@@ -216,7 +279,7 @@ export default function NestedBlockEditorModal({
       <div className="absolute inset-0 bg-black/50" />
 
       {/* Modal */}
-      <div className="relative bg-white rounded-xl shadow-2xl w-full max-w-3xl max-h-[90vh] flex flex-col">
+      <div className="relative bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-gray-200">
           <div className="flex items-center gap-3">
@@ -236,8 +299,33 @@ export default function NestedBlockEditorModal({
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-y-auto p-6">
-          {renderEditor()}
+        <div className="flex-1 overflow-y-auto p-6 space-y-6">
+          {/* Block Content Editor */}
+          <div>
+            <h3 className="text-sm font-semibold text-gray-700 mb-3">Content</h3>
+            {renderEditor()}
+          </div>
+
+          {/* Layout & Styling Controls */}
+          <div>
+            <h3 className="text-sm font-semibold text-gray-700 mb-3">Layout & Styling</h3>
+            <SimplifiedLayoutControls
+              containerWidth={containerWidth}
+              padding={padding}
+              paddingHorizontal={paddingHorizontal}
+              marginTop={marginTop}
+              marginBottom={marginBottom}
+              marginHorizontal={marginHorizontal}
+              backgroundColor={backgroundColor}
+              customClass={customClass}
+              displayStyle={displayStyle}
+              cardBorderRadius={cardBorderRadius}
+              cardShadow={cardShadow}
+              cardHoverEffect={cardHoverEffect}
+              hideHeader={true}
+              onChange={handleLayoutChange}
+            />
+          </div>
         </div>
 
         {/* Footer */}

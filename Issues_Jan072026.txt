@@ -23,3 +23,12 @@ If you need interactivity, consider converting part of this to a Client Componen
 JAN 08, 2026
 #ISSUES 2:
 1. I added a Columns Layout block in a component, but i'm unable to edit it. again, i'm saying, how we add/edit content blocks should work uniformly across pages and components. we should be reusing one thing rather than creating separate versions for pages and components.
+
+#ISSUES 2:
+1. Ordering of Home page components not working
+3. Read More not working
+4. Donate page
+5. Forms should send email (visitor in home page, contact us)
+
+
+

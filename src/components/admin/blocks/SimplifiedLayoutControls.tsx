@@ -459,7 +459,12 @@ export default function SimplifiedLayoutControls({
               name="displayStyle"
               value="flat"
               checked={displayStyle === 'flat'}
-              onChange={(e) => onChange({ display_style: e.target.value as DisplayStyle })}
+              onChange={(e) => onChange({
+                display_style: e.target.value as DisplayStyle,
+                card_border_radius: 'none',
+                card_shadow: 'none',
+                card_hover_effect: false
+              })}
               className="mt-1 w-4 h-4 text-terracotta-red focus:ring-terracotta-red"
             />
             <div className="flex-1">

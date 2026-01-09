@@ -135,13 +135,17 @@ export default function BlockLayoutWrapper({
   const effectiveDisplayStyle = displayStyle || 'flat'
   const cardStyle = displayStyleClasses[effectiveDisplayStyle]
 
-  // Custom card border radius (overrides default from displayStyle)
-  const customBorderRadius = cardBorderRadius ? borderRadiusClasses[cardBorderRadius] : ''
+  // Custom card border radius (only apply if NOT flat)
+  const customBorderRadius = effectiveDisplayStyle !== 'flat' && cardBorderRadius
+    ? borderRadiusClasses[cardBorderRadius]
+    : ''
 
-  // Custom card shadow (overrides default from displayStyle)
-  const customShadow = cardShadow ? shadowClasses[cardShadow] : ''
+  // Custom card shadow (only apply if NOT flat)
+  const customShadow = effectiveDisplayStyle !== 'flat' && cardShadow
+    ? shadowClasses[cardShadow]
+    : ''
 
-  // Hover effect
+  // Hover effect (only apply if NOT flat)
   const hoverClass = cardHoverEffect && effectiveDisplayStyle !== 'flat'
     ? 'hover:shadow-xl hover:scale-[1.01] transition-all duration-300'
     : ''
