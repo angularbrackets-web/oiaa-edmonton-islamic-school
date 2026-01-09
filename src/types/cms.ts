@@ -449,7 +449,8 @@ export interface WidgetBlockContent extends BlockContent {
 
   // Widget Configuration
   custom_attributes?: Record<string, string>  // data-* attributes, etc.
-  inline_config?: string             // Inline config/initialization code
+  inline_config_before?: string      // Code to run BEFORE scripts load (e.g., window.Keela = {...})
+  inline_config?: string             // Code to run AFTER scripts load
 
   // Display Options
   min_height?: string                // Minimum height (e.g., "400px")
@@ -711,6 +712,7 @@ export function getDefaultBlockContent(blockType: BlockType): BlockContent {
         container_id: '',
         container_class: '',
         custom_attributes: {},
+        inline_config_before: '',
         inline_config: '',
         min_height: '400px',
         loading_text: 'Loading widget...'

@@ -30,10 +30,24 @@ export default function WidgetBlock({ content }: WidgetBlockProps) {
     container_id,
     container_class,
     custom_attributes = {},
+    inline_config_before,
     inline_config,
     min_height = '400px',
     loading_text = 'Loading widget...'
   } = content
+
+  // Execute config BEFORE scripts load (e.g., window.Keela = {...})
+  useEffect(() => {
+    if (inline_config_before) {
+      try {
+        const configFunction = new Function(inline_config_before)
+        configFunction()
+      } catch (error) {
+        console.error('Error executing widget pre-initialization config:', error)
+        setHasError(true)
+      }
+    }
+  }, [inline_config_before])
 
   // Track script loading
   const totalScripts = script_urls.length

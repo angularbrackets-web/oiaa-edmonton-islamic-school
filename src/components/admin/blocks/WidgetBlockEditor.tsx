@@ -492,21 +492,39 @@ export default function WidgetBlockEditor({ content, onChange }: WidgetBlockEdit
               )}
             </div>
 
-            {/* Inline Config */}
+            {/* Pre-Initialization Config */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Inline Configuration Code
+                Pre-Initialization Code (Runs Before Scripts)
+              </label>
+              <textarea
+                value={content.inline_config_before || ''}
+                onChange={(e) => onChange({ ...content, inline_config_before: e.target.value })}
+                placeholder="// Code that must run BEFORE scripts load
+// Example for Keela: window.Keela = { id: 'your-id' };"
+                rows={4}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md font-mono text-sm focus:ring-2 focus:ring-deep-teal focus:border-transparent"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                <strong>Runs before scripts load.</strong> Use for widgets that need configuration set on window object (e.g., Keela).
+              </p>
+            </div>
+
+            {/* Post-Initialization Config */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Post-Initialization Code (Runs After Scripts)
               </label>
               <textarea
                 value={content.inline_config || ''}
                 onChange={(e) => onChange({ ...content, inline_config: e.target.value })}
-                placeholder="// JavaScript code to initialize the widget
+                placeholder="// Code that runs AFTER scripts load
 // Example: MyWidget.init({ apiKey: 'xxx' });"
-                rows={6}
+                rows={4}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md font-mono text-sm focus:ring-2 focus:ring-deep-teal focus:border-transparent"
               />
               <p className="text-xs text-gray-500 mt-1">
-                JavaScript code executed after scripts load (advanced users only)
+                <strong>Runs after scripts load.</strong> Use for manual initialization or API calls.
               </p>
             </div>
 
