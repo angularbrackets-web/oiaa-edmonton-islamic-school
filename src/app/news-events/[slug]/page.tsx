@@ -4,6 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { CalendarIcon, UserIcon, TagIcon, ArrowLeftIcon } from '@heroicons/react/24/outline'
 import ShareButtons from '@/components/ShareButtons'
+import { supabaseAdmin } from '@/lib/supabase'
 
 interface NewsArticle {
   id: string
@@ -21,29 +22,64 @@ interface NewsArticle {
   updated_at: string
 }
 
+// Generate static paths for all published articles at build time
+export async function generateStaticParams() {
+  try {
+    console.log('[News Static Params] Fetching all published articles for static generation')
+
+    const { data: articles, error } = await supabaseAdmin
+      .from('news')
+      .select('slug')
+      .eq('published', true)
+
+    if (error) {
+      console.error('[News Static Params] Error:', error)
+      return []
+    }
+
+    console.log(`[News Static Params] Found ${articles?.length || 0} articles to pre-build`)
+
+    return articles?.map((article: { slug: string }) => ({
+      slug: article.slug,
+    })) || []
+  } catch (error) {
+    console.error('[News Static Params] Exception:', error)
+    return []
+  }
+}
+
 async function getArticle(slug: string): Promise<NewsArticle | null> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000')
-    const apiUrl = `${baseUrl}/api/news/${slug}`
-
     console.log('[News Detail] Fetching article with slug:', slug)
-    console.log('[News Detail] API URL:', apiUrl)
 
-    const response = await fetch(apiUrl, {
-      cache: 'no-store'
-    })
+    // Use Supabase directly instead of HTTP fetch
+    const { data, error } = await supabaseAdmin
+      .from('news')
+      .select('*')
+      .eq('slug', slug)
+      .eq('published', true)
+      .single()
 
-    console.log('[News Detail] Response status:', response.status)
-
-    if (!response.ok) {
-      console.error('[News Detail] Response not OK:', response.status, response.statusText)
+    if (error) {
+      console.error('[News Detail] Database error for slug:', slug, error)
       return null
     }
 
-    const data = await response.json()
-    console.log('[News Detail] Response data:', data)
+    if (!data) {
+      console.log('[News Detail] No article found with slug:', slug)
+      return null
+    }
 
-    return data.success ? data.data : null
+    console.log('[News Detail] Successfully fetched article:', data.title)
+
+    // Transform the data
+    const article: NewsArticle = {
+      ...data,
+      author: data.author || 'Admin',
+      featured_image: data.featured_image || data.image_url || null
+    }
+
+    return article
   } catch (error) {
     console.error('[News Detail] Error fetching article:', error)
     return null
@@ -52,22 +88,32 @@ async function getArticle(slug: string): Promise<NewsArticle | null> {
 
 async function getRelatedArticles(category: string, currentSlug: string): Promise<NewsArticle[]> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
-    const response = await fetch(`${baseUrl}/api/news?category=${category}&limit=3`, {
-      cache: 'no-store'
-    })
+    console.log('[News Detail] Fetching related articles for category:', category)
 
-    if (!response.ok) {
+    // Use Supabase directly instead of HTTP fetch
+    const { data: articles, error } = await supabaseAdmin
+      .from('news')
+      .select('*')
+      .eq('category', category)
+      .eq('published', true)
+      .neq('slug', currentSlug)
+      .order('publish_date', { ascending: false })
+      .limit(3)
+
+    if (error) {
+      console.error('[News Detail] Error fetching related articles:', error)
       return []
     }
 
-    const data = await response.json()
-    const articles = data.success ? data.data : []
+    console.log(`[News Detail] Found ${articles?.length || 0} related articles`)
 
-    // Filter out current article and limit to 3
-    return articles.filter((article: NewsArticle) => article.slug !== currentSlug).slice(0, 3)
+    return articles?.map((article: any) => ({
+      ...article,
+      author: article.author || 'Admin',
+      featured_image: article.featured_image || article.image_url || null
+    })) || []
   } catch (error) {
-    console.error('Error fetching related articles:', error)
+    console.error('[News Detail] Error fetching related articles:', error)
     return []
   }
 }
