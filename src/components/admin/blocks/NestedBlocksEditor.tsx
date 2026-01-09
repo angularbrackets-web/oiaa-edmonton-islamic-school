@@ -43,6 +43,7 @@ const ALLOWED_BLOCK_TYPES: BlockType[] = [
   'form',
   'map',
   'documents',
+  'widget',
   'spacer',
   'divider',
   'columns'  // Allow nested columns for complex layouts
