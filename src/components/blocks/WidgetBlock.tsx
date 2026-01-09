@@ -70,6 +70,40 @@ export default function WidgetBlock({ content }: WidgetBlockProps) {
     }
   }, [allScriptsLoaded, inline_config, isLoaded])
 
+  // Special handling for Keela widgets - manually create iframe
+  useEffect(() => {
+    if (!allScriptsLoaded || hasError) return
+
+    // Check if this is a Keela widget by looking for keela-embed-form class
+    const isKeelaWidget = container_html?.includes('keela-embed-form')
+
+    if (isKeelaWidget) {
+      // Wait a tick for DOM to update
+      setTimeout(() => {
+        const embedForm = document.querySelector('.keela-embed-form')
+
+        if (embedForm && embedForm.children.length === 0) {
+          // Only create iframe if it doesn't already exist
+          const dataSrc = embedForm.getAttribute('data-src')
+          const embedId = embedForm.getAttribute('data-embed-id')
+
+          if (dataSrc && embedId) {
+            const iframe = document.createElement('iframe')
+            iframe.className = ''
+            iframe.frameBorder = '0'
+            iframe.setAttribute('data-embed-id', embedId)
+            iframe.src = `${dataSrc}?embedId=${embedId}`
+            iframe.setAttribute('allow', 'clipboard-write')
+            iframe.style.width = '100%'
+            iframe.style.border = 'none'
+
+            embedForm.appendChild(iframe)
+          }
+        }
+      }, 100)
+    }
+  }, [allScriptsLoaded, hasError, container_html])
+
   // Handle script loading
   const handleScriptLoad = () => {
     setScriptsLoaded(prev => prev + 1)
