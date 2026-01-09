@@ -59,8 +59,8 @@ export default function NewsPage() {
       const response = await fetch(url)
       const data = await response.json()
 
-      if (data.success) {
-        setArticles(data.data || [])
+      if (data.news) {
+        setArticles(data.news || [])
       }
     } catch (error) {
       console.error('Error loading articles:', error)
